@@ -52,8 +52,9 @@ states_rearranged=[2 3 1];
 
 % hours_plotted=[-4 16];
 
-fourhr_periods={'pre4to1','post1to4','post5to8','post9to12','post13to16'};
-no_4hr_periods=length(fourhr_periods);
+hr_periods=make_period_labels(4,16,'hrs');
+no_periods=length(hr_periods);
+period_colors=[linspace(0,1,no_periods)' 1-abs(linspace(1,-1,no_periods)') linspace(1,0,no_periods)'];
 
 % sampling_freq=1000;
 % seconds_per_epoch=4096/250;
@@ -69,21 +70,16 @@ for d=1:no_drugs
     drug_summed_MI=summed_MI(strcmp(drugs,drug),:);
     %         drug_summed_MI_4hr=subj_summed_MI_4hr(strcmp(subj_drugs,drug),:);
     drug_states=states(strcmp(drugs,drug));
-%     drug_hrs=hrs(strcmp(drugs,drug));
-    drug_4hrs=fourhrs(strcmp(drugs,drug));
+    drug_hrs=hrs(strcmp(drugs,drug));
+%     drug_4hrs=fourhrs(strcmp(drugs,drug));
     
-    for f=1:no_4hr_periods
+    for f=1:no_periods
         
-        start_epoch=find(strcmp(drug_4hrs,fourhr_periods{f}), 1 );
-        end_epoch=find(strcmp(drug_4hrs,fourhr_periods{f}), 1, 'last' );
-        
-        epochs=start_epoch:end_epoch;
-        
-        pd_summed_MI=drug_summed_MI(epochs,:);
+        pd_summed_MI=drug_summed_MI(strcmp(drug_hrs,hr_periods{f}),:);
         %             pd_summed_MI_4hr=drug_summed_MI_4hr(epochs,:);
-        pd_states=drug_states(epochs);
+        pd_states=drug_states(strcmp(drug_hrs,hr_periods{f}));
         %             pd_hrs=drug_hrs(epochs);
-        %             pd_4hrs=drug_4hrs(epochs);
+        %             pd_4hrs=drug_hrs(epochs);
         
         %             total_epochs=length(epochs);
         
@@ -100,47 +96,46 @@ for d=1:no_drugs
         %% Each band, all drugs, by 4 hour period.
         
         for p=1:no_band_pairs
-            
-            %             figure(2*no_drugs+1+b)
+
             figure(p)
-            
-            subplot(no_drugs,no_4hr_periods,(d-1)*no_4hr_periods+f)
             
             for s_r=1:no_states
                 
+                subplot(no_drugs,no_states,(d-1)*no_states+s_r)
+                
                 state_index=states_rearranged(s_r);
                 
-                state_indices=find(strcmp(pd_states,state_labels{state_index}));
+                state_label=state_labels{state_index};
                 
-                plot(pd_summed_MI_norm(state_indices,band_pairs(p,1)),pd_summed_MI_norm(state_indices,band_pairs(p,2)),state_markers{state_index},'MarkerSize',state_sizes(state_index))
+                state_indices=find(strcmp(pd_states,state_label));
+                
+                plot(pd_summed_MI_norm(state_indices,band_pairs(p,1)),pd_summed_MI_norm(state_indices,band_pairs(p,2)),'.','Color',period_colors(f,:))
                 
                 hold on
                 
-            end
-            
-            axis('tight')
-            
-            if d==1 && f==round(no_4hr_periods/2)
+                axis('tight')
                 
-                legend(state_labels{states_rearranged})
-                
-                try
+                if d==1 && s_r==round(no_states/2)
                     
-                    title({[subject,', ',char(channel_label)];[band_pair_labels{p},' Summed MI']})
+                    try
+                        
+                        title({channel_label;[band_pair_labels{p},' Summed MI']})
+                        
+                    end
                     
                 end
                 
-            end
-            
-            if d==no_drugs
+                if d==no_drugs
+                    
+                    xlabel(state_label)
+                    
+                end
                 
-                xlabel(fourhr_periods{f})
-                
-            end
-            
-            if f==1
-                
-                ylabel(drug)
+                if f==1
+                    
+                    ylabel(drug)
+                    
+                end
                 
             end
             
@@ -153,6 +148,10 @@ end
 for p=1:no_band_pairs
     
     figure(p)
+    
+    subplot(1,round(no_states/2))
+    
+    title({[name,'Summed MI '];band_pair_labels{p}})
     
     saveas(gcf,[all_dirname,'/',all_dirname,'_',band_pair_labels{p},'.fig'])
     
