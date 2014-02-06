@@ -1,0 +1,109 @@
+function [f,data_hat,bins,signals,A,P,Pmod]=plotfft(data,varargin)
+
+% varargin can contain five options, each prefaced by an option specifier:
+% 'sampling frequency',sampling_freq: The sampling frequency of the signal.
+%     Default is 1.
+% 'nobands',number of bands: Determines the number of bands the signal will be
+%     filtered into. Default is 10 bands, ranging from 1/signal_length to the 
+%     nyquist frequency.
+% 'filename','filename': The name of the data being analyzed; will be used to 
+%     save figures.
+% 'spacing','linear' or 'log' or 'sqrt': Determines how a range of frequencies 
+%     is divided into bins. Default is sqrt.
+% 'bandranges',vector of bandlimits (low1,hi1,low2,hi2),vector of bands numbers: 
+%     Determines the upper and lower limits of ranges of frequencies, each divided 
+%     into a specified number of bins. 'bandranges' should always be the last set
+%     of arguments.
+
+signal_length=length(data);
+
+% Defaults.
+sampling_freq=1;
+noranges=1;
+nobands=10;
+spacing='sqrt';
+filename=[];
+bandranges=[];
+
+for i=1:floor(length(varargin)/2)
+    if strcmp(varargin(2*i-1),'sampling frequency')==1
+        sampling_freq=varargin(2*i);
+    elseif strcmp(varargin(2*i-1),'nobands')==1
+        nobands=varargin(2*i);
+    elseif strcmp(varargin(2*i-1),'filename')==1
+        filename=varargin(2*i);
+    elseif strcmp(varargin(2*i-1),'spacing')==1
+        spacing=varargin(2*i);
+    elseif strcmp(varargin(2*i-1),'bandranges')==1
+        bandranges=varargin(2*i);
+        nobands=varargin(2*i+1);
+        noranges=length(bandranges)/2;    
+    end
+end
+    
+data_hat=fft(data);
+
+figure();
+subplot(1,2,1)
+t=1:signal_length;
+t=t*sampling_freq;
+plot(t,data)
+title('Data')
+subplot(1,2,2)
+indices=1:signal_length/2;
+f=sampling_freq*(indices-1)/signal_length;
+plot(f,abs(data_hat(1:signal_length/2)))
+title('FFT (Power)')
+
+if ~isempty(filename)
+    saveas(gcf,[filename,'fft.fig']);
+end
+
+nyquist=sampling_freq/2;
+
+for i=1:noranges
+
+% Stopped here.
+    
+bins=[]; signals=[]; A=[]; P=[]; Pmod=[];
+
+figure();
+
+for i=1:nobands
+    
+    flo=(sqrt_band_centers(i)-bandwidth)^2;
+    fhi=(sqrt_band_centers(i)+bandwidth)^2;
+    bins(i,1)=flo; bins(i,2)=fhi;
+    
+%     flo=exp(log_band_centers(i)-bandwidth);
+%     fhi=exp(log_band_centers(i)+bandwidth);
+    
+%     flo=band_centers(i)-bandwidth;
+%     fhi=band_centers(i)+bandwidth;
+
+    filter=butterworth(3,signal_length,1,flo,fhi,0);
+    
+    filtered=data_hat.*sqrt(filter);
+    signals(:,i)=real(ifft(filtered));
+    
+    H(:,i)=hilbert(signals(:,i));
+    A(:,i)=abs(H(:,i));
+    P(:,i)=phase(H(:,i));
+    Pmod(:,i)=mod(P(:,i),2*pi)/pi;
+    
+    subplot(nobands,3,3*i-2);
+    plot(signals(:,i));
+    title([num2str(flo),' to ',num2str(fhi),' Frequency Band'])
+    
+    subplot(nobands,3,3*i-1);
+    plot(A(:,i));
+    title(['Amplitude of ',num2str(flo),' to ',num2str(fhi),' Frequency Band']);
+    
+    subplot(nobands,3,3*i);
+    plot(Pmod(:,i));
+    title(['Phase of ',num2str(flo),' to ',num2str(fhi),' Frequency Band']);
+end
+
+if nargin>3
+    saveas(gcf,[filename,'fft_bands.fig']);
+end

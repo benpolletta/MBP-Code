@@ -1,0 +1,73 @@
+function [all_avg_fft,all_se_fft]=avg_fft_condition(sampling_freq,signal_length,cond_labels)
+
+[cond_listname,listpath]=uigetfile('*list','Choose a list of condition lists to fft.')
+
+cond_lists=textread([listpath,cond_listname],'%s');
+cond_num=length(cond_lists);
+
+f=sampling_freq*[1:signal_length/2]/(signal_length);
+% format=make_format(signal_length/2,'f');
+
+all_avg_fft=nan(cond_num,signal_length/2);
+all_se_fft=nan(cond_num,signal_length/2);
+
+for j=1:cond_num
+    
+    listname=char(cond_lists(j));
+    fftname=[listname(1:end-5),'_avg_fft'];
+%     fid=fopen([fftname,'.txt'],'w');
+    
+    filenames=textread([listpath,listname],'%s');
+    filenum=length(filenames);
+
+    data_hat=nan(filenum,signal_length);
+
+    for i=1:filenum
+
+        filename=char(filenames(i));
+        data=load(filename);
+        data=data';
+
+%         data_hat(i,:)=fft(data(:,3));
+        data_hat(i,:)=fft(data);
+        
+%         fprintf(fid,format,data_hat);
+        
+    end
+
+    avg_fft=mean(abs(data_hat).^2);
+    avg_fft=avg_fft(1:signal_length/2);
+    se_fft=std(abs(data_hat).^2)/sqrt(filenum);
+    se_fft=se_fft(1:signal_length/2);
+
+    figure()
+    loglog(f,avg_fft,'k',f,avg_fft+se_fft,'--k')
+    title(['Avg. FFT for ',listname])
+    xlabel('Frequency (Hz)')
+    ylabel('Power')
+    legend('Mean','SE')
+    saveas(gcf,fftname,'fig')
+    
+    all_avg_fft(j,:)=avg_fft;
+    all_se_fft(j,:)=se_fft;
+    
+    clear data_hat
+    
+    pack
+    
+end
+
+figure()
+plot(f,all_avg_fft')
+
+hold on
+
+plot(f,all_avg_fft'+all_se_fft')
+plot(f,all_avg_fft'-all_se_fft')
+xlabel('Frequency')
+if nargin>2
+    legend(cond_labels)
+else
+    legend(cond_lists)
+end
+saveas(gcf,[cond_listname(1:end-5),'_avg_fft.fig'])

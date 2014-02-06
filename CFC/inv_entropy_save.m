@@ -1,0 +1,43 @@
+function [MI]=inv_entropy_save(M,filename,A_bands,P_bands)
+
+% Finding inverse entropy measure for each pair of modes.
+
+[nobins,noamps,nophases]=size(M);
+
+Total_amp_a=zeros(size(M));
+
+for i=1:nobins
+    Total_amp_a(i,:,:)=sum(M);
+end
+
+Prob=M./Total_amp_a;
+Prob(find(Prob==0))=1;
+
+H=reshape(-sum(Prob.*log(Prob)),noamps,nophases);
+MI=(log(nobins)-H)/log(nobins);
+
+% Saving inverse entropy.
+
+params=[];
+
+if nargin>2
+
+    Abandslabel=['a_',num2str(length(A_bands)),'_from_',num2str(A_bands(1,1)),'_to_',num2str(A_bands(end,end))];
+    Pbandslabel=['p_',num2str(length(P_bands)),'_from_',num2str(P_bands(1,1)),'_to_',num2str(P_bands(end,end))];
+    bandslabel=[Abandslabel,'_v_',Pbandslabel];
+
+    %fid=fopen([filename,'_',bandslabel,'_inv_entropy.txt'],'w');
+%     if length([filename,'_inv_entropy.txt'])<=namelengthmax
+        fid=fopen([filename,'_inv_entropy.txt'],'w');
+%     else
+%         fid=fopen([filename(end-namelengthmax+16:end),'_inv_entropy.txt'],'w');
+%     end
+
+    for i=1:nophases
+        params=[params,'%f\t'];
+    end
+    params=[params,'%f\n'];
+    fprintf(fid,params,[NaN P_bands(:,2)' ; A_bands(:,2) MI]');
+    fclose(fid);
+
+end

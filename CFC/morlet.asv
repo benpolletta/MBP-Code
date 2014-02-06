@@ -1,0 +1,3 @@
+function PSI = morlet(FC,FB,T)
+
+PSI = ((pi*FB/FS)^(-0.5))*exp(2*pi*FC*T).*exp((FS*T.^(-2)/(FB/FS));

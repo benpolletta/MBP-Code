@@ -1,0 +1,8 @@
+function colorplot(M)
+
+[r,c]=size(M);
+M_ext=zeros(r+1,c+1);
+M_ext(1:r,1:c)=M;
+pcolor(M_ext);
+%axis ij;
+colorbar;

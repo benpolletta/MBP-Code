@@ -1,0 +1,83 @@
+function [All_bMI,avg_bMI]=batch_bMI_missing_F(datalist,charstoskip,MI_dir,F_dir,x_lims,x_bins,y_lims,y_bins,spacing,units)
+
+present_dir=pwd;
+
+filenames=textread(datalist,'%s%*[^\n]');
+filenum=length(filenames);
+
+bands_lo=makebands(x_bins,x_lims(1),x_lims(2),'linear');
+bands_hi=makebands(y_bins,y_lims(1),y_lims(2),'linear');
+
+format='';
+for j=1:x_bins-1
+    format=[format,'%f\t'];
+end
+format=[format,'%f\n'];
+
+for p=1:y_bins
+    A_labels{p}=num2str(bands_hi(p,2));
+end
+
+for p=1:x_bins
+    P_labels{p}=num2str(bands_lo(p,2));
+end
+
+All_bMI=zeros(y_bins,x_bins,filenum);
+
+for i=1:filenum
+    filename=char(filenames(i));
+    data=load(filename);
+    filename=filename(1:end-charstoskip);
+%     MIfilename=[char(MI_dir),'\',filename,'_a_15_from_20_to_110_v_p_15_from_3_to_9_inv_entropy.txt'];
+    MIfilename=[char(MI_dir),'\',filename,'_inv_entropy.txt'];
+    Zfilename=[char(MI_dir),'\',filename,'_inv_entropy_zscores.txt'];
+%     Ffilename=[char(F_dir),'\',filename,'\',filename,'_freqs.txt'];
+
+    [signal_length,junk]=size(data);
+    [f,data_hat,bands,signals,H,A,P,F,cycle_bounds]=filter_fft_bank(data,600,5,10,[1/signal_length 300],spacing,0,.9,filename,[char(F_dir),'\',filename]);
+   
+    MI=load(MIfilename);
+    MI=triu(MI(2:end,2:end),1);
+    [r,c]=size(MI);
+    
+    ZS=load(Zfilename);
+    ZS=triu(ZS(2:end,2:end),1);
+    
+    MI_zthresh=MI;
+    z_threshold=.05/nchoosek(c,2);
+    MI_zthresh(normcdf(ZS,0,1)<1-z_threshold)=0;
+
+    cd (char(MI_dir));
+    
+    bMI=emd_inv_entropy_plot_bMI(MI_zthresh,F,x_lims,x_bins,y_lims,y_bins,'linear',units,filename);
+    All_bMI(:,:,i)=bMI;
+    
+    cd (present_dir);
+    
+    close(gcf);
+end
+
+avg_bMI=mean(All_bMI,3);
+
+cd (char(MI_dir));
+
+fid=fopen([datalist,'_avg_bMI.txt'],'w');
+fprintf(fid,format,avg_bMI');
+fclose(fid)
+
+colorplot(avg_bMI)
+title(['Mean Binned Thresholded MI for ',datalist],'FontSize',30)
+axis xy
+set(gca,'XTick',[1.5:15.5],'YTick',[1.5:15.5],'XTickLabel',P_labels,'YTickLabel',A_labels,'FontSize',16)
+xlabel(['Phase-Modulating Freq. (',char(units),')'],'FontSize',24)
+ylabel(['Amplitude-Modulated Freq. (',char(units),')'],'FontSize',24)
+saveas(gcf,[datalist,'_avg_bMI.fig'])
+
+figure()
+colormap('gray')
+colorplot(avg_bMI)
+axis xy
+set(gca,'XTick',[1.5 8.5 15.5],'YTick',[1.5 8.5 15.5],'XTickLabel',[P_labels(1) P_labels(8) P_labels(15)],'YTickLabel',[A_labels(1) A_labels(8) A_labels(15)],'FontSize',16)
+saveas(gcf,[datalist,'_avg_bMI_minimal.fig'])
+
+cd (present_dir);

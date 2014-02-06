@@ -1,0 +1,20 @@
+# The Wilson-Cowan Model
+# Set the fixed parameters
+a=16
+b=12
+c=16
+d=5
+q=-4
+3
+# the wilson-cowan equations
+u’=-u+f(a*u-b*v+p)
+v’=-v+f(c*u-d*v+q)
+f(u)=1/(1+exp(-u))
+# Set the adjustable parameter.
+param p=-5
+# Set some options for a nice plot.
+@ xp=u,yp=v,xlo=-.125,ylo=-.125,xhi=1,yhi=1
+# Set some options for AUTO
+@ parmin=-5, parmax=5, dsmax=0.05
+@ maxstor=500000
+done

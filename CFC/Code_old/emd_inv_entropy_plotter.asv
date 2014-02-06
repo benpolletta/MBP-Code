@@ -1,0 +1,84 @@
+function emd_inv_entropy_colorplot(MI,MI_p_vals,threshold,filename,bands,units,dirname)
+
+[noamps,nophases]=size(MI);
+
+MI=fliplr(triu(MI,1));
+MI_p_vals=fliplr(triu(MI,1));
+P_bands=flipud(bands);
+A_bands=bands;
+
+figure();
+
+subplot(2,1,1)
+colorplot(MI)
+axis ij
+title('Inverse Entropy for Phase-Amplitude Curve')
+
+if nargin>5
+    xlabel(['Phase-Modulating (',char(units),')']);
+    ylabel(['Amplitude-Modulated (',char(units),')']);
+else
+    xlabel('Phase-Modulating');
+    ylabel('Amplitude-Modulated');
+end
+
+subplot(2,1,2)
+colorplot(MI_p_vals)
+axis ij
+title('Inverse Entropy p-Value for Phase-Amplitude Curve')
+
+if nargin>5
+    xlabel(['Phase-Modulating (',char(units),')']);
+    ylabel(['Amplitude-Modulated (',char(units),')']);
+else
+    xlabel('Phase-Modulating');
+    ylabel('Amplitude-Modulated');
+end
+
+if nargin>4
+    for i=1:noamps
+        A_labels{i}=num2str(A_bands(i,2));
+    end
+    for i=1:nophases
+        P_labels{i}=num2str(P_bands(i,2));
+    end
+    set(gca,'XTick',[1.5:(nophases+1.5)],'YTick',[1.5:(noamps+1.5)],'XTickLabel',P_labels,'YTickLabel',A_labels);
+end
+
+if nargin>6
+    saveas(gcf,[dirname,'\',filename,'_inv_entropy.fig']);
+elseif nargin>3
+    saveas(gcf,[filename,'_emd_inv_entropy.fig']);
+end
+
+MI_good=MI;
+MI_good(MI_p_vals<threshold)=0;
+
+subplot(2,1,2)
+colorplot(MI_p_vals)
+axis ij
+title('Inverse Entropy p-Value for Phase-Amplitude Curve')
+
+if nargin>5
+    xlabel(['Phase-Modulating (',char(units),')']);
+    ylabel(['Amplitude-Modulated (',char(units),')']);
+else
+    xlabel('Phase-Modulating');
+    ylabel('Amplitude-Modulated');
+end
+
+if nargin>4
+    for i=1:noamps
+        A_labels{i}=num2str(A_bands(i,2));
+    end
+    for i=1:nophases
+        P_labels{i}=num2str(P_bands(i,2));
+    end
+    set(gca,'XTick',[1.5:(nophases+1.5)],'YTick',[1.5:(noamps+1.5)],'XTickLabel',P_labels,'YTickLabel',A_labels);
+end
+
+if nargin>6
+    saveas(gcf,[dirname,'\',filename,'_inv_entropy.fig']);
+elseif nargin>3
+    saveas(gcf,[filename,'_emd_inv_entropy.fig']);
+end
