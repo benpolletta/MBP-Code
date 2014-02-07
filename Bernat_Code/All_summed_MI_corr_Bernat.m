@@ -149,9 +149,8 @@ for p=1:no_band_pairs
     
     figure(p)
     
-    subplot(1,round(no_states/2))
-    
-    title({[name,'Summed MI '];band_pair_labels{p}})
+    subplot(no_drugs,no_states,round(no_states/2))
+    legend(hr_periods)
     
     saveas(gcf,[all_dirname,'/',all_dirname,'_',band_pair_labels{p},'.fig'])
     
