@@ -42,9 +42,7 @@ no_drugs=length(drug_labels);
 state_labels={'R','NR','W'};
 no_states=length(state_labels);
 
-% long_state_labels={'REM','NREM / Quiet Wake','Active Wake'};
-state_markers={'.r','.g','.b'};
-state_sizes=[20 10 10];
+long_state_labels={'REM','NREM / Quiet Wake','Active Wake'};
 
 states_rearranged=[2 3 1];
 
@@ -54,7 +52,7 @@ states_rearranged=[2 3 1];
 
 hr_periods=make_period_labels(4,16,'hrs');
 no_periods=length(hr_periods);
-period_colors=[linspace(0,1,no_periods)' 1-abs(linspace(1,-1,no_periods)') linspace(1,0,no_periods)'];
+period_colors=[max(linspace(-1,1,no_periods)',0) max(linspace(1,-1,no_periods)',0) ones(no_periods,1)];
 
 % sampling_freq=1000;
 % seconds_per_epoch=4096/250;
@@ -127,7 +125,7 @@ for d=1:no_drugs
                 
                 if d==no_drugs
                     
-                    xlabel(state_label)
+                    xlabel(long_state_labels{state_index})
                     
                 end
                 
