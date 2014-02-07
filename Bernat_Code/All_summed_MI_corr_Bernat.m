@@ -50,9 +50,9 @@ states_rearranged=[2 3 1];
 
 % hours_plotted=[-4 16];
 
-hr_periods=make_period_labels(4,16,'hrs');
+[period_colors,hr_periods]=make_period_labels(4,16,'hrs');
 no_periods=length(hr_periods);
-period_colors=[max(linspace(-1,1,no_periods)',0) max(linspace(1,-1,no_periods)',0) ones(no_periods,1)];
+% period_colors=[max(linspace(-1,1,no_periods)',0) max(linspace(1,-1,no_periods)',0) ones(no_periods,1)];
 
 % sampling_freq=1000;
 % seconds_per_epoch=4096/250;
