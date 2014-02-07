@@ -39,16 +39,15 @@ no_drugs=length(drug_labels);
 
 %% Setting up information about different states.
 
-state_labels={'R','NR','W'};
+state_labels={'W','NR','R'};
 no_states=length(state_labels);
 
-long_state_labels={'REM','NREM / Quiet Wake','Active Wake'};
-
-states_rearranged=[2 3 1];
+long_state_labels={'Active Wake','NREM / Quiet Wake','REM'};
 
 %% Setting up information about periods (time since injection).
 
-% hours_plotted=[-4 16];
+hours_plotted=-4:16;
+hours_plotted(hours_plotted==0)=[];
 
 [period_colors,hr_periods]=make_period_labels(4,16,'hrs');
 no_periods=length(hr_periods);
@@ -58,6 +57,11 @@ no_periods=length(hr_periods);
 % seconds_per_epoch=4096/250;
 % epochs_per_min=60/seconds_per_epoch;
 % epochs_per_hour=60*60/seconds_per_epoch;
+
+%% Setting up arrays to store outputs of correlation analysis.
+
+All_corrs=nan(no_band_pairs,no_periods,no_states,no_drugs);
+All_lines=nan(no_band_pairs,2,no_periods,no_states,no_drugs);
 
 %% Cycling through drugs.
 
@@ -69,69 +73,42 @@ for d=1:no_drugs
     %         drug_summed_MI_4hr=subj_summed_MI_4hr(strcmp(subj_drugs,drug),:);
     drug_states=states(strcmp(drugs,drug));
     drug_hrs=hrs(strcmp(drugs,drug));
-%     drug_4hrs=fourhrs(strcmp(drugs,drug));
+    %     drug_4hrs=fourhrs(strcmp(drugs,drug));
     
-    for f=1:no_periods
+    for h=1:no_periods
         
-        pd_summed_MI=drug_summed_MI(strcmp(drug_hrs,hr_periods{f}),:);
+        pd_summed_MI=drug_summed_MI(strcmp(drug_hrs,hr_periods{h}),:);
         %             pd_summed_MI_4hr=drug_summed_MI_4hr(epochs,:);
-        pd_states=drug_states(strcmp(drug_hrs,hr_periods{f}));
+        pd_states=drug_states(strcmp(drug_hrs,hr_periods{h}));
         %             pd_hrs=drug_hrs(epochs);
         %             pd_4hrs=drug_hrs(epochs);
         
-        %             total_epochs=length(epochs);
-        
         %% Normalizing summed MI.
+        %
+        %         pd_summed_MI_mean=ones(size(pd_summed_MI))*diag(nanmean(pd_summed_MI));
+        %         pd_summed_MI_std=ones(size(pd_summed_MI))*diag(nanstd(pd_summed_MI));
+        %         pd_summed_MI_norm=(pd_summed_MI-pd_summed_MI_mean)./pd_summed_MI_std;
         
-        pd_summed_MI_mean=ones(size(pd_summed_MI))*diag(nanmean(pd_summed_MI));
-        pd_summed_MI_std=ones(size(pd_summed_MI))*diag(nanstd(pd_summed_MI));
-        pd_summed_MI_norm=(pd_summed_MI-pd_summed_MI_mean)./pd_summed_MI_std;
-        
-        %             summed_MI_max(d,:)=nanmax(pd_summed_MI);
-        
-        %% PLOTTING FIGURES
-        
-        %% Each band, all drugs, by 4 hour period.
-        
-        for p=1:no_band_pairs
-
-            figure(p)
+        for s=1:no_states
             
-            for s_r=1:no_states
+            state_label=state_labels{s};
+            
+            state_indices=find(strcmp(pd_states,state_label));
+            
+            if length(state_indices)>=2
                 
-                subplot(no_drugs,no_states,(d-1)*no_states+s_r)
+                state_abscissa=pd_summed_MI(state_indices,band_pairs(:,1));
+                state_ordinate=pd_summed_MI(state_indices,band_pairs(:,2));
                 
-                state_index=states_rearranged(s_r);
+                state_corr=corr(state_abscissa,state_ordinate);
                 
-                state_label=state_labels{state_index};
+                All_corrs(:,h,s,d)=diag(state_corr);
                 
-                state_indices=find(strcmp(pd_states,state_label));
-                
-                plot(pd_summed_MI_norm(state_indices,band_pairs(p,1)),pd_summed_MI_norm(state_indices,band_pairs(p,2)),'.','Color',period_colors(f,:))
-                
-                hold on
-                
-                axis('tight')
-                
-                if d==1 && s_r==round(no_states/2)
+                for p=1:no_band_pairs
                     
-                    try
-                        
-                        title({channel_label;[band_pair_labels{p},' Summed MI']})
-                        
-                    end
+                    fit=polyfit(state_abscissa(:,p),state_ordinate(:,p),1);
                     
-                end
-                
-                if d==no_drugs
-                    
-                    xlabel(long_state_labels{state_index})
-                    
-                end
-                
-                if f==1
-                    
-                    ylabel(drug)
+                    All_lines(p,:,h,s,d)=fit;
                     
                 end
                 
@@ -147,15 +124,36 @@ for p=1:no_band_pairs
     
     figure(p)
     
-    subplot(no_drugs,no_states,round(no_states/2))
-    legend(hr_periods)
+    for d=1:no_drugs
+        
+        subplot(no_drugs,1,d)
+            
+        plot(hours_plotted',reshape(All_corrs(p,:,:,d),no_periods,no_states),'-s')
+        
+        axis('tight')
+        
+        if d==1
+            
+            legend(state_labels)
+                
+            title({channel_label;[band_pair_labels{p},' Summed MI']})
+            
+        end
+        
+        if d==no_drugs
+            
+            xlabel('Hour Since Injection')
+            
+        end
+        
+        ylabel(drug_labels{d})
+             
+    end
     
-    saveas(gcf,[all_dirname,'/',all_dirname,'_',band_pair_labels{p},'.fig'])
+    saveas(gcf,[all_dirname,'/',all_dirname,'_',band_pair_labels{p},'_by_drug.fig'])
     
     set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
     
-    print(gcf,'-dpdf',[all_dirname,'/',all_dirname,'_',band_pair_labels{p},'.pdf'])
+    print(gcf,'-dpdf',[all_dirname,'/',all_dirname,'_',band_pair_labels{p},'_by_drug.pdf'])
     
 end
-
-close('all')
