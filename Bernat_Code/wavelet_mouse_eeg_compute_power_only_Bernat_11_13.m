@@ -163,7 +163,7 @@ for d=1:no_drugs
         data=load([record_dir,'/',epoch_name]);
         data=detrend(data);
         
-        data_hat=pmtm(data,[],signal_length);
+        data_hat=fft(data);
 
         for i=1:no_stops
             
