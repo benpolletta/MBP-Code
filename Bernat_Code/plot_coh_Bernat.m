@@ -1,4 +1,4 @@
-function collect_plot_subject_coh_Bernat(chan1_name,chan1_channels,chan2_name,chan2_channels)
+function plot_coh_Bernat(chan1_name,chan1_channels,chan2_name,chan2_channels)
 
 pair_dir=sprintf('All_%s_by_%s_cohy',chan1_name,chan2_name);
 mkdir (pair_dir)
