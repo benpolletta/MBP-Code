@@ -71,8 +71,12 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
             cohy_shuf_stdi=reshape(nanstd(imag(cohy_shuf)),no_freqs,no_periods1)';
             cohy_norm=real(cohy-cohy_shuf_mean)./cohy_shuf_stdr+sqrt(-1)*imag(cohy-cohy_shuf_mean)./cohy_shuf_stdi;
             
+            coh_shuf_mean=reshape(nanmean(abs(cohy_shuf)),no_freqs,no_periods1)';
+            coh_shuf_std=reshape(nanstd(abs(cohy_shuf)),no_freqs,no_periods1)';
+            coh_norm=real(abs(cohy)-coh_shuf_mean)./coh_shuf_std;
+            
             pair_filename=sprintf('%s_ch%d_by_ch%d_cohy.mat',subject_dir,channel_pair);
-            save(pair_filename,'cohy','cohy_norm','cohy_shuf_mean','cohy_shuf_stdr','cohy_shuf_stdi')
+            save(pair_filename,'cohy','cohy_norm','cohy_shuf_mean','cohy_shuf_stdr','cohy_shuf_stdi','coh_norm','coh_shuf_mean','coh_shuf_std')
             %                 save(pair_filename,'cohy','cohy_norm','cohy_shuf','-v7.3')
             
         else

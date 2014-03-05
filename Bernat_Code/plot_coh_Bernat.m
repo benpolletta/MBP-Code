@@ -21,6 +21,7 @@ subjects_fid=fopen([pair_dir,'/',pair_dir,'_subjects.txt'],'w');
 hrs_fid=fopen([pair_dir,'/',pair_dir,'_hrs.txt'],'w');
 rcoh_fid=fopen([pair_dir,'/',pair_dir,'_rcoh.txt'],'w');
 icoh_fid=fopen([pair_dir,'/',pair_dir,'_icoh.txt'],'w');
+coh_fid=fopen([pair_dir,'/',pair_dir,'_icoh.txt'],'w');
 
 for s=1:length(subjects)
     
@@ -40,6 +41,7 @@ for s=1:length(subjects)
         pair_filename=sprintf('%s_ch%d_by_ch%d_cohy.mat',subject_dir,channel_pair);
         cohy_struct=load(pair_filename);
         cohy_norm=cohy_struct.cohy_norm;
+        coh_norm=cohy_struct.coh_norm;
         no_pds=size(cohy_norm,1);
         
         pd_list_prefix=sprintf('%s_chan%d',subject_dir,channel_pair(1));
@@ -57,6 +59,7 @@ for s=1:length(subjects)
             fprintf(hrs_fid,'%s\n',pds{p});
             fprintf(rcoh_fid,cohy_format,real(cohy_norm(p,:)));
             fprintf(icoh_fid,cohy_format,imag(cohy_norm(p,:)));
+            fprintf(coh_fid,cohy_format,coh_norm(p,:));
             
         end
         
