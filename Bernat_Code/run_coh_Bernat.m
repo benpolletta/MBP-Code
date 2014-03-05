@@ -81,10 +81,8 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
             
         end
         
+        cd (present_dir)
+        
     end
     
-    cd (present_dir)
-    
-end
-
 end

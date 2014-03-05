@@ -66,11 +66,11 @@ for s=1:length(subjects)
         imagesc(imag(cohy_norm)')
         axis xy
         colorbar
-        ylabel(drug)
-        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',f(1:floor(no_freqs/10):no_freqs))
-        if d==round(length(drugs)/2)
-            title(sprintf('Imaginary Coherence for %s by %s',chan1_name,chan2_name))
-            xlabel('Hour Relative to Injection')
+        title(drug)
+        xlabel('Hour Relative to Injection')
+        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',round(f(1:floor(no_freqs/10):no_freqs)))
+        if d==1
+            ylabel(sprintf('Imaginary Coherence for %s, %s by %s',subject,chan1_name,chan2_name))
         end
         
         figure(2*s)
@@ -79,11 +79,11 @@ for s=1:length(subjects)
         imagesc(real(cohy_norm)')
         axis xy
         colorbar
-        ylabel(drug)
-        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',f(1:floor(no_freqs/10):no_freqs))
-        if d==round(length(drugs)/2)
-            title(sprintf('Coherence for %s by %s',chan1_name,chan2_name))
-            xlabel('Hour Relative to Injection')
+        title(drug)
+        xlabel('Hour Relative to Injection')
+        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',round(f(1:floor(no_freqs/10):no_freqs)))
+        if d==1
+            ylabel(sprintf('Coherence for %s, %s by %s',subject,chan1_name,chan2_name))
         end
         
         cd (present_dir)
