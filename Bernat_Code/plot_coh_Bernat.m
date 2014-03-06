@@ -21,7 +21,6 @@ subjects_fid=fopen([pair_dir,'/',pair_dir,'_subjects.txt'],'w');
 hrs_fid=fopen([pair_dir,'/',pair_dir,'_hrs.txt'],'w');
 rcoh_fid=fopen([pair_dir,'/',pair_dir,'_rcoh.txt'],'w');
 icoh_fid=fopen([pair_dir,'/',pair_dir,'_icoh.txt'],'w');
-coh_fid=fopen([pair_dir,'/',pair_dir,'_icoh.txt'],'w');
 
 for s=1:length(subjects)
     
