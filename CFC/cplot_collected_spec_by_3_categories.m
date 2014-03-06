@@ -1,4 +1,4 @@
-function cplot_collected_spec_by_3_categories(Title,name,freqs,bands,stops,c_order,cat3_labels,cat1_labels,cat2_labels,cat3_vec,cat1_vec,cat2_vec,spec)
+function cplot_collected_spec_by_3_categories(Title,name,freqs,bands,band_names,stops,c_order,cat3_labels,cat1_labels,cat2_labels,cat3_vec,cat1_vec,cat2_vec,spec)
 
 % cat1_labels is for rows. cat2_labels is for columns. cat3_labels is for
 % number of subplots.
@@ -89,7 +89,7 @@ for c3=1:no_cats3
             
             band_width=length(band_freqs);
 
-            tick_indices=1:floor(band_width/10):band_width;
+            tick_indices=1:ceil(band_width/10):band_width;
             
             band_ticks=band_freqs(tick_indices);
             
@@ -107,7 +107,7 @@ for c3=1:no_cats3
             
             figure(c1)
             
-            subplot(no_cats3,no_bands,(c3-1)*no_bands+b)
+            subplot(no_bands,no_cats3,(b-1)*no_cats3+c3)
             
             imagesc(reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
             
@@ -117,23 +117,38 @@ for c3=1:no_cats3
             
             set(gca,'XTick',1:ceil(no_cats2/5):no_cats2,'XTickLabel',cat2_labels(1:ceil(no_cats2/5):no_cats2),'YTick',tick_indices,'YTickLabel',band_labels)
             
-            if b==1
+            if c3==1 
                 
-                ylabel({cat3,'Frequency (Hz)'})
+                if ~isempty(band_names)
+                    
+                    ylabel({band_names{b},'Frequency (Hz)'})
+                    
+                else
+                    
+                    ylabel('Frequency (Hz)')
+                    
+                end
             
             end
             
-            if c3==1 && b==ceil(no_bands/2)
+            if b==1
                 
-                title({Title,['Mean for ',char(long_cat1_labels{c1})]})
+                if c3==ceil(no_bands/2)
                 
+                    title({Title,['Mean for ',char(long_cat1_labels{c1})],cat3})
+                
+                else
+                
+                    title(cat3)
                 %             title({Title,['Median for ',cat1]})
+                
+                end
                 
             end
             
             figure(2*no_cats1+c3)
             
-            subplot(no_cats1,no_bands,(c1-1)*no_bands+b)
+            subplot(no_bands,no_cats1,(b-1)*no_cats1+c1)
             
             imagesc(reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
             
@@ -143,17 +158,32 @@ for c3=1:no_cats3
             
             set(gca,'XTick',1:ceil(no_cats2/5):no_cats2,'XTickLabel',cat2_labels(1:ceil(no_cats2/5):no_cats2),'YTick',tick_indices,'YTickLabel',band_labels)
             
-            if b==1
+            if c1==1 
                 
-                ylabel({cat1,'Frequency (Hz)'})
+                if ~isempty(band_names)
+                
+                    ylabel({band_names{b},'Frequency (Hz)'})
+                    
+                else
+                    
+                    ylabel('Frequency (Hz)')
+                    
+                end
             
             end
             
-            if c1==1 && b==ceil(no_bands/2)
+            if b==1 
                 
-                title({Title,['Mean for ',char(long_cat3_labels{c3})]})
+                if b==ceil(no_bands/2)
                 
+                    title({Title,['Mean for ',char(long_cat3_labels{c3})],cat1})
+                
+                else
+                    
+                    title(cat1)
                 %             title({Title,['Mean for ',cat3]})
+                
+                end
                 
             end
             
@@ -189,11 +219,27 @@ for c3=1:no_cats3
                 
             end   
                 
-            if b==ceil(no_bands/2) && c3==1
+            if c3==1
                 
-                title({Title,['Mean for ',char(long_cat1_labels{c1})]})
+                if b==ceil(no_bands/2)
+                    
+                    if ~isempty(band_names)
                 
+                        title({Title,['Mean for ',char(long_cat1_labels{c1})],band_names{b}})
+                
+                    else
+                        
+                        title({Title,['Mean for ',char(long_cat1_labels{c1})]})
+                        
+                    end
+                        
+                else
+                    
+                    title(band_names{b})
+                    
                 % title({Title,['Median for ',cat1]})
+                
+                end
                 
             end
             

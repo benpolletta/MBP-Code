@@ -3,7 +3,8 @@ function All_spec_plots_Bernat(channel_label)
 freqs=1000*[1:2^10]/2^11;
 freqs=freqs(freqs<=200);
 
-bands=[4 12; 20 100; 100 200];
+bands=[100 200; 20 100; 4 12];
+band_names={'HFO','gamma','theta'};
 
 stops=[58 62; 117 123; 179 181];
 
@@ -44,11 +45,11 @@ for i=1:no_post
     p=p+1;
 end
 
-cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_hrs_by_state'],freqs,bands,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec)
+cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_hrs_by_state'],freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec)
 
-cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_hrs_by_state'],freqs,[0 200],stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_pct)
+cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_hrs_by_state'],freqs,[0 200],'',stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_pct)
 
-cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_hrs_by_state'],freqs,[0 200],stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_zs)
+cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_hrs_by_state'],freqs,[0 200],'',stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_zs)
 
 no_pre=4; no_post=12; no_hrs=no_pre+no_post;
 hr_labels=cell(no_hrs,1); short_hr_labels=cell(no_hrs,1); hr_corder=zeros(no_hrs,3);
@@ -67,11 +68,11 @@ for i=1:no_post
     p=p+1;
 end
 
-cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_hrs_by_state'],freqs,bands,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec)
+cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec)
 
-cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_hrs_by_state'],freqs,[0 200],stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec_pct)
+cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_hrs_by_state'],freqs,[0 200],'',stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec_pct)
    
-cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_hrs_by_state'],freqs,[0 200],stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec_zs)
+cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_hrs_by_state'],freqs,[0 200],'',stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec_zs)
 
 end
 
