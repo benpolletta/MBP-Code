@@ -16,7 +16,7 @@ end
 cond_lists=textread([listpath,cond_listname],'%s');
 cond_num=length(cond_lists);
 
-f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length);
+f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length/2);
 % format=make_format(signal_length/2+1,'f');
 f(f>200)=[];
 no_freqs=length(f);

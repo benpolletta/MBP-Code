@@ -5,7 +5,7 @@ mkdir (pair_dir)
 
 sampling_freq=1000;
 signal_length=4096*4;
-f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length);
+f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length/2);
 f(f>200)=[];
 no_freqs=length(f);
 cohy_format=make_format(no_freqs,'f');

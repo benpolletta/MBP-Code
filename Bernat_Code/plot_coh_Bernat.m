@@ -5,7 +5,7 @@ mkdir (pair_dir)
 
 sampling_freq=1000;
 signal_length=4096*4;
-f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length);
+f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length/2);
 f(f>200)=[];
 no_freqs=length(f);
 cohy_format=make_format(no_freqs,'f');
@@ -38,10 +38,12 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         subject_dir=[subject,'_',drug];
         cd (subject_dir)
         
-        pair_filename=sprintf('%s_ch%d_by_ch%d_cohy.mat',subject_dir,channel_pair);
+        pair_filename=sprintf('%s_ch%d_by_ch%d_hours_cohy.mat',subject_dir,channel_pair);
         cohy_struct=load(pair_filename);
         cohy_norm=cohy_struct.cohy_norm;
+        cohy_norm=cohy_norm(:,1:no_freqs);
         coh_norm=cohy_struct.coh_norm;
+        coh_norm=coh_norm(:,1:no_freqs);
         no_pds=size(cohy_norm,1);
         
         pd_list_prefix=sprintf('%s_chan%d',subject_dir,channel_pair(1));

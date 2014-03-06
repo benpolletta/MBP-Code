@@ -5,7 +5,7 @@ function run_coh_Bernat(no_shufs,chan1_channels,chan2_channels)
 
 sampling_freq=1000;
 signal_length=4096*4;
-f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length);
+f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length/2);
 f(f>200)=[];
 no_freqs=length(f);
 
@@ -17,7 +17,7 @@ load('drugs.mat')
 list_suffixes={'hours','4hrs_by_state'};
 no_master_lists=length(list_suffixes);
 
-for l=1:no_master_lists
+for l=2:no_master_lists
     
     for s=1:min(length(chan1_channels),length(chan2_channels))
         
@@ -56,8 +56,10 @@ for l=1:no_master_lists
                     
                     load([channel_dir1,'/',pd1_name(1:end-5),'_fft.mat']);
                     chan1_fft=all_fft;
+                    chan1_fft=chan1_fft(:,1:no_freqs);
                     load([channel_dir2,'/',pd2_name(1:end-5),'_fft.mat']);
                     chan2_fft=all_fft;
+                    chan2_fft=chan2_fft(:,1:no_freqs);
                     no_epochs=size(chan2_fft,1);
                     
                     cohy(pd,:)=coherency(chan1_fft,chan2_fft);
