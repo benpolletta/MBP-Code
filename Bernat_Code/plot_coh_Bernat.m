@@ -66,7 +66,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         figure(3*s-2)
         
         subplot(1,4,d)
-        imagesc(imag(coh_norm)')
+        imagesc(coh_norm')
         axis xy
         colorbar
         title(drug)
