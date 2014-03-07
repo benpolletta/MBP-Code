@@ -133,7 +133,7 @@ for c3=1:no_cats3
             
             if b==1
                 
-                if c3==ceil(no_bands/2)
+                if c3==ceil(no_cats3/2)
                 
                     title({Title,['Mean for ',char(long_cat1_labels{c1})],cat3})
                 
