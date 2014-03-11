@@ -1,4 +1,4 @@
-function [pd_corder,period_labels]=make_period_labels(hrs_pre,hrs_post,format)
+function [period_labels,pd_corder]=make_period_labels(hrs_pre,hrs_post,format)
 
 if strcmp(format,'hrs')
     

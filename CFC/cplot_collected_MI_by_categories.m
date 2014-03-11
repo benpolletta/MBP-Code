@@ -80,6 +80,10 @@ for m=1:no_stats
     figure_replotter(figs(m,:),rows,cols,x_ticks,y_ticks,{long_cat2_labels{:}, long_cat1_labels{:}});
     
     saveas(gcf,[name,'_',stat_labels{m},'.fig']);
-    saveas(gcf,[name,'_',stat_labels{m},'.fig']);
+    
+    set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
+    
+    print(gcf,'-dpdf',[name,'_',stat_labels{m},'.pdf']);
+        
     
 end
