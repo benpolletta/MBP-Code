@@ -17,9 +17,9 @@ load('drugs.mat')
 list_suffixes={'hours','4hrs_by_state'};
 no_master_lists=length(list_suffixes);
 
-for l=2:no_master_lists
+for l=1:no_master_lists
     
-    for s=1:min(length(chan1_channels),length(chan2_channels))
+    for s=3:min(length(chan1_channels),length(chan2_channels))
         
         subject=subjects{s};
         subj_chan1=chan1_channels(s);
@@ -64,7 +64,7 @@ for l=2:no_master_lists
                     
                     cohy(pd,:)=coherency(chan1_fft,chan2_fft);
                     
-                    parfor sh=1:no_shufs
+                    for sh=1:no_shufs
                         
                         chan1_fft_loc=chan1_fft; chan2_fft_loc=chan2_fft;
                         cohy_shuf(sh,:,pd)=coherency(chan1_fft_loc(randperm(no_epochs),:),chan2_fft_loc(randperm(no_epochs),:));

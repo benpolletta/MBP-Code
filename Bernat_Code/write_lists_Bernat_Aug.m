@@ -1,4 +1,4 @@
-function write_lists_Bernat_Aug_temp(subject,channels,list_label,varargin)
+function write_lists_Bernat_11_13(subject,channels,list_label,varargin)
 
 % Sample call:  write_lists_Bernat('A99',4,[-4 0;0 4;4
 % 8],{'pre','post1to4','post5to8'}).
@@ -37,13 +37,13 @@ if isempty(periods)
     pd_labels={'all'};
     pd_labels_given=1;
 end
-    
+
 [no_periods,cols]=size(periods);
 if cols~=2
     if no_periods==2
         periods=periods';
         [no_periods,~]=size(periods);
-    else 
+    else
         display('periods must have two rows or two columns.')
         return
     end
@@ -81,89 +81,42 @@ for d=1:no_drugs
         
         channel=channels(c);
         channel_name=[record_name,'_chan',num2str(channel)];
-        master_list_fid=fopen([channel_name,'_',list_label,'_master.list'],'w');
+        %         master_list_fid=fopen([channel_name,'_',list_label,'_master.list'],'w');
         epochs_fid=fopen([channel_name,'_',list_label,'_epochs.list'],'w');
         
-        if ~isempty(states)
+        for p=1:no_periods
             
-            for s=1:no_states
+            start_epoch=max(periods(p,1),1);
+            end_epoch=min(periods(p,2),no_epochs);
+            %                 start_epoch=ceil(inj_epochs(d)+periods(1,p)*epochs_per_hour+1);
+            %                 end_epoch=floor(inj_epochs(d)+periods(2,p)*epochs_per_hour);
+            
+            epoch_indices=[start_epoch:end_epoch];
+            
+            if ~isempty(epoch_indices)
                 
-                state=char(states(s));
+                pd_label=char(pd_labels{p});
                 
-                state_name=[channel_name,'_',state];
-                                
-                for p=1:no_periods
-                                      
-                    start_epoch=periods(p,1);
-                    end_epoch=periods(p,2);
-                    %                 start_epoch=ceil(inj_epochs(d)+periods(1,p)*epochs_per_hour+1);
-                    %                 end_epoch=floor(inj_epochs(d)+periods(2,p)*epochs_per_hour);
+                %                     list_name=[channel_name,'_',pd_label,'.list'];
+                %                     list_fid=fopen(list_name,'w');
+                %                     fprintf(master_list_fid,'%s\n',list_name);
+                
+                for e=1:length(epoch_indices)
                     
-                    epoch_indices=find(VS(max(start_epoch,1):min(end_epoch,no_epochs),strcmp(state_order,state))==1)+max(start_epoch,1)-1;
+                    epoch_name=[channel_name,'_epoch',num2str(round(epoch_indices(e))),'.txt'];
+                    epoch_state=char(state_order{VS(e,:)==1});
                     
-                    if ~isempty(epoch_indices)
-                        
-                        pd_label=char(pd_labels{p});
-                        
-                        list_name=[state_name,'_',pd_label,'.list'];
-                        list_fid=fopen(list_name,'w');
-                        fprintf(master_list_fid,'%s\n',list_name);
-                        
-                        for e=1:length(epoch_indices)
-                            
-                            epoch_name=[channel_name,'_epoch',num2str(round(epoch_indices(e))),'.txt'];
-                            
-                            fprintf(list_fid,'%s\n',epoch_name);
-                            fprintf(epochs_fid,'%d\t%s\t%s\t%s\n',epoch_indices(e),state,pd_label,epoch_name);
-                            
-                        end
-                        
-                        fclose(list_fid);
-                        
-                    end
+                    %                         fprintf(list_fid,'%s\n',epoch_name);
+                    fprintf(epochs_fid,'%d\t%s\t%s\t%s\n',epoch_indices(e),pd_label,epoch_state,epoch_name);
                     
                 end
                 
-            end
-            
-        else
-            
-            for p=1:no_periods
-                
-                start_epoch=max(periods(p,1),1);
-                end_epoch=min(periods(p,2),no_epochs);
-                %                 start_epoch=ceil(inj_epochs(d)+periods(1,p)*epochs_per_hour+1);
-                %                 end_epoch=floor(inj_epochs(d)+periods(2,p)*epochs_per_hour);
-                
-                epoch_indices=[start_epoch:end_epoch];
-
-                if ~isempty(epoch_indices)
-                                
-                    pd_label=char(pd_labels{p});
-                    
-                    list_name=[channel_name,'_',pd_label,'.list'];
-                    list_fid=fopen(list_name,'w');
-                    fprintf(master_list_fid,'%s\n',list_name);
-                    
-                    for e=1:length(epoch_indices)
-                        
-                        epoch_name=[channel_name,'_epoch',num2str(round(epoch_indices(e))),'.txt'];
-                        
-                        fprintf(list_fid,'%s\n',epoch_name);
-                        fprintf(epochs_fid,'%d\t%s\t%s\n',epoch_indices(e),pd_label,epoch_name);
-                        
-                    end
-                    
-                    fclose(list_fid);
-                
-                end
+%                 fclose(list_fid);
                 
             end
             
         end
         
     end
-    
-    clear VS
     
 end

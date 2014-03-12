@@ -14,6 +14,7 @@ drugs_fid=fopen([dir,'/',dir,'_drugs.txt'],'w');
 subjects_fid=fopen([dir,'/',dir,'_subjects.txt'],'w');
 hrs_fid=fopen([dir,'/',dir,'_hrs.txt'],'w');
 fourhrs_fid=fopen([dir,'/',dir,'_4hrs.txt'],'w');
+sixmins_fid=fopen([dir,'/',dir,'_6mins.txt'],'w');
 states_fid=fopen([dir,'/',dir,'_states.txt'],'w');
 BP_fid=fopen([dir,'/',dir,'_BP.txt'],'w');
 BP_pct_fid=fopen([dir,'/',dir,'_BP_pct.txt'],'w');
@@ -36,7 +37,7 @@ for d=1:drug_num
         
         all_dir=['ALL_',subject,'_chan',num2str(channel)];
         
-        [states,hrs,fourhrs]=textread([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%s%s%s%*[^\n]');
+        [states,hrs,fourhrs,sixmins]=textread([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%s%s%s%s%*[^\n]');
         
         BP_mat=load([all_dir,'/ALL_',channel_name,'_BP.mat']);
         BP_data=BP_mat.BP_all;
@@ -65,6 +66,8 @@ for d=1:drug_num
             fprintf(hrs_fid,'%s\n',char(hrs{e}));
             
             fprintf(fourhrs_fid,'%s\n',char(fourhrs{e}));
+            
+            fprintf(sixmins_fid,'%s\n',char(sixmins{e}));
             
             fprintf(states_fid,'%s\n',char(states{e}));
             

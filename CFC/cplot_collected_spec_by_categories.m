@@ -31,7 +31,7 @@ no_cats1=length(cat1_labels);
 no_cats2=length(cat2_labels);
 
 stat_labels={'median','mean','std'};
-% long_stat_labels={'Median','Mean','St. Dev.'};
+long_stat_labels={'Median','Mean','St. Dev.'};
 no_stats=length(stat_labels);
 
 spec_stats=zeros(no_freqs,no_cats1,no_cats2,no_stats);
@@ -68,130 +68,180 @@ for c1=1:no_cats1
         
     end
     
-    %% Plots by Band.
-    
-    for b=1:no_bands
+    for s=1:no_stats
         
-        band_freqs=freqs(band_indices{b});
+        %% Plots by Band.
         
-        band_width=length(band_freqs);
-        
-        tick_indices=1:ceil(band_width/10):band_width;
-        
-        band_ticks=band_freqs(tick_indices);
-        
-        if mean(band_ticks)<10
+        for b=1:no_bands
             
-            band_labels=round(10*band_ticks)/10;
+            band_freqs=freqs(band_indices{b});
             
-        else
+            band_width=length(band_freqs);
             
-            band_labels=round(band_ticks);
+            tick_indices=1:ceil(band_width/10):band_width;
             
-        end
-        
-        %% Colorplots by Band.
-        
-        figure(1)
-        
-        subplot(no_bands,no_cats1,(b-1)*no_cats1+c1)
-        
-        imagesc(reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
-        
-        axis xy
-        
-        colorbar
-        
-        set(gca,'XTick',1:ceil(no_cats2/5):no_cats2,'XTickLabel',cat2_labels(1:ceil(no_cats2/5):no_cats2),'YTick',tick_indices,'YTickLabel',band_labels)
-        
-        if c1==1
+            band_ticks=band_freqs(tick_indices);
             
-            if ~isempty(band_names)
+            if mean(band_ticks)<10
                 
-                ylabel({band_names{b},'Frequency (Hz)'})
+                band_labels=round(10*band_ticks)/10;
                 
             else
                 
-                ylabel('Frequency (Hz)')
+                band_labels=round(band_ticks);
                 
             end
             
-        end
-        
-        if b==1
+            %% Colorplots by Band.
             
-            title({Title,['Mean for ',cat1]})
+            % Figures for each drug.
             
-        end
-        
-        %% Line Plots by Band.
-        
-        figure(2)
-        
-        set(gcf,'DefaultAxesColorOrder',c_order)
-        
-        subplot(no_cats1,no_bands,(c1-1)*no_bands+b)
-        
-        plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
-        
-        hold on
-        
-        plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)+reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
-        
-        plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)-reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
-        
-        set(gca,'XTick',band_ticks,'XTickLabel',band_labels)
-        
-        xlim([band_ticks(1) band_ticks(end)])
-        
-        if b==no_bands && c1==1
+            figure((s-1)*(no_cats1+2)+c1)
             
-            legend(long_cat2_labels,'Location','BestOutside')
+            subplot(no_bands,1,b)
             
-        end
-        
-        if b==1
+            imagesc(reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2))
             
-            ylabel(cat1)
+            axis xy
             
-        end
-        
-        if c1==1
+            colorbar
             
-            if b==ceil(no_bands/2)
+            set(gca,'XTick',1:ceil(no_cats2/5):no_cats2,'XTickLabel',cat2_labels(1:ceil(no_cats2/5):no_cats2),'YTick',tick_indices,'YTickLabel',band_labels)
+            
+            if c1==1
                 
                 if ~isempty(band_names)
                     
-                    title({Title,['Mean for ',char(long_cat1_labels{c1})],band_names{b}})
+                    ylabel({band_names{b},'Frequency (Hz)'})
                     
                 else
                     
-                    title({Title,['Mean for ',char(long_cat1_labels{c1})]})
+                    ylabel('Frequency (Hz)')
                     
                 end
                 
-            else
+            end
+            
+            if b==1
                 
-                title(band_names{b})
+                title({Title,[long_stat_labels{s},' for ',cat1]})
                 
-                % title({Title,['Median for ',cat1]})
+            end
+            
+            % Figure w/ all drugs.
+            
+            figure((s-1)*(no_cats1+2)+no_cats1+1)
+            
+            subplot(no_bands,no_cats1,(b-1)*no_cats1+c1)
+            
+            imagesc(reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2))
+            
+            axis xy
+            
+            colorbar
+            
+            set(gca,'XTick',1:ceil(no_cats2/5):no_cats2,'XTickLabel',cat2_labels(1:ceil(no_cats2/5):no_cats2),'YTick',tick_indices,'YTickLabel',band_labels)
+            
+            if c1==1
+                
+                if ~isempty(band_names)
+                    
+                    ylabel({band_names{b},'Frequency (Hz)'})
+                    
+                else
+                    
+                    ylabel('Frequency (Hz)')
+                    
+                end
+                
+            end
+            
+            if b==1
+                
+                title({Title,[long_stat_labels{s},' for ',cat1]})
+                
+            end
+            
+            %% Line Plots by Band.
+            
+            figure(s*(no_cats1+2))
+            
+            set(gcf,'DefaultAxesColorOrder',c_order)
+            
+            subplot(no_cats1,no_bands,(c1-1)*no_bands+(no_bands+1-b))
+            
+            plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2))
+            
+            hold on
+            
+            plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2)+reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
+            
+            plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2)-reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
+            
+            set(gca,'XTick',band_ticks,'XTickLabel',band_labels)
+            
+            xlim([band_ticks(1) band_ticks(end)])
+            
+            if b==no_bands && c1==1
+                
+                legend(long_cat2_labels,'Location','BestOutside')
+                
+            end
+            
+            if b==1
+                
+                ylabel(cat1)
+                
+            end
+            
+            if c1==1
+                
+                if b==ceil(no_bands/2)
+                    
+                    if ~isempty(band_names)
+                        
+                        title({Title,[long_stat_labels{s},' for ',char(long_cat1_labels{c1})],band_names{b}})
+                        
+                    else
+                        
+                        title({Title,[long_stat_labels{s},' for ',char(long_cat1_labels{c1})]})
+                        
+                    end
+                    
+                else
+                    
+                    title(band_names{b})
+                    
+                    % title({Title,['Median for ',cat1]})
+                    
+                end
                 
             end
             
         end
+        
+        saveas((s-1)*(no_cats1+2)+c1,[name,'_',cat1,'_',stat_labels{s},'.fig'])
+        
+        set((s-1)*(no_cats1+2)+c1,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
+        
+        print((s-1)*(no_cats1+2)+c1,'-dpdf',[name,'_',cat1,'_',stat_labels{s},'.pdf'])
         
     end
     
 end
-    
-saveas(1,[name,'.fig'])
-    
-set(1,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
 
-print(1,'-dpdf',[name,'.pdf'])
-
-saveas(1,[name,'_line.fig'])
+for s=1:no_stats
     
-set(1,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
-
-print(1,'-dpdf',[name,'_line.pdf'])
+    saveas((s-1)*(no_cats1+2)+no_cats1+1,[name,'_',stat_labels{s},'.fig'])
+    
+    set((s-1)*(no_cats1+2)+no_cats1+1,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
+    
+    print((s-1)*(no_cats1+2)+no_cats1+1,'-dpdf',[name,'_',stat_labels{s},'.pdf'])
+    
+    saveas(s*(no_cats1+2),[name,'_line.fig'])
+    
+    set(s*(no_cats1+2),'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
+    
+    print(s*(no_cats1+2),'-dpdf',[name,'_',stat_labels{s},'_line.pdf'])
+    
+end
