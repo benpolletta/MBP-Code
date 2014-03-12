@@ -74,11 +74,11 @@ for d=1:3
                 
             end
             
-            figure_replotter_labels(1:3,3,1,[(-40*6:6:0)+3,(0:6:12*10*6)-3],freqs,titles,xlabels,ylabels)
+            figure_replotter_labels_subregion(1:3,3,1,[(-40*6:6:0)+3,(0:6:12*10*6)-3],freqs,[-120 360],[0 200],titles,xlabels,ylabels)
             
-            saveas(gcf,['ALL_',drugs{d},'_spec_',norms{n},'_6mins_horiz_',stats{s},'.fig'])
+            saveas(gcf,['ALL_',drugs{d},'_spec_',norms{n},'_6mins_horiz_sub_',stats{s},'.fig'])
             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
-            print(gcf,'-dpdf',['ALL_',drugs{c},'_spec_',norms{n},'_6mins_horiz_',stats{s},'.pdf'])
+            print(gcf,'-dpdf',['ALL_',drugs{c},'_spec_',norms{n},'_6mins_horiz_sub_',stats{s},'.pdf'])
             
             close('all')
             
@@ -94,7 +94,7 @@ for d=1:3
         
         for s=1:length(stats)
             
-            open(['ALL_',drugs{d},'_spec_',norms{n},'_6mins_horiz_',stats{s},'.fig'])
+            open(['ALL_',drugs{d},'_spec_',norms{n},'_6mins_horiz_sub_',stats{s},'.fig'])
             
         end
         
