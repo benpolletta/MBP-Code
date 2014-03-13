@@ -5,9 +5,9 @@ function [max_data_all,data_all]=figure_replotter_labels(numbers,rows,cols,x_tic
 % columns, followed by rows labels for the rows.
 
 x_dim=length(x_tick_labels);
-x_tick_selected=1:ceil(x_dim/8):x_dim;
+x_tick_selected=1:ceil(x_dim/4):x_dim;
 y_dim=length(y_tick_labels);
-y_tick_selected=1:floor(y_dim/5):y_dim;
+y_tick_selected=1:floor(y_dim/6):y_dim;
 
 data_all=nan(y_dim,x_dim,rows*cols);
 
@@ -49,7 +49,8 @@ for i=1:length(numbers)
     imagesc(data_all(:,:,i))
     axis xy
     if min_data<max_data
-        caxis([min_data max_data])
+%         caxis([min_data max_data])
+        caxis([0 max_data])
     end
         
     set(gca,'XTick',x_tick_selected,'XTickLabel',round(x_tick_labels(x_tick_selected)))
@@ -89,7 +90,7 @@ for i=1:length(numbers)
     
     if col==1
         if ~isempty(y_labels)
-            ylabel({y_labels{row}})%;'Amp.-Giving Freq. (Hz)'})
+            ylabel(y_labels{row})%;'Amp.-Giving Freq. (Hz)'})
         else
             ylabel('Amp.-Giving Freq. (Hz)')
         end
