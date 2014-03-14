@@ -40,7 +40,7 @@ for sub=1:length(x_subregions)
                 
             end
             
-            figure_replotter_labels_subregion(1:4*length(pd_labels),4,length(pd_labels),phases,amps,x_subregions(sub,:),y_subregions(sub,:),pd_labels,xlabels,ylabels)
+            figure_replotter_labels_subregion(1:4*length(pd_labels),4,length(pd_labels),4,6,phases,amps,x_subregions(sub,:),y_subregions(sub,:),pd_labels,xlabels,ylabels)
             
             saveas(gcf,[channel_name,'/',measure_name,'_MI_horiz_',sub_labels{sub},'_',stats{s},'.fig'])
             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
@@ -73,7 +73,7 @@ for sub=1:length(x_subregions)
                 
             end
             
-            figure_replotter_labels_subregion(1:3*length(pd_labels),3,length(pd_labels),phases,amps,x_subregions(sub,:),y_subregions(sub,:),pd_labels,xlabels,ylabels)
+            figure_replotter_labels_subregion(1:3*length(pd_labels),3,length(pd_labels),4,6,phases,amps,x_subregions(sub,:),y_subregions(sub,:),pd_labels,xlabels,ylabels)
             
             saveas(gcf,['ALL_',drugs{d},'_MI_horiz_',sub_labels{sub},'_',stats{s},'.fig'])
             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])

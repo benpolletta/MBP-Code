@@ -73,7 +73,7 @@ for c3=1:no_cats3
                 
 %                 fprintf('m=%d, c1=%d, c2=%d\n',m,c1,c2)
                 
-                handl=figure_replotter(gcf,1,1,x_ticks,y_ticks,{[long_stat_labels{m},' ',long_cat1_labels{c1},' ',long_cat2_labels{c2}]});
+                handl=figure_replotter(gcf,1,1,12,18,x_ticks,y_ticks,{[long_stat_labels{m},' ',long_cat1_labels{c1},' ',long_cat2_labels{c2}]});
                 
                 saveas(handl,[name,'_',cat3,'_',cat1,'_',cat2,'_',stat_labels{m},'.fig']);
                 
@@ -97,7 +97,7 @@ for c3=1:no_cats3
     
     for m=1:no_stats
         
-        figure_replotter(figs(m,:),rows,cols,x_ticks,y_ticks,long_labels);
+        figure_replotter(figs(m,:),rows,cols,4,7,x_ticks,y_ticks,long_labels);
         
         saveas(gcf,[name,'_',cat3,'_',stat_labels{m},'.fig']);
         

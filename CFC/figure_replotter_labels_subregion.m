@@ -1,4 +1,4 @@
-function [max_data_all,data_all]=figure_replotter_labels_subregion(numbers,rows,cols,x_tick_labels,y_tick_labels,x_subregion,y_subregion,titles,x_labels,y_labels)
+function [max_data_all,data_all]=figure_replotter_labels_subregion(numbers,rows,cols,x_tick_no,y_tick_no,x_tick_labels,y_tick_labels,x_subregion,y_subregion,titles,x_labels,y_labels)
 
 % 'labels' can contain either a title for each figure to be replotted, in
 % which case it has length rows*cols, or it can contain cols labels for the
@@ -7,12 +7,12 @@ function [max_data_all,data_all]=figure_replotter_labels_subregion(numbers,rows,
 x_sub_indices=find(x_subregion(1)<=x_tick_labels & x_tick_labels <= x_subregion(2));
 x_tick_sub=x_tick_labels(x_sub_indices);
 x_dim=length(x_tick_sub);
-x_tick_selected=1:ceil(x_dim/4):x_dim;
+x_tick_selected=1:floor(x_dim/x_tick_no):x_dim;
 
 y_sub_indices=find(y_subregion(1)<=y_tick_labels & y_tick_labels <= y_subregion(2));
 y_tick_sub=y_tick_labels(y_sub_indices);
 y_dim=length(y_tick_sub);
-y_tick_selected=1:floor(y_dim/6):y_dim;
+y_tick_selected=1:floor(y_dim/y_tick_no):y_dim;
 
 data_all=nan(y_dim,x_dim,rows*cols);
 

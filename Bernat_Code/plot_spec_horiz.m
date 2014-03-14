@@ -30,7 +30,7 @@ long_norms={'Percent Change From Baseline','z-Scored'};
 %                 
 %             end
 %             
-%             figure_replotter_labels(1:4,4,1,[(-40*6:6:0)+3,(0:6:12*10*6)-3],freqs,titles,xlabels,ylabels)
+%             figure_replotter_labels(1:4,4,1,8,6,[(-40*6:6:0)+3,(0:6:12*10*6)-3],freqs,titles,xlabels,ylabels)
 %             
 %             saveas(gcf,['ALL_',channels{c},'/ALL_',channels{c},'_spec_',norms{n},'_6mins_horiz_',stats{s},'.fig'])
 %             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
@@ -74,7 +74,7 @@ clear titles
 %                 
 %             end
 %             
-%             figure_replotter_labels_subregion(1:3,3,1,[(-40*6:6:0)+3,(0:6:12*10*6)-3],freqs,[-120 360],[0 200],titles,xlabels,ylabels)
+%             figure_replotter_labels_subregion(1:3,3,1,8,6,[(-40*6:6:0)+3,(0:6:12*10*6)-3],freqs,[-120 360],[0 200],titles,xlabels,ylabels)
 %             
 %             saveas(gcf,['ALL_',drugs{d},'_spec_',norms{n},'_6mins_horiz_sub_',stats{s},'.fig'])
 %             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])

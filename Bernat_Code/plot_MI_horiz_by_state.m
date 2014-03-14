@@ -39,7 +39,7 @@ long_states={'Active Wake','NREM/Quiet Wake','REM'};
 %                 
 %             end
 %             
-%             figure_replotter_labels(1:4*length(pd_labels),4,length(pd_labels),phases,amps,pd_labels,xlabels,ylabels)
+%             figure_replotter_labels(1:4*length(pd_labels),4,length(pd_labels),4,7,phases,amps,pd_labels,xlabels,ylabels)
 %             
 %             saveas(gcf,[channel_name,'/',measure_name,'_MI_horiz_',states{st},'_',stats{s},'.fig'])
 %             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
@@ -76,7 +76,7 @@ for d=1:4
                 
             end
             
-            figure_replotter_labels(1:3*length(pd_labels),3,length(pd_labels),phases,amps,pd_labels,xlabels,ylabels)
+            figure_replotter_labels(1:3*length(pd_labels),3,length(pd_labels),4,7,phases,amps,pd_labels,xlabels,ylabels)
             
             saveas(gcf,['ALL_',drugs{d},'_MI_horiz_',states{st},'_',stats{s},'.fig'])
             set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
