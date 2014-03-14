@@ -238,7 +238,7 @@ for s=1:no_stats
     
     print((s-1)*(no_cats1+2)+no_cats1+1,'-dpdf',[name,'_',stat_labels{s},'.pdf'])
     
-    saveas(s*(no_cats1+2),[name,'_line.fig'])
+    saveas(s*(no_cats1+2),[name,'_',stat_labels{s},'_line.fig'])
     
     set(s*(no_cats1+2),'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
     

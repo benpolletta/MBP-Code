@@ -26,25 +26,25 @@ mkdir (fig_dir)
 
 %% Figures by hour.
 
-MI=load([name,'/',name,'_',measure,'_hr_MI.txt'],'%s');
+% MI=load([name,'/',name,'_',measure,'_hr_MI.txt'],'%s');
 
-p=1;
-for i=4:-1:1
-    period_labels{p}=['Hour ',num2str(i),' Preinjection'];
-    short_period_labels{p}=['pre',num2str(i)];
-    p=p+1;
-end
-for i=1:12
-    period_labels{p}=['Hour ',num2str(i),' Postinjection'];
-    short_period_labels{p}=['post',num2str(i)];
-    p=p+1;
-end
-
-for d=1:no_drugs
-
-    cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI)
-
-end
+% p=1;
+% for i=4:-1:1
+%     period_labels{p}=['Hour ',num2str(i),' Preinjection'];
+%     short_period_labels{p}=['pre',num2str(i)];
+%     p=p+1;
+% end
+% for i=1:12
+%     period_labels{p}=['Hour ',num2str(i),' Postinjection'];
+%     short_period_labels{p}=['post',num2str(i)];
+%     p=p+1;
+% end
+% 
+% for d=1:no_drugs
+% 
+%     cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI)
+% 
+% end
     
 % %%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
@@ -70,7 +70,7 @@ end
 
 %% Figures by state and 4 hour period.
 
-% MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
+MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
 
 clear period_labels; clear short_period_labels; p=1;
 for i=1:1
