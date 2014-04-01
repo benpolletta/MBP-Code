@@ -18,7 +18,7 @@ challenge_list_name=challenge_list_name(1:end-5);
 thresh_labels={'pt','zt','lt','zs','lzs'};
 thresh_titles={'Empirical p-Value Thresholded','Normal Thresholded','Lognormal Thresholded','Normal z-Scored','Lognormal z-Scored'};
 
-bands_lo=[1:.25:12]';
+bands_lo=[1:.25:20]';
 bands_hi=[20:5:200]';
 bincenters=-.95:.1:.95;
 

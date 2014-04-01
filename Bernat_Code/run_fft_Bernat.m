@@ -30,7 +30,7 @@ for l=3:no_master_lists
                 
                 drug_dir=pwd;
                 
-                while index>=10
+                if index>=11
                     
                     channel=subj_channels(c);
                     channel_dir=[subject_dir,'_chan',num2str(channel),'_epochs'];

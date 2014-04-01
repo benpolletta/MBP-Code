@@ -53,7 +53,11 @@ for i=1:length(numbers)
         caxis([0 max_data])
     end
         
-    set(gca,'XTick',x_tick_selected,'XTickLabel',round(x_tick_labels(x_tick_selected)))
+    if iscell(x_tick_labels)
+        set(gca,'XTick',x_tick_selected,'XTickLabel',x_tick_labels(x_tick_selected))
+    else
+        set(gca,'XTick',x_tick_selected,'XTickLabel',round(x_tick_labels(x_tick_selected)))
+    end
     set(gca,'YTick',y_tick_selected,'YTickLabel',round(y_tick_labels(y_tick_selected)))
         
     if length(titles)==cols 

@@ -58,21 +58,21 @@ for i=1:length(numbers)
     imagesc(data_all(:,:,i))
     axis xy
     if min_data<max_data
-%         caxis([min_data max_data])
-        caxis([0 max_data])
+        caxis([min_data max_data])
+%         caxis([0 max_data])
     end
         
-    set(gca,'XTick',x_tick_selected,'XTickLabel',round(x_tick_sub(x_tick_selected)))
-    set(gca,'YTick',y_tick_selected,'YTickLabel',round(y_tick_sub(y_tick_selected)))
+    set(gca,'XTick',x_tick_selected,'XTickLabel',round(x_tick_sub(x_tick_selected)),'FontSize',16)
+    set(gca,'YTick',y_tick_selected,'YTickLabel',round(y_tick_sub(y_tick_selected)),'FontSize',16)
         
     if length(titles)==cols 
         
         if row==1
             
             if iscell(titles{col})
-                title(titles{col})
+                title(titles{col},'FontSize',16)
             else
-                title(cellstr(titles{col}))
+                title(cellstr(titles{col}),'FontSize',16)
             end
             
         end
@@ -80,9 +80,9 @@ for i=1:length(numbers)
     elseif length(titles)==rows
         
         if iscell(titles{row})
-            title(titles{row})
+            title(titles{row},'FontSize',16)
         else
-            title(cellstr(titles{row}))
+            title(cellstr(titles{row}),'FontSize',16)
         end
         
     end
@@ -90,7 +90,7 @@ for i=1:length(numbers)
     if row==rows
         
         if ~isempty(x_labels)
-            xlabel(x_labels{col})
+            xlabel(x_labels{col},'FontSize',16)
         else
             xlabel('Phase-Giving Freq. (Hz)')
         end
@@ -99,9 +99,9 @@ for i=1:length(numbers)
     
     if col==1
         if ~isempty(y_labels)
-            ylabel(y_labels{row})%;'Amp.-Giving Freq. (Hz)'})
+            ylabel(y_labels{row},'FontSize',16)%;'Amp.-Giving Freq. (Hz)'})
         else
-            ylabel('Amp.-Giving Freq. (Hz)')
+            ylabel('Amp.-Giving Freq. (Hz)','FontSize',16)
         end
     elseif col==cols
         colorbar

@@ -62,12 +62,13 @@ for i=1:length(numbers)
     end
     axis xy
     if min_MI<max_MI
-        caxis([min_MI max_MI])
+%         caxis([min_MI max_MI])
+        caxis([0 max_MI])
     end
     
 %     if length(numbers)==1
-    set(gca,'XTick',1:x_tick_no:nophases,'XTickLabel',bands_lo(1:x_tick_no:end))
-    set(gca,'YTick',1:y_tick_no:noamps,'YTickLabel',bands_hi(1:y_tick_no:end))
+    set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',round(bands_lo(1:floor(nophases/x_tick_no):end)))
+    set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',round(bands_hi(1:floor(noamps/y_tick_no):end)))
 %     else
 %         set(gca,'XTick',[],'XTickLabel',[])
 %         set(gca,'YTick',[],'YTickLabel',[])

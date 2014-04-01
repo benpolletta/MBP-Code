@@ -45,8 +45,8 @@ clear rows cols
 
 % Extracting components, amplitudes, and phases.
 
-[bands_lo,~,A_lo,P_lo]=filter_wavelet_Jan(data,'fs',sampling_freq,'bands',bands_lo);
-[bands_hi,~,A_hi,P_hi]=filter_wavelet_Jan(data,'fs',sampling_freq,'filename',[dataname,'_hi'],'bands',bands_hi);
+[bands_lo,~,A_lo,P_lo]=filter_wavelet_Jan(data,'sampling_freq',sampling_freq,'bands',bands_lo);
+[bands_hi,~,A_hi,P_hi]=filter_wavelet_Jan(data,'sampling_freq',sampling_freq,'filename',[dataname,'_hi'],'bands',bands_hi);
 
 % Saving.
 
