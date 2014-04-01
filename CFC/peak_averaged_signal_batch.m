@@ -1,29 +1,29 @@
-function [Peak_segments,Peak_locs]=peak_averaged_signal_batch(peak_freq,target_freq,sampling_freq)
+function [Peak_segments,Peak_locs]=peak_averaged_signal_batch(peak_freq,target_freq,no_target_cycles,sampling_freq)
 
-segment_length=2*floor(sampling_freq/target_freq)+1;
+% Finds peaks in trace filtered at frequency peak_freq, spaced at least
+% no_target_cycles cycles (at frequency target_freq) apart. Returns all
+% segments in a matrix, and locations of peaks in a vector.
+
+segment_length=no_target_cycles*floor(sampling_freq/target_freq)+1;
     
-peak_freq_wavelet=dftfilt3(peak_freq, 8, sampling_freq, 'winsize', segment_length);
+peak_freq_wavelet=dftfilt3(peak_freq, 7, sampling_freq, 'winsize', segment_length);
 
-[listname,listpath]=uigetfile('*list','Choose a list of files to calculate peak-averaged signal.')
+[listname,listpath]=uigetfile('*list','Choose a list of files to calculate peak-averaged signal.');
 
 filenames=textread([listpath,listname],'%s');
 filenum=length(filenames);
 
 fid=fopen([listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.txt'],'w');
 
-format=[];
-for i=1:segment_length
-    format=[format,'%f\t'];
-end
-format=[format(1:end-1),'n'];
+format=make_format(segment_length,'f');
 
 Peak_segments=[];
 
-for i=1:filenum
+for f=1:filenum
     
-    filename=char(filenames(i));
+    filename=char(filenames(f));
     data=load(filename);
-    signal_length=length(data);
+    %     signal_length=length(data);
 
     peak_freq_filtered=conv(data,peak_freq_wavelet);
     %     peak_freq_filtered=peak_freq_filtered(sampling_freq/2+1:end-sampling_freq/2);
@@ -48,7 +48,7 @@ for i=1:filenum
     signal_length=length(peak_freq_mag);
     Maxima=Maxima(segment_length+1:end-segment_length);
 
-    figure(), plot(peak_freq_mag), hold on, plot(real(peak_freq_filtered),'k'), plot(Maxima,'c')
+    %     figure(), plot(peak_freq_mag), hold on, plot(real(peak_freq_filtered),'k'), plot(Maxima,'c')
 
     Peak_locs=Max_locs(Max_locs==Win_centers);
 
@@ -93,7 +93,7 @@ xlabel('Time From Peak (s)')
 saveas(gcf,[listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.fig'])
 
 figure()
-plot(t,se_peak_segments))
+plot(t,se_peak_segments)
 title([num2str(target_freq),' Hz-Spaced ',num2str(peak_freq),' Hz Peak-Triggered Signal S.D. for ',listname])
 xlabel('Time From Peak (s)')
 saveas(gcf,[listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_sd.fig'])

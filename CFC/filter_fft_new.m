@@ -1,7 +1,7 @@
 function [f,data_hat,bands,signals,H,A,P,F,cycle_bounds]=filter_fft_new(data,varargin)
 
 % varargin can contain five options, each prefaced by an option specifier:
-% 'sampling frequency',sampling_freq: The sampling frequency of the signal.
+% 'sampling_freq',sampling_freq: The sampling frequency of the signal.
 %     Default is 1.
 % 'nobands', number of bands: Determines the number of bands the signal will be
 %     filtered into. Default is 10 bands, ranging from 1/signal_length to the 
@@ -44,7 +44,7 @@ bands=[];
 
 % Changing defaults.
 for i=1:floor(length(varargin)/2)
-    if strcmp(varargin(2*i-1),'fs')==1
+    if strcmp(varargin(2*i-1),'sampling_freq')==1
         sampling_freq=cell2mat(varargin(2*i));
     elseif strcmp(varargin(2*i-1),'nobands')==1
         nobands=cell2mat(varargin(2*i));
