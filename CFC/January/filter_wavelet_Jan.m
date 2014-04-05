@@ -4,8 +4,12 @@ function [bands,H,A,P]=filter_wavelet_Jan(data,varargin)
 % frequencies, and returns the complex signal, its amplitude, and its
 % phase.
 %
+% Example:
+% [bands,H,A,P]=filter_wavelet_Jan(PD_data,'bands',1:50,'sampling_freq',20000);
+%
+% INPUTS:
 % varargin can contain eight options, each prefaced by an option specifier:
-% 'sampling frequency',sampling_freq: The sampling frequency of the signal.
+% 'sampling_freq', scalar: The sampling frequency of the signal.
 %     Default is 1.
 % Frequency resolution can be designated two ways:
 % 1) 'no_cycles', scalar or vector: Number of cycles for each wavelet. Either
@@ -26,6 +30,17 @@ function [bands,H,A,P]=filter_wavelet_Jan(data,varargin)
 %     divided into a specified number of bins.
 % 'spacing', 'linear' or 'log' or 'sqrt': Determines how a range of frequencies 
 %     is divided into bins. Default is linear. 
+% 
+% OUTPUTS:
+% 'bands' is a vector containing the (estimated) center frequencies of each
+% output (wavelet-convolved) vector.
+% 'H' is a matrix whose columns contain the complex-valued
+% wavelet-convolved output vectors, at the frequencies specified in
+% 'bands'.
+% 'A' is a matrix whose columns contain the amplitudes of the
+% wavelet-convolved output vectors.
+% 'P' is a matrix whose columns contain the phases of the wavelet-convolved
+% output vectors.
 
 [r,c]=size(data);
 if r<c

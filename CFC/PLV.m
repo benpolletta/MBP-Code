@@ -1,24 +1,20 @@
-function [Pref_phase,MI]=PLV(sampling_freq,P,A,bands_lo,filename,dirname)
+function [Pref_phase,PLV]=PLV(P1,P2,filename,dirname)
 
-[signal_length,nophases]=size(P);
-[~,noamps]=size(A);
-P_A_hi=zeros(signal_length,nophases,noamps);
+[~,nophases]=size(P1);
 
-for i=1:noamps
+MRV=mean(exp(sqrt(-1)*(P1-P2)));
 
-    [~,~,~,P_A]=filter_wavelet_Jan(A(:,i),'fs',sampling_freq,'bands',bands_lo);
+Pref_phase=angle(PLV);
+PLV=abs(PLV);
+
+if nargin>2
     
-    P_A_hi(:,:,i)=P_A;
+    if nargin>3
     
-    PLV=mean(exp(sqrt(-1)*(P_A-P)));
-    Pref_phase(i,:)=angle(PLV);
-    MI(i,:)=abs(PLV);
+        save([dirname,'/',filename,'_PLV.mat'],'Pref_phase','MI')
 
-end
-
-if nargin>4
-    
-%     save([dirname,'/',filename,'_Pa.mat'],'P_A_hi')
-    save([dirname,'/',filename,'_PLV.mat'],'Pref_phase','MI')
-
+    else
+        
+    save([filename,'_PLV.mat'],'Pref_phase','MI')
+        
 end

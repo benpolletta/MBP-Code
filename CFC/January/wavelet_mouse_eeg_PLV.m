@@ -15,6 +15,9 @@ listnames=textread(challenge_list,'%s%*[^\n]');
 no_challenges=length(listnames);
 challenge_list_name=[challenge_list_name(1:end-5),'_PLV'];
 
+PP_titles=cell(no_challenges,1);
+MI_titles=cell(no_challenges,1);
+
 if length(challenge_labels)==no_challenges
     
     for i=1:length(challenge_labels)
