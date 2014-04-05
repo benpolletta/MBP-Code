@@ -5,6 +5,8 @@ function [Peak_segments,Peak_locs]=peak_averaged_signal_batch(peak_freq,target_f
 % segments in a matrix, and locations of peaks in a vector.
 
 segment_length=no_target_cycles*floor(sampling_freq/target_freq)+1;
+
+max_segments=2*ceil(epoch_length/segment_length);
     
 peak_freq_wavelet=dftfilt3(peak_freq, 7, sampling_freq, 'winsize', segment_length);
 
@@ -17,7 +19,7 @@ fid=fopen([listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_fr
 
 format=make_format(segment_length,'f');
 
-Peak_segments=[];
+Peak_segments=nan(max_segments*filenum,segment_length);
 
 for f=1:filenum
     

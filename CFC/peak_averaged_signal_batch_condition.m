@@ -2,7 +2,7 @@ function [mean_peak_segments,se_peak_segments]=peak_averaged_signal_batch_condit
 
 segment_length=no_target_cycles*floor(sampling_freq/target_freq)+1;
 
-max_segments=ceil(epoch_length/segment_length);
+max_segments=2*ceil(epoch_length/segment_length);
 
 t=[1:segment_length]-floor(segment_length/2)-1;
 t=t/sampling_freq;
