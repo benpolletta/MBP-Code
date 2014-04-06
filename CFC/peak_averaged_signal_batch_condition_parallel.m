@@ -4,7 +4,7 @@ function [mean_peak_segments,se_peak_segments]=peak_averaged_signal_batch_condit
 % no_target_cycles cycles (at frequency target_freq) apart. Returns all
 % segments in a matrix, and locations of peaks in a vector.
 
-segment_length=no_target_cycles*floor(sampling_freq/target_freq);
+segment_length=floor(no_target_cycles*sampling_freq/target_freq);
 if mod(segment_length,2) == 0
     segment_length=segment_length+1;
 end
@@ -33,6 +33,8 @@ for c=1:condition_num
     
     listname=char(condition_names(c));
     list_legend{c} = listname(1:end-5);
+    list_dir = [list_legend{c},'_peak-triggered_avg'];
+    mkdir (list_dir)
     
     filenames=textread(listname,'%s');
     filenum=length(filenames);
@@ -42,7 +44,7 @@ for c=1:condition_num
         filename=char(filenames(f));
         data=load(filename);
         
-        [peak_segments,~]=peak_averaged_signal(data,peak_freq,target_freq,no_target_cycles,sampling_freq,0,filename(1:end-4));
+        [peak_segments,~]=peak_averaged_signal(data,peak_freq,target_freq,no_target_cycles,sampling_freq,0,[list_dir,'/',filename(1:end-4)]);
         
         no_peaks(f)=size(peak_segments,1);
         
@@ -72,7 +74,7 @@ for c=1:condition_num
     
     All_peak_segments(Aps_index+1:end,:)=[];
     
-    save([listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'],'All_peak_segments','All_peak_locs','peak_freq','target_freq','sampling_freq')
+    save([list_dir,'/',listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'],'All_peak_segments','All_peak_locs','peak_freq','target_freq','sampling_freq')
     
     mean_peak_segments(:,c)=mean(All_peak_segments)';
     se_peak_segments(:,c)=std(All_peak_segments)'/sqrt(length(All_peak_segments));
@@ -81,20 +83,20 @@ for c=1:condition_num
     plot(t,mean_peak_segments(:,c))
     title([num2str(target_freq),' Hz-Spaced ',num2str(peak_freq),' Hz Peak-Triggered Average Signal for ',listname])
     xlabel('Time From Peak (s)')
-    save_as_pdf(gcf,[listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg'])
+    save_as_pdf(gcf,[list_dir,'/',listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg'])
     
     figure()
     plot(t,se_peak_segments(:,c))
     title([num2str(target_freq),' Hz-Spaced ',num2str(peak_freq),' Hz Peak-Triggered Signal S.D. for ',listname])
     xlabel('Time From Peak (s)')
-    save_as_pdf(gcf,[listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_sd'])
+    save_as_pdf(gcf,[list_dir,'/',listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_sd'])
     
     figure()
     boxplot(All_peak_segments)
     title([num2str(target_freq),' Hz-Spaced ',num2str(peak_freq),' Hz Peak-Triggered Signal Boxplot for ',listname])
     set(gca,'XTickLabel',t)
     xlabel('Time From Peak (s)')
-    save_as_pdf(gcf,[listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_boxplot'])
+    save_as_pdf(gcf,[list_dir,'/',listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_boxplot'])
     
 end
 

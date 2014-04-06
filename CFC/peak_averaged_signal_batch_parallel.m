@@ -11,6 +11,9 @@ end
 
 [listname,listpath]=uigetfile('*list','Choose a list of files to calculate peak-averaged signal.');
 
+list_dir = [listname(1:end-5),'_peak-triggered_avg'];
+mkdir (list_dir)
+
 filenames=textread([listpath,listname],'%s');
 filenum=length(filenames);
 
@@ -19,7 +22,7 @@ parfor f=1:filenum
     filename=char(filenames(f));
     data=load(filename);
     
-    [peak_segments,~]=peak_averaged_signal(data,peak_freq,target_freq,no_target_cycles,sampling_freq,0,filename(1:end-4));
+    [peak_segments,~]=peak_averaged_signal(data,peak_freq,target_freq,no_target_cycles,sampling_freq,0,[list_dir,'/',filename(1:end-4)]);
     
     no_peaks(f)=size(peak_segments,1);
     
@@ -49,7 +52,7 @@ end
 
 All_peak_segments(Aps_index+1:end,:)=[];
 
-save([listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'],'All_peak_segments','All_peak_locs','peak_freq','target_freq','sampling_freq')
+save([list_dir,'/',listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'],'All_peak_segments','All_peak_locs','peak_freq','target_freq','sampling_freq')
 
 mean_peak_segments=mean(All_peak_segments);
 se_peak_segments=std(All_peak_segments)/sqrt(length(All_peak_segments));
