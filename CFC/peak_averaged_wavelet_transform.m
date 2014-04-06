@@ -52,7 +52,7 @@ if plot_opt > 0
     subplot(2,1,1)
     imagesc(t,freqs,zscore(Morlet')')
     set(gca,'YDir','normal');
-    xlabel('Time (s)'); ylabel('Pseudo-frequency (Hz)');
+    xlabel('Time (s)'); ylabel('Frequency (Hz)');
     title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform'])
 %     set(gca,'YTick',freqs(1:floor(no_freqs/5):no_freqs))
     

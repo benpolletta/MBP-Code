@@ -4,7 +4,10 @@ function [mean_peak_segments,se_peak_segments]=peak_averaged_signal_batch_condit
 % no_target_cycles cycles (at frequency target_freq) apart. Returns all
 % segments in a matrix, and locations of peaks in a vector.
 
-segment_length=no_target_cycles*floor(sampling_freq/target_freq)+1;
+segment_length=no_target_cycles*floor(sampling_freq/target_freq);
+if mod(segment_length,2) == 0
+    segment_length=segment_length+1;
+end
 
 t=[1:segment_length]-floor(segment_length/2)-1;
 t=t/sampling_freq;
@@ -61,7 +64,7 @@ for c=1:condition_num
         
         All_peak_segments(Aps_index+1:Aps_index+size(Peak_segments,1),:)=Peak_segments;
         
-        All_peak_locs=Peak_locs;
+        All_peak_locs{f}=Peak_locs;
         
         Aps_index=Aps_index+size(Peak_segments,1);
         
