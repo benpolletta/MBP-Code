@@ -93,9 +93,11 @@ for d=1:no_drugs
         
     epoch_list=[channel_name,'_4hrs_by_state_epochs.list'];
     hrs_list=[channel_name,'_hours_epochs.list'];
+    sixmins_list=[channel_name,'_6mins_epochs.list']
 
     [fourhrs,states,epoch_names]=textread([record_dir,'/',channel_dir,'/',epoch_list],'%*d%s%s%s%*[^\n]');
     hrs=textread([record_dir,'/',channel_dir,'/',hrs_list],'%*d%s%*[^\n]');
+    sixmins=textread([record_dir,'/',channel_dir,'/',sixmins_list],'%*d%s%*[^\n]');
 %     no_epochs=length(epoch_names);
 
     start_epochs=ceil(inj_epochs(d)+period_hrs(:,1)*epochs_per_hour+1);
@@ -107,6 +109,7 @@ for d=1:no_drugs
     drug_states=states(start_epochs(1):end_epochs(end));
     drug_fourhrs=fourhrs(start_epochs(1):end_epochs(end));
     drug_hrs=hrs(start_epochs(1):end_epochs(end));
+    drug_sixmins=sixmins(start_epochs(1):end_epochs(end));
     drug_epoch_names=epoch_names(start_epochs(1):end_epochs(end));
 
     total_epochs=end_epochs(end)-start_epochs(1)+1;
@@ -140,59 +143,59 @@ for d=1:no_drugs
     
     for j=1:total_epochs
         
-        fprintf(fid_states_pds,'%s\t%s\t%s\n',char(drug_states(j)),char(drug_hrs(j)),char(drug_fourhrs(j)));
+        fprintf(fid_states_pds,'%s\t%s\t%s\t%s\n',char(drug_states(j)),char(drug_hrs(j)),char(drug_fourhrs(j)),char(drug_sixmins(j)));
         
     end
 
     %% COMPUTING POWER & BAND POWER BY EPOCH.
     
-    parfor j=1:total_epochs
-        
-%         data_spec=zeros(1,no_f_bins);
-       
-        BP=zeros(1,no_bands);
-                
-%         local_f_bin_indices=f_bin_indices;
-        
-        local_band_indices=band_indices;
-        
-        local_stop_indices=stop_indices;
-        
-        epoch_name=char(drug_epoch_names(j));
-        
-        data=load([record_dir,'/',epoch_name]);
-        data=detrend(data);
-        
-        data_hat=fft(data);
-
-        for i=1:no_stops
-            
-            data_hat(local_stop_indices{i})=nan;
-            
-        end
-
-        data_spec=nanmean(reshape(data_hat(2:end),8,(length(data_hat)-1)/8));
-        
-        spec_all(j,:)=data_spec(1:no_f_bins);
-        
-        for i=1:no_bands
-            
-            BP(i)=nansum(data_hat(local_band_indices{i}));
-            
-        end
-                
-        BP_all(j,:)=BP;
-        
-    end
-
-    %% SAVING POWER & BAND POWER.
-    
-    fprintf(fid_vec(1),spec_format,[(start_epochs(1):end_epochs(end))' spec_all]');
-    fprintf(fid_vec(2),BP_format,[(start_epochs(1):end_epochs(end))' BP_all]');
-    
-    fclose('all');
-    
-    save([all_dirname,'/',all_filename,'_spec.mat'],'spec_all')
-    save([all_dirname,'/',all_filename,'_BP.mat'],'band_limits','band_labels','BP_all')
+%     parfor j=1:total_epochs
+%         
+% %         data_spec=zeros(1,no_f_bins);
+%        
+%         BP=zeros(1,no_bands);
+%                 
+% %         local_f_bin_indices=f_bin_indices;
+%         
+%         local_band_indices=band_indices;
+%         
+%         local_stop_indices=stop_indices;
+%         
+%         epoch_name=char(drug_epoch_names(j));
+%         
+%         data=load([record_dir,'/',epoch_name]);
+%         data=detrend(data);
+%         
+%         data_hat=pmtm(data);
+% 
+%         for i=1:no_stops
+%             
+%             data_hat(local_stop_indices{i})=nan;
+%             
+%         end
+% 
+%         data_spec=nanmean(reshape(data_hat(2:end),8,(length(data_hat)-1)/8));
+%         
+%         spec_all(j,:)=data_spec(1:no_f_bins);
+%         
+%         for i=1:no_bands
+%             
+%             BP(i)=nansum(data_hat(local_band_indices{i}));
+%             
+%         end
+%                 
+%         BP_all(j,:)=BP;
+%         
+%     end
+% 
+%     %% SAVING POWER & BAND POWER.
+%     
+%     fprintf(fid_vec(1),spec_format,[(start_epochs(1):end_epochs(end))' spec_all]');
+%     fprintf(fid_vec(2),BP_format,[(start_epochs(1):end_epochs(end))' BP_all]');
+%     
+%     fclose('all');
+%     
+%     save([all_dirname,'/',all_filename,'_spec.mat'],'spec_all')
+%     save([all_dirname,'/',all_filename,'_BP.mat'],'band_limits','band_labels','BP_all')
     
 end

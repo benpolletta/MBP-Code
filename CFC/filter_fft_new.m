@@ -1,7 +1,7 @@
 function [f,data_hat,bands,signals,H,A,P,F,cycle_bounds]=filter_fft_new(data,varargin)
 
 % varargin can contain five options, each prefaced by an option specifier:
-% 'sampling frequency',sampling_freq: The sampling frequency of the signal.
+% 'sampling_freq',sampling_freq: The sampling frequency of the signal.
 %     Default is 1.
 % 'nobands', number of bands: Determines the number of bands the signal will be
 %     filtered into. Default is 10 bands, ranging from 1/signal_length to the 
@@ -44,7 +44,7 @@ bands=[];
 
 % Changing defaults.
 for i=1:floor(length(varargin)/2)
-    if strcmp(varargin(2*i-1),'fs')==1
+    if strcmp(varargin(2*i-1),'sampling_freq')==1
         sampling_freq=cell2mat(varargin(2*i));
     elseif strcmp(varargin(2*i-1),'nobands')==1
         nobands=cell2mat(varargin(2*i));
@@ -113,10 +113,10 @@ for j=1:nobands
         bw=bands(j,3)-bands(j,1);
         pbw=pct_pass*bw;
         overlap=bw-pbw;
-        plo=bands(j,2)-pbw/2;
-        phi=bands(j,2)+pbw/2;
-        slo=bands(j,2)-pbw/2-overlap;
-        shi=bands(j,2)+pbw/2+overlap;
+        plo=max(bands(j,2)-pbw/2,0);
+        phi=max(bands(j,2)+pbw/2,0);
+        slo=max(bands(j,2)-pbw/2-overlap,0);
+        shi=max(bands(j,2)+pbw/2+overlap,0);
     elseif c==5
         slo=bands(j,1);
         plo=bands(j,2);
@@ -130,9 +130,27 @@ for j=1:nobands
         hold on;
     else       
         if buttorder==0            
-            %[n,Wn]=buttord(2*[flo fhi]/sampling_freq,2*[flo-(fhi-flo)/2 fhi+(fhi-flo)/2]/sampling_freq,1,20);
-            [n,Wn]=buttord(2*[plo phi]/sampling_freq,2*[slo shi]/sampling_freq,1,20);
-            n=n/2;
+            if slo==0 || plo==0
+                
+                if phi>0 && shi>0
+                    
+                    [n,Wn]=buttord(2*phi/sampling_freq,2*shi/sampling_freq,1,70);
+                    
+                else
+                    
+                    display('Bands must contain a nonzero interval of positive frequencies.')
+                    
+                    return
+                    
+                end
+                
+            else
+                
+                %[n,Wn]=buttord(2*[flo fhi]/sampling_freq,2*[flo-(fhi-flo)/2 fhi+(fhi-flo)/2]/sampling_freq,1,20);
+                [n,Wn]=buttord(2*[plo phi]/sampling_freq,2*[slo shi]/sampling_freq,1,70);
+                %n=n/2;
+                
+            end
         else
             n=buttorder;
             Wn=2*[plo phi]/sampling_freq;

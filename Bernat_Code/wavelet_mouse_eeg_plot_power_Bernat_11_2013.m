@@ -14,13 +14,13 @@ signal_length=sampling_freq*seconds_per_epoch;
 epochs_per_min=60/seconds_per_epoch;
 epochs_per_hour=60*60/seconds_per_epoch;
 
-if strcmp(subject,'A99') | strcmp(subject,'A102')
+if strcmp(subject,'A99') || strcmp(subject,'A102')
     inj_epochs=floor([3*60 5*60+7 2*60+35 5*60+7]*epochs_per_min);
     number_epochs=[7354 4938 5236 4881];
-elseif strcmp(subject,'A103') | strcmp(subject,'A104')
+elseif strcmp(subject,'A103') || strcmp(subject,'A104')
     inj_epochs=[813 733 1293 1125];
     number_epochs=[5449 4782 5703 5107];
-elseif strcmp(subject,'A105') | strcmp(subject,'A106')
+elseif strcmp(subject,'A105') || strcmp(subject,'A106')
     inj_epochs=floor([5*60+7 4*60+42 2*60+53 5*60+7]*epochs_per_min);
     number_epochs=[4313 5006 4541 5736];
 end

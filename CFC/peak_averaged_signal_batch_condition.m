@@ -1,19 +1,23 @@
-function [mean_peak_segments,se_peak_segments]=peak_averaged_signal_batch_condition(peak_freq,target_freq,sampling_freq)
+function [mean_peak_segments,se_peak_segments]=peak_averaged_signal_batch_condition(peak_freq,target_freq,no_target_cycles,sampling_freq,epoch_length)
 
-segment_length=2*floor(sampling_freq/target_freq)+1;
+segment_length=no_target_cycles*floor(sampling_freq/target_freq)+1;
+
+max_segments=2*ceil(epoch_length/segment_length);
 
 t=[1:segment_length]-floor(segment_length/2)-1;
 t=t/sampling_freq;
-    
-peak_freq_wavelet=dftfilt3(peak_freq, 8, sampling_freq, 'winsize', segment_length);
 
-[conditions_name,conditions_path]=uigetfile('*list','Choose a list of lists to calculate peak-averaged signal.')
+format=make_format(segment_length,'f');
+    
+peak_freq_wavelet=dftfilt3(peak_freq, 7, sampling_freq, 'winsize', segment_length);
+
+[conditions_name,conditions_path]=uigetfile('*list','Choose a list of lists to calculate peak-averaged signal.');
 
 condition_names=textread([conditions_path,conditions_name],'%s');
 condition_num=length(condition_names);
 
 mean_peak_segments=nan(segment_length,condition_num);
-std_peak_segments=nan(segment_length,condition_num);
+se_peak_segments=nan(segment_length,condition_num);
 
 for j=1:condition_num
     
@@ -24,20 +28,18 @@ for j=1:condition_num
 
     fid=fopen([listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.txt'],'w');
 
-    format=[];
-    for i=1:segment_length
-        format=[format,'%f\t'];
-    end
-    format=[format(1:end-1),'n'];
+    Peak_segments=nan(max_segments*filenum,segment_length);
 
-    Peak_segments=[];
+    for f=1:filenum
 
-    for i=1:filenum
-
-        filename=char(filenames(i));
+        filename=char(filenames(f));
         data=load(filename);
         signal_length=length(data);
-
+        
+        Maxima=nan(1,signal_length);
+        Max_locs=nan(1,signal_length);
+        Win_centers=nan(1,signal_length);
+        
         peak_freq_filtered=conv(data,peak_freq_wavelet);
         %     peak_freq_filtered=peak_freq_filtered(sampling_freq/2+1:end-sampling_freq/2);
         peak_freq_mag=abs(peak_freq_filtered);
@@ -79,7 +81,7 @@ for j=1:condition_num
 
             segment_start=max(1,peak_location-floor(segment_length/2));
             segment_end=min(signal_length,peak_location+floor(segment_length/2));
-            Peak_segments=[Peak_segments; data(segment_start:segment_end)'];
+            Peak_segments(i,:)=data(segment_start:segment_end)';
 
             fprintf(fid,format,data(segment_start:segment_end));
 

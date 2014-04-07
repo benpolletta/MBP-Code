@@ -5,7 +5,7 @@ mkdir (pair_dir)
 
 sampling_freq=1000;
 signal_length=4096*4;
-f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length);
+f=(sampling_freq/2)*([1:signal_length/2+1]-1)/(signal_length/2);
 f(f>200)=[];
 no_freqs=length(f);
 cohy_format=make_format(no_freqs,'f');
@@ -14,15 +14,16 @@ present_dir=pwd;
 
 load('subjects.mat')
 load('drugs.mat')
-load('channels.mat')
+% load('channels.mat')
 
 drugs_fid=fopen([pair_dir,'/',pair_dir,'_drugs.txt'],'w');
 subjects_fid=fopen([pair_dir,'/',pair_dir,'_subjects.txt'],'w');
 hrs_fid=fopen([pair_dir,'/',pair_dir,'_hrs.txt'],'w');
 rcoh_fid=fopen([pair_dir,'/',pair_dir,'_rcoh.txt'],'w');
 icoh_fid=fopen([pair_dir,'/',pair_dir,'_icoh.txt'],'w');
+coh_fid=fopen([pair_dir,'/',pair_dir,'_coh.txt'],'w');
 
-for s=1:length(subjects)
+for s=1:min(length(chan1_channels),length(chan2_channels))
     
     subject=subjects{s};
     subj_chan1=chan1_channels(s);
@@ -37,9 +38,12 @@ for s=1:length(subjects)
         subject_dir=[subject,'_',drug];
         cd (subject_dir)
         
-        pair_filename=sprintf('%s_ch%d_by_ch%d_cohy.mat',subject_dir,channel_pair);
+        pair_filename=sprintf('%s_ch%d_by_ch%d_hours_cohy.mat',subject_dir,channel_pair);
         cohy_struct=load(pair_filename);
         cohy_norm=cohy_struct.cohy_norm;
+        cohy_norm=cohy_norm(:,1:no_freqs);
+        coh_norm=cohy_struct.coh_norm;
+        coh_norm=coh_norm(:,1:no_freqs);
         no_pds=size(cohy_norm,1);
         
         pd_list_prefix=sprintf('%s_chan%d',subject_dir,channel_pair(1));
@@ -57,40 +61,55 @@ for s=1:length(subjects)
             fprintf(hrs_fid,'%s\n',pds{p});
             fprintf(rcoh_fid,cohy_format,real(cohy_norm(p,:)));
             fprintf(icoh_fid,cohy_format,imag(cohy_norm(p,:)));
+            fprintf(coh_fid,cohy_format,coh_norm(p,:));
             
         end
         
-        figure(2*s-1)
+        figure(3*s-2)
+        
+        subplot(1,4,d)
+        imagesc(coh_norm')
+        axis xy
+        colorbar
+        title(drug)
+        xlabel('Hour Relative to Injection')
+        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',round(f(1:floor(no_freqs/10):no_freqs)))
+        if d==1
+            ylabel(sprintf('Coherence for %s, %s by %s',subject,chan1_name,chan2_name))
+        end
+        
+        figure(3*s-1)
         
         subplot(1,4,d)
         imagesc(imag(cohy_norm)')
         axis xy
         colorbar
-        ylabel(drug)
-        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',f(1:floor(no_freqs/10):no_freqs))
-        if d==round(length(drugs)/2)
-            title(sprintf('Imaginary Coherence for %s by %s',chan1_name,chan2_name))
-            xlabel('Hour Relative to Injection')
+        title(drug)
+        xlabel('Hour Relative to Injection')
+        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',round(f(1:floor(no_freqs/10):no_freqs)))
+        if d==1
+            ylabel(sprintf('Imaginary Coherence for %s, %s by %s',subject,chan1_name,chan2_name))
         end
         
-        figure(2*s)
+        figure(3*s)
         
         subplot(1,4,d)
         imagesc(real(cohy_norm)')
         axis xy
         colorbar
-        ylabel(drug)
-        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',f(1:floor(no_freqs/10):no_freqs))
-        if d==round(length(drugs)/2)
-            title(sprintf('Coherence for %s by %s',chan1_name,chan2_name))
-            xlabel('Hour Relative to Injection')
+        title(drug)
+        xlabel('Hour Relative to Injection')
+        set(gca,'XTick',1:floor(no_pds/3):no_pds,'XTickLabel',pds(1:floor(no_pds/3):no_pds),'YTick',1:floor(no_freqs/10):no_freqs,'YTickLabel',round(f(1:floor(no_freqs/10):no_freqs)))
+        if d==1
+            ylabel(sprintf('Real Coherence for %s, %s by %s',subject,chan1_name,chan2_name))
         end
         
         cd (present_dir)
         
     end
     
-    saveas(2*s-1,[pair_dir,'/',pair_dir,'_',subject,'_icoh'],'fig')
-    saveas(2*s,[pair_dir,'/',pair_dir,'_',subject,'_rcoh'],'fig')
+    saveas(3*s-2,[pair_dir,'/',pair_dir,'_',subject,'_coh'],'fig')
+    saveas(3*s-1,[pair_dir,'/',pair_dir,'_',subject,'_icoh'],'fig')
+    saveas(3*s,[pair_dir,'/',pair_dir,'_',subject,'_rcoh'],'fig')
     
 end

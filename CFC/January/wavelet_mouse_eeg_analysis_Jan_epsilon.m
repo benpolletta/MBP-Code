@@ -8,7 +8,7 @@ listnames=textread(challenge_list,'%s%*[^\n]');
 no_challenges=length(listnames);
 challenge_list_name=challenge_list_name(1:end-5);
 
-bands_lo=1:.25:12;
+bands_lo=1:.25:20;
 bands_hi=20:5:200;
 bincenters=-.95:.1:.95;
 
@@ -113,10 +113,14 @@ if no_challenges>1
 %         
 %     end
 
-    figure_replotter_labels([2:2:2*no_challenges],subplot_dims(1),subplot_dims(2),bands_lo,bands_hi,titles,[],row_labels)
+    try
+        
+        figure_replotter_labels([2:2:2*no_challenges],subplot_dims(1),subplot_dims(2),5,6,bands_lo,bands_hi,titles,[],row_labels)
     
-    saveas(gcf,[challenge_list_name,'_avgMI.fig'])
+        saveas(gcf,[challenge_list_name,'_avgMI.fig'])
     
+    end
+        
 end
 
 fclose('all')

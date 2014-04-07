@@ -1,4 +1,4 @@
-function [handle]=figure_replotter(numbers,rows,cols,bands_lo,bands_hi,labels)
+function [handle]=figure_replotter(numbers,rows,cols,x_tick_no,y_tick_no,bands_lo,bands_hi,labels)
 % function [max_MI_all,MI_all]=figure_replotter(numbers,rows,cols,bands_lo,bands_hi,labels)
 
 % 'labels' can contain either a title for each figure to be replotted, in
@@ -62,12 +62,13 @@ for i=1:length(numbers)
     end
     axis xy
     if min_MI<max_MI
-        caxis([min_MI max_MI])
+%         caxis([min_MI max_MI])
+        caxis([0 max_MI])
     end
     
 %     if length(numbers)==1
-    set(gca,'XTick',1:4:nophases,'XTickLabel',bands_lo(1:4:end))
-    set(gca,'YTick',1:4:noamps,'YTickLabel',bands_hi(1:4:end))
+    set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',round(bands_lo(1:floor(nophases/x_tick_no):end)))
+    set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',round(bands_hi(1:floor(noamps/y_tick_no):end)))
 %     else
 %         set(gca,'XTick',[],'XTickLabel',[])
 %         set(gca,'YTick',[],'YTickLabel',[])

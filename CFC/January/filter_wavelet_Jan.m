@@ -62,7 +62,7 @@ time_resol=[];
 
 % Changing defaults.
 for i=1:floor(length(varargin)/2)
-    if strcmp(varargin(2*i-1),'fs')==1
+    if strcmp(varargin(2*i-1),'sampling_freq')==1
         sampling_freq=cell2mat(varargin(2*i));
     elseif strcmp(varargin(2*i-1),'nobands')==1
         nobands=cell2mat(varargin(2*i));

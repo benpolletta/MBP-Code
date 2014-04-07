@@ -1,4 +1,4 @@
-function [pd_corder,period_labels]=make_period_labels(hrs_pre,hrs_post,format)
+function [period_labels,pd_corder]=make_period_labels(hrs_pre,hrs_post,format)
 
 if strcmp(format,'hrs')
     
@@ -51,6 +51,34 @@ elseif strcmp(format,'4hrs')
         period_labels{index}=['post',num2str(p-3),'to',num2str(p)];
         
         pd_corder(index,:)=(p/4-1)*[0 1 1]/(hrs_post/4)+(hrs_post-p)*[1 0 1]/hrs_post;
+        
+        index=index+1;
+    
+    end
+        
+elseif strcmp(format,'6mins')
+    
+    no_periods=(ceil(hrs_pre+hrs_post)*10);
+    
+    period_labels=cell(1,no_periods);
+    
+    index=1;
+    
+    for p=10*hrs_pre:-1:1
+        
+        period_labels{index}=num2str(-6*p+3);
+        
+        pd_corder(index,:)=(index-1)*[1 1 1]/(2*10*hrs_pre);
+        
+        index=index+1;
+        
+    end
+    
+    for p=1:10*hrs_post
+        
+        period_labels{index}=num2str(6*p-3);
+        
+        pd_corder(index,:)=(p-1)*[0 1 1]/(10*hrs_post)+(10*hrs_post-p)*[1 0 1]/(10*hrs_post);
         
         index=index+1;
     
