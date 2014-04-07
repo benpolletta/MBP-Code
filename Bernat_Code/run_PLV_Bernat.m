@@ -78,8 +78,6 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
                 
                 parfor sh=1:no_shufs
                     
-                    chan1_fft_loc=chan1_fft; chan2_fft_loc=chan2_fft;
-                    PLV_shuf(sh,:,pd)=coherency(chan1_fft_loc(randperm(no_epochs),:),chan2_fft_loc(randperm(no_epochs),:));
                     
                 end
                 
