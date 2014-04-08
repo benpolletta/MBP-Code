@@ -7,7 +7,7 @@ function [Peak_segments,Peak_locs]=peak_averaged_signal(data,peak_freq,target_fr
 % and also peak-triggered average.
 
 data_length=length(data);
-segment_length=no_target_cycles*floor(sampling_freq/target_freq);
+segment_length=floor(no_target_cycles*sampling_freq/target_freq);
 if mod(segment_length,2) == 0
     segment_length=segment_length+1;
 end
