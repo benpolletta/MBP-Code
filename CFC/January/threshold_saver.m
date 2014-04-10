@@ -1,4 +1,4 @@
-function MI_thresh=threshold_saver(MI,MI_stats,filename,dirname);
+function MI_thresh=threshold_saver(MI,MI_stats,filename,dirname)
 
 for l=1:3
             

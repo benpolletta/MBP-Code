@@ -1,5 +1,10 @@
 function wavelet_mouse_eeg_threshold_IE(cutoff_prompt,challenge_list,challenge_descriptor,challenge_labels,subplot_dims)
 
+% Thresholds data - as listed in (list of lists) challenge_list - by stats,
+% given by cutoff_prompt, or searched for in the directory containing the
+% data. challenge_descriptor, challenge_labels, and subplot_dims are all
+% degenerate variables at one time used for plotting.
+
 close('all')
 
 challenge_list_name=char(challenge_list);
@@ -11,15 +16,18 @@ if nargin<5
     end
 end
 
+% Getting lists contained in list of lists.
 listnames=textread(challenge_list_name,'%s%*[^\n]');
 no_challenges=length(listnames);
 challenge_list_name=challenge_list_name(1:end-5);
 
+% Labels and titles for different thresholding methods.
 thresh_labels={'pt','zt','lt','zs','lzs'};
 thresh_titles={'Empirical p-Value Thresholded','Normal Thresholded','Lognormal Thresholded','Normal z-Scored','Lognormal z-Scored'};
 
-bands_lo=[1:.25:20]';
-bands_hi=[20:5:200]';
+% Bands for PAC analysis.
+bands_lo=[1:.25:30]';
+bands_hi=[20:5:250]';
 bincenters=-.95:.1:.95;
 
 nofits=length(thresh_titles);
@@ -29,6 +37,8 @@ nophases=length(bands_hi);
 present_dir=pwd;
 
 for j=1:no_challenges
+    
+    % Making titles for plots.
     
     for k=1:nofits
 
@@ -69,8 +79,13 @@ for j=1:no_challenges
     
     listdir=pwd;
     
+    % Going through lots of trouble to find the file containing the
+    % surrogate statistics, in multiple different ways.
+    
     cutoff_dir=[];
     
+    % If a prompt (part of the filename of the file containing the stats)
+    % is given.
     if ~isempty(cutoff_prompt)
         if ischar(cutoff_prompt) && ~isempty(dir(cutoff_prompt))
             cutoff_dir=dir(cutoff_prompt);
@@ -87,6 +102,7 @@ for j=1:no_challenges
         end
     end
     
+    % If no prompt is given.
     if isempty(cutoff_dir)
         if ~isempty(dir(['STATS_FILE_SHUFFLE_',listname,'_*']))
             cutoff_dir=dir(['STATS_FILE_SHUFFLE_',listname,'_*']);
@@ -100,37 +116,41 @@ for j=1:no_challenges
         end
     end
     
+    % File containing the cutoffs.
     cutoff_file=dir([cutoff_dir,'/',cutoff_dir,'*IE.mat']);
     cutoff_dir=[cutoff_dir,'/'];
     
+    % Creating directory to save thresholded data.
     dirname=['THRESH_',cutoff_dir(7:end)];
     mkdir (dirname)
     
+    % Creating directory to save averaged data.
     avg_dirname=['AVG_',dirname];
     mkdir (avg_dirname)
     
     for c=1:length(cutoff_file)
     
+        % Getting cutoffs.
         cutoff_name=cutoff_file(c).name;
         stats_struct=load([cutoff_dir,cutoff_name]);
         MI_stats=stats_struct.MI_stats;
         
         cutoff_suffix=cutoff_name(length(cutoff_dir):end-4);
         
-        avg_MI_thresh=zeros(nophases,noamps,nofits);
+        avg_MI_thresh=zeros(nophases,noamps,nofits); % Creating file to store average thresholded data.
         
-        parfor k=1:filenum
+        parfor k=1:filenum % Doing the thresholding, in parallel.
             
             filename=char(filenames(k));
             filename=filename(1:end-4);
             MI_filename=[filename,'_IE.mat'];
             
-            MI=load(MI_filename,'MI');
+            MI=load(MI_filename,'MI'); % Loading raw data.
             MI=MI.MI;
             
-            MI_thresh=threshold_saver(MI,MI_stats,[filename,cutoff_suffix],dirname);
+            MI_thresh=threshold_saver(MI,MI_stats,[filename,cutoff_suffix],dirname); % Doing the thresholding and saving.
             
-            avg_MI_thresh=avg_MI_thresh+MI_thresh;
+            avg_MI_thresh=avg_MI_thresh+MI_thresh; % Adding results to average.
             
         end
         
@@ -160,14 +180,18 @@ for j=1:no_challenges
 
 end
 
-% if no_challenges>1
-%     
-%     for k=1:nofits
-%     
-%         figure_replotter([1:nofits:nofits*no_challenges],subplot_dims(1),subplot_dims(2),bands_lo,bands_hi,MI_titles(k,:));
-%     
-%         saveas(gcf,[challenge_list_name,'_',char(thresh_labels(k)),'_avgMI_thresh.fig'])
-%             
-%     end
-%     
-% end
+try
+    
+    if no_challenges>1
+        
+        for k=1:nofits
+            
+            figure_replotter([1:nofits:nofits*no_challenges],subplot_dims(1),subplot_dims(2),bands_lo,bands_hi,MI_titles(k,:));
+            
+            saveas(gcf,[challenge_list_name,'_',char(thresh_labels(k)),'_avgMI_thresh.fig'])
+            
+        end
+        
+    end
+    
+end

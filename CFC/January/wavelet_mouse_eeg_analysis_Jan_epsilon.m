@@ -8,8 +8,8 @@ listnames=textread(challenge_list,'%s%*[^\n]');
 no_challenges=length(listnames);
 challenge_list_name=challenge_list_name(1:end-5);
 
-bands_lo=1:.25:20;
-bands_hi=20:5:200;
+bands_lo=1:.25:30;
+bands_hi=20:5:250;
 bincenters=-.95:.1:.95;
 
 noamps=length(bands_lo);

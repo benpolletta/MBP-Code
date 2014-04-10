@@ -1,6 +1,6 @@
-function [t, freqs, Morlet, mean_peak_segment, no_peaks] = peak_averaged_wavelet_transform(data, peak_freq, sampling_freq, plot_opt, tit_le)
+function [t, freqs, Morlet, mean_peak_segment, no_peaks] = peak_averaged_wavelet_transform(data, peak_freq, peak_freq_cycles, sampling_freq, plot_opt, tit_le)
 
-[Peak_segments, ~] = peak_averaged_signal(data, peak_freq, peak_freq, 4, sampling_freq, 0, '');
+[Peak_segments, ~] = peak_averaged_signal(data, peak_freq, peak_freq, peak_freq_cycles, sampling_freq, 0, '');
 
 [no_peaks, segment_length] = size(Peak_segments);
 

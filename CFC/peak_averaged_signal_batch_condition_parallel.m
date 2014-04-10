@@ -22,7 +22,7 @@ else
     
 end
     
-condition_names=textread([conditions_path,conditions_name],'%s');
+condition_names=textread([conditions_path,'/',conditions_name],'%s');
 condition_num=length(condition_names);
 list_legend = cell(condition_num,1);
 
@@ -62,7 +62,7 @@ for c=1:condition_num
         
         filename=char(filenames(f));
         
-        load([filename(1:end-4),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'])
+        load([list_dir,'/',filename(1:end-4),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'])
         
         All_peak_segments(Aps_index+1:Aps_index+size(Peak_segments,1),:)=Peak_segments;
         
@@ -76,7 +76,7 @@ for c=1:condition_num
     
     save([list_dir,'/',listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'],'All_peak_segments','All_peak_locs','peak_freq','target_freq','sampling_freq')
     
-    mean_peak_segments(:,c)=mean(All_peak_segments)';
+    mean_peak_segments(:,c)=mean(All_peak_segments)'-mean(mean(All_peak_segments));
     se_peak_segments(:,c)=std(All_peak_segments)'/sqrt(length(All_peak_segments));
     
     figure()

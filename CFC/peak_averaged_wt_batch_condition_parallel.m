@@ -1,10 +1,10 @@
-function [mean_wt,mean_peak_segments]=peak_averaged_wt_batch_condition_parallel(conditions_name,peak_freq,sampling_freq)
+function [mean_wt,mean_peak_segments]=peak_averaged_wt_batch_condition_parallel(conditions_name,peak_freq,peak_freq_cycles,sampling_freq)
 
 % Finds peaks in trace filtered at frequency peak_freq, spaced at least
 % no_target_cycles cycles (at frequency target_freq) apart. Returns all
 % segments in a matrix, and locations of peaks in a vector.
 
-segment_length=floor(1.5*sampling_freq/peak_freq);
+segment_length=floor(peak_freq_cycles*sampling_freq/peak_freq);
 if mod(segment_length,2)==0
     segment_length = segment_length + 1;
 end
@@ -51,7 +51,7 @@ for c=1:condition_num
         filename=char(filenames(f));
         data=load(filename);
         
-        [~, ~, file_wt, file_mean_peak_segment, file_peak_no] = peak_averaged_wavelet_transform(data, peak_freq, sampling_freq, 0, [list_dir,'/',filename(1:end-4)]);
+        [~, ~, file_wt, file_mean_peak_segment, file_peak_no] = peak_averaged_wavelet_transform(data, peak_freq, peak_freq_cycles, sampling_freq, 0, [list_dir,'/',filename(1:end-4)]);
         
         All_wt(:,:,f) = file_wt*file_peak_no;
         

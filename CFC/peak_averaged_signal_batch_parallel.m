@@ -40,7 +40,7 @@ for f=1:filenum
     
     filename=char(filenames(f));
     
-    load([filename(1:end-4),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'])
+    load([list_dir,'/',filename(1:end-4),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.mat'])
     
     All_peak_segments(Aps_index+1:Aps_index+size(Peak_segments,1),:)=Peak_segments;
     

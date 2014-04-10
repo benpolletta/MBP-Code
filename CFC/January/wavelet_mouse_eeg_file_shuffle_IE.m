@@ -1,5 +1,18 @@
 function wavelet_mouse_eeg_file_shuffle_IE(in_noshufs,thresholds,challenge_list)
 
+% Performs surrogate data analysis, by computing PAC for nonsimultaneous
+% epochs of amplitude and phase data. Amplitude and phase epochs to be
+% shuffled are taken from lists, the names of these lists are in turn
+% listed in challenge_list. 
+% INPUTS:
+% > in_noshufs gives the number of shufs you'd like
+% to compute for the epochs listed. If there are not enough data files to
+% create this number of pairings of nonsimultaneous phase and amplitude
+% time series, the maximum number of pairings will be created instead.
+% > thresholds gives the 'p-value' used to create a threshold, which will
+% be subtracted from raw data to create thresholded data. 
+% > challenge_list is the list of lists of the data.
+
 close('all')
 
 % challenge_descriptor=char(challenge_descriptor);
@@ -32,8 +45,8 @@ no_challenges=length(listnames);
 % stat_labels={'pt_cutoffs','z_means','z_stds','z_cutoffs','lz_means','lz_stds','lz_cutoffs','skews'};
 % stat_titles={'Empirical p-Value Cutoff','Mean ','Standard Deviation ','Standard Normal Cutoff','Mean Log ','Standard Deviation Log ','Lognormal Cutoff','Skewness'};
 
-bands_lo=1:.25:20;
-bands_hi=20:5:200;
+bands_lo=1:.25:30;
+bands_hi=20:5:250;
 bincenters=-.95:.1:.95;
 
 noamps=length(bands_hi);
@@ -52,6 +65,9 @@ for j=1:no_challenges
    
     filenames=textread(listname,'%s%*[^\n]');
     filenum=length(filenames);
+    
+    % Choosing nonsimultaneous pairs of amplitude and phase time series
+    % from the list of data epochs.
     
     if filenum>1
         
@@ -106,7 +122,7 @@ for j=1:no_challenges
             
             filename=['Shuf',num2str(k),'_',ampname(1:end-5),'_',phasename(1:end-6),'P'];
             
-            [M,MI]=inverse_entropy_Jan(nobins,Amp,Phase,filename,dirname);
+            [M,MI]=inverse_entropy_Jan(nobins,Amp,Phase,filename,dirname); % Calculating shuffled MI for this pair.
             
             avg_M=avg_M+M;
             all_MI(:,:,k)=MI;
