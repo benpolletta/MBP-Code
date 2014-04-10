@@ -1,4 +1,4 @@
-function CFC_Jan_wav_HAP(datafile,sampling_freq,bands_lo,bands_hi,outfilename)
+function [bands_lo,A_lo,P_lo,bands_hi,A_hi,P_hi]=CFC_Jan_wav_HAP(datafile,sampling_freq,bands_lo,bands_hi,outfilename)
 
 % Finds phase-amplitude modulation for rhythmic modes centered at bands_lo 
 % on rhythmic modes centered at band_hi. Calculates an inverse entropy 
@@ -60,6 +60,6 @@ clear rows cols
 % fprintf();
 % fclose(fid);
 
-save([dirname,'/',dataname,'_AP.mat'],'sampling_freq','bands_lo','bands_hi','A_lo','P_lo','A_hi','P_hi')
+save([dirname,'/',dataname,'_AP.mat'],'sampling_freq','bands_lo','bands_hi','A_lo','P_lo','A_hi','P_hi','-v7.3')
 
 cd (present_dir);

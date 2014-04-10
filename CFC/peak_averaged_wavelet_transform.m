@@ -6,6 +6,21 @@ function [t, freqs, Morlet, mean_peak_segment, no_peaks] = peak_averaged_wavelet
 
 t = ((1:segment_length) - floor(segment_length/2))/sampling_freq;
 
+% <<<<<<< HEAD
+% MorletFourierFactor = 4*pi/(6+sqrt(2+6^2));
+% freqs = 1:200;
+% scales = 1./(freqs*MorletFourierFactor);
+% no_scales = length(scales);
+% 
+% Morlet = zeros(no_scales,segment_length);
+% 
+% for p = 1:no_peaks
+%    
+%     sig =  struct('val',Peak_segments(p,:),'period',sampling_freq);
+%     cwt = cwtft(sig,'scales',1./[1:1:200]);
+%     
+%     Morlet = Morlet + abs(cwt.cfs);
+% =======
 freqs = 1:200;
 no_freqs = length(freqs);
 
@@ -40,7 +55,7 @@ Morlet = Morlet/no_peaks;
 mean_peak_segment = mean(Peak_segments);
 
 if ~isempty(tit_le)
-   
+
     save([tit_le,'_',num2str(peak_freq),'_peak_wav.mat'],'Morlet','freqs','t','mean_peak_segment','no_peaks','peak_freq','sampling_freq');
     
 end
