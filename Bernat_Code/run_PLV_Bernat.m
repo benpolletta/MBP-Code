@@ -38,10 +38,11 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         
         if no_periods1==no_periods2
             
-            pair_filename=sprintf('%s_ch%d_by_ch%d_cohy.mat',subject_dir,channel_pair);
+            pair_dir=sprintf('%s_ch%d_by_ch%d_PLV',subject_dir,channel_pair);
             
             avg_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
             avg_PP=nan(no_periods1,no_bands_hi+no_bands_lo);
+            avg_PC=nan(no_periods1,no_bands_hi+no_bands_lo);
             
             for pd=1:no_periods1
                 
@@ -66,14 +67,15 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
                     mat1 = load([channel_dir1,'/',pd1_listname,'/',epoch1_name(1:end-4),'_AP.mat']);
                     mat2 = load([channel_dir1,'/',pd2_listname,'/',epoch2_name(1:end-4),'_AP.mat']);
                     
-                    [PP,plv]=PLV([mat1.Plo mat1.Phi],[mat2.Plo mat2.Phi],epoch1_name(1:end-4),epoch_pairname,pair_filename);
+                    [PP,plv]=PLV([mat1.Plo mat1.Phi],[mat2.Plo mat2.Phi],epoch1_name(1:end-4),epoch_pairname,pair_dir);
                     
-                    pd_PP=pd_PP+exp(sqrt(-1)*PP)/no_epochs;
+                    pd_PP=pd_PP+exp(sqrt(-1)*PP);
                     pd_PLV=pd_PLV+plv;
                     
                 end
                    
-                avg_PP(pd,:)=pd_PP;
+                avg_PP(pd,:)=angle(pd_PP);
+                avg_PC(pd,:)=abs(pd_PP/no_epochs);
                 avg_PLV(pd,:)=pd_PLV/no_epochs;
                 
                 parfor sh=1:no_shufs
@@ -89,7 +91,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
             cohy_norm=real(PLV_mat-cohy_shuf_mean)./cohy_shuf_stdr+sqrt(-1)*imag(PLV_mat-cohy_shuf_mean)./cohy_shuf_stdi;
             
 
-            save(pair_filename,'cohy','cohy_norm','cohy_shuf_mean','cohy_shuf_stdr','cohy_shuf_stdi')
+            save(pair_dir,'cohy','cohy_norm','cohy_shuf_mean','cohy_shuf_stdr','cohy_shuf_stdi')
             %                 save(pair_filename,'cohy','cohy_norm','cohy_shuf','-v7.3')
             
         else
