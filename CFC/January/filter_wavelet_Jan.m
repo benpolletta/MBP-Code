@@ -176,8 +176,7 @@ bands=[bands-freqresol/2 bands bands+freqresol/2];
 
 for j=1:nobands
 
-    temp=conv(data,wavelet(j,:));
-    H(:,j)=temp(sampling_freq/2+1:end-sampling_freq/2);
+    H(:,j)=conv(data,wavelet(j,:),'same');
     
 end
 
