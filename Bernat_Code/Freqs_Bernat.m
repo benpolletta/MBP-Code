@@ -35,7 +35,7 @@ spec_params = nan(size(ALL_spec,1),no_bands*2);
 spec_zs_params = nan(size(ALL_spec,1),no_bands*2);
 spec_pct_params = nan(size(ALL_spec,1),no_bands*2);
 
-for b = 1:size(bands,2)
+for b = 1:size(bands,1)
 
     band_indices = bands(b,1) <= f_bins & f_bins <= bands(b,2);
     
