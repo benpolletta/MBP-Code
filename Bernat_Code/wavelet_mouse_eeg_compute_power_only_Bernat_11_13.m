@@ -93,7 +93,7 @@ for d=1:no_drugs
         
     epoch_list=[channel_name,'_4hrs_by_state_epochs.list'];
     hrs_list=[channel_name,'_hours_epochs.list'];
-    sixmins_list=[channel_name,'_6mins_epochs.list']
+    sixmins_list=[channel_name,'_6mins_epochs.list'];
 
     [fourhrs,states,epoch_names]=textread([record_dir,'/',channel_dir,'/',epoch_list],'%*d%s%s%s%*[^\n]');
     hrs=textread([record_dir,'/',channel_dir,'/',hrs_list],'%*d%s%*[^\n]');

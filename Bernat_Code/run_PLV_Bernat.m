@@ -14,7 +14,7 @@ present_dir=pwd;
 load('subjects.mat')
 load('drugs.mat')
 
-for s=1:min(length(chan1_channels),length(chan2_channels))
+for s=2:min(length(chan1_channels),length(chan2_channels))
     
     subject=subjects{s};
     subj_chan1=chan1_channels(s);
@@ -22,7 +22,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
     
     channel_pair=[subj_chan1 subj_chan2];
     
-    for d=2:length(drugs)
+    for d=1:1%:length(drugs)
         
         drug=drugs{d};
         
@@ -39,7 +39,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         periods2=textread(period_list2,'%s');
         no_periods2=length(periods2);
         
-        if isempty(dir([channel_dir1,'/*AP.mat'])) | isempty(dir([channel_dir2,'/*AP.mat']))
+        if isempty(dir([channel_dir1,'/*AP.mat'])) || isempty(dir([channel_dir2,'/*AP.mat']))
             
             channels_listname = [subject_dir,'_channels.list'];
 %             delete(channels_listname)
