@@ -38,7 +38,7 @@ for j=1:no_challenges
     avg_M=zeros(length(bincenters),length(bands_hi),length(bands_lo));
     avg_MI=zeros(length(bands_hi),length(bands_lo));
     
-    parfor k=1:filenum
+    for k=1:filenum
 
         filename=char(filenames(k));
 

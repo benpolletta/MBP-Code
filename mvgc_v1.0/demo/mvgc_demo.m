@@ -123,7 +123,7 @@ fprintf('actual model order     = %d\n',amo);
 
 % Select model order.
 
-if     strcmpi(morder,'actual')
+if strcmpi(morder,'actual')
     morder = amo;
     fprintf('\nusing actual model order = %d\n',morder);
 elseif strcmpi(morder,'AIC')

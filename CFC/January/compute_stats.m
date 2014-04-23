@@ -24,9 +24,11 @@ MI_stats(:,:,7)=exp(norminv(threshold,lz_means,lz_stds));
 
 % Computing skewness.
 
-for i=1:reps
-    Mn(:,:,i)=z_means;
-end
+try
+    
+    Mn=repmat(z_means,[1 1 reps]);
+    
+    multiplier=sqrt(reps-1)/(sqrt(reps)*(reps-2));
+    MI_stats(:,:,8)=multiplier*sum((MIvals-Mn).^3,3)./(std(MIvals,1,3).^(1.5));
 
-multiplier=sqrt(reps-1)/(sqrt(reps)*(reps-2));
-MI_stats(:,:,8)=multiplier*sum((MIvals-Mn).^3,3)./(std(MIvals,1,3).^(1.5));
+end

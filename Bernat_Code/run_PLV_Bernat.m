@@ -14,7 +14,7 @@ present_dir=pwd;
 load('subjects.mat')
 load('drugs.mat')
 
-for s=2:min(length(chan1_channels),length(chan2_channels))
+for s=1:min(length(chan1_channels),length(chan2_channels))
     
     subject=subjects{s};
     subj_chan1=chan1_channels(s);
@@ -22,7 +22,7 @@ for s=2:min(length(chan1_channels),length(chan2_channels))
     
     channel_pair=[subj_chan1 subj_chan2];
     
-    for d=1:1%:length(drugs)
+    for d=1:length(drugs)
         
         drug=drugs{d};
         
@@ -82,7 +82,7 @@ for s=2:min(length(chan1_channels),length(chan2_channels))
                 pd_PP=nan(no_epochs,no_bands_hi+no_bands_lo);
                 pd_PLV=nan(no_epochs,no_bands_hi+no_bands_lo);
                 
-                parfor e=1:no_epochs
+                for e=1:no_epochs
                 
                     epoch1_name = pd1_list{e};
                     epoch2_name = pd2_list{e};

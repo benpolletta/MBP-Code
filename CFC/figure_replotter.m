@@ -67,8 +67,19 @@ for i=1:length(numbers)
     end
     
 %     if length(numbers)==1
-    set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',round(bands_lo(1:floor(nophases/x_tick_no):end)))
-    set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',round(bands_hi(1:floor(noamps/y_tick_no):end)))
+    
+    if iscell(bands_lo)
+        set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',bands_lo(1:floor(nophases/x_tick_no):end))
+    else
+        set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',round(bands_lo(1:floor(nophases/x_tick_no):end)))
+    end
+       
+    if iscell(bands_hi)
+        set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',bands_hi(1:floor(noamps/y_tick_no):end))
+    else
+        set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',round(bands_hi(1:floor(noamps/y_tick_no):end)))
+    end
+    
 %     else
 %         set(gca,'XTick',[],'XTickLabel',[])
 %         set(gca,'YTick',[],'YTickLabel',[])
