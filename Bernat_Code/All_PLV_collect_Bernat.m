@@ -18,6 +18,8 @@ sixmins_fid = fopen([dir,'/',dir(1:end-4),'_6mins.txt'],'w');
 states_fid=fopen([dir,'/',dir(1:end-4),'_states.txt'],'w');
 PLV_fid=fopen([dir,'/',dir(1:end-4),'_PLV.txt'],'w');
 PLV_thresh_fid=fopen([dir,'/',dir(1:end-4),'_PLV_thresh.txt'],'w');
+PLV_zs_fid=fopen([dir,'/',dir(1:end-4),'_PLV_zs.txt'],'w');
+PLV_pct_fid=fopen([dir,'/',dir(1:end-4),'_PLV_pct.txt'],'w');
 PP_fid=fopen([dir,'/',dir(1:end-4),'_PP.txt'],'w');
 
 for d = 1:drug_num
@@ -55,11 +57,11 @@ for d = 1:drug_num
         subj_PLV_thresh = load(subj_PLV_thresh_file);
         subj_PP = load(subj_PP_file);
             
-        % subj_PLV_zs = zscore(thresh_PLV);
-        % 
-        % baseline_indices = strcmp(subj_hrs,'pre4') | strcmp(subj_hrs,'pre3') | strcmp(subj_hrs,'pre2') | strcmp(subj_hrs,'pre1');
-        % baseline_PLV = ones(epochs,no_freqs)*diag(nanmean(subj_PLV(baseline_indices,:)));
-        % subj_PLV_pct = 100*PLV_data./baseline_PLV-100*ones(epochs,no_freqs);
+        subj_PLV_zs = zscore(subj_PLV);
+        
+        baseline_indices = strcmp(subj_hrs,'pre4') | strcmp(subj_hrs,'pre3') | strcmp(subj_hrs,'pre2') | strcmp(subj_hrs,'pre1');
+        baseline_PLV = ones(size(subj_PLV))*diag(nanmean(subj_PLV(baseline_indices,:)));
+        subj_PLV_pct = 100*subj_PLV./baseline_PLV-100*ones(size(subj_PLV));
         
         [no_epochs,no_freqs] = size(subj_PLV);
         PLV_format = make_format(no_freqs,'f');
@@ -74,6 +76,8 @@ for d = 1:drug_num
             fprintf(states_fid,'%s\n',subj_states{e});
             fprintf(PLV_fid,PLV_format,subj_PLV(e,:));
             fprintf(PLV_thresh_fid,PLV_format,subj_PLV_thresh(e,:));
+            fprintf(PLV_zs_fid,PLV_format,subj_PLV_zs(e,:));
+            fprintf(PLV_pct_fid,PLV_format,subj_PLV_pct(e,:));
             fprintf(PP_fid,PLV_format,subj_PP(e,:));
             
         end
@@ -82,4 +86,4 @@ for d = 1:drug_num
     
 end
 
-fclose('all')
+fclose('all');

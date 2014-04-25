@@ -68,6 +68,25 @@ for c1=1:no_cats1
         
     end
     
+end
+
+color_lim = zeros(no_bands,2,no_stats);
+
+for b=1:no_bands
+    
+    for s = 1:no_stats
+        
+        color_lim(b,1,s) = min(min(min(spec_stats(band_indices{b},:,:,s))));
+        color_lim(b,2,s) = max(max(max(spec_stats(band_indices{b},:,:,s))));
+        
+    end
+    
+end
+
+for c1=1:no_cats1
+    
+    cat1=char(cat1_labels{c1});
+    
     for s=1:no_stats
         
         %% Plots by Band.
@@ -132,9 +151,11 @@ for c1=1:no_cats1
             
             figure((s-1)*(no_cats1+2)+no_cats1+1)
             
-            subplot(no_bands,no_cats1,(b-1)*no_cats1+c1)
+            subplot(no_cats1,no_bands,(c1-1)*no_bands+(no_bands+1-b))%(no_bands,no_cats1,(b-1)*no_cats1+c1)
             
             imagesc(reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2))
+                        
+            caxis(color_lim(b,:,s))
             
             axis xy
             
@@ -146,11 +167,11 @@ for c1=1:no_cats1
                 
                 if ~isempty(band_names)
                     
-                    ylabel({band_names{b},'Frequency (Hz)'})
+                    title({Title,[long_stat_labels{s},' for ',band_names{b}]})
                     
                 else
                     
-                    ylabel('Frequency (Hz)')
+                    title({Title,long_stat_labels{s}})
                     
                 end
                 
@@ -158,7 +179,7 @@ for c1=1:no_cats1
             
             if b==1
                 
-                title({Title,[long_stat_labels{s},' for ',cat1]})
+                ylabel(cat1)
                 
             end
             

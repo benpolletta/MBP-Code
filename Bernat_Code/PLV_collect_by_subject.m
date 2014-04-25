@@ -12,7 +12,7 @@ no_pds = length(pd_labels);
 
 present_dir = pwd;
 
-for d = 2
+for d = 1:drug_num
     
     drug = char(drugs{d});
 

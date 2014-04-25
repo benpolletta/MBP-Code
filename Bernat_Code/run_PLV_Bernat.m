@@ -14,6 +14,8 @@ present_dir=pwd;
 load('subjects.mat')
 load('drugs.mat')
 
+index = 0; % For when it gets stopped in the middle somwhere...
+
 for s=1:min(length(chan1_channels),length(chan2_channels))
     
     subject=subjects{s};
@@ -24,6 +26,10 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
     
     for d=1:length(drugs)
         
+        index = index + 1;
+        
+        if index > 0
+        
         drug=drugs{d};
         
         subject_dir=[subject,'_',drug];
@@ -31,12 +37,12 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         
         channel_dir1=[subject_dir,'_chan',num2str(channel_pair(1)),'_epochs'];
         period_list1=[channel_dir1,'/',channel_dir1(1:end-length('_epochs')),'_hours_master.list'];
-        periods1=textread(period_list1,'%s');
+        periods1=text_read(period_list1,'%s');
         no_periods1=length(periods1);
         
         channel_dir2=[subject_dir,'_chan',num2str(channel_pair(2)),'_epochs'];
         period_list2=[channel_dir2,'/',channel_dir2(1:end-length('_epochs')),'_hours_master.list'];
-        periods2=textread(period_list2,'%s');
+        periods2=text_read(period_list2,'%s');
         no_periods2=length(periods2);
         
         if isempty(dir([channel_dir1,'/*AP.mat'])) || isempty(dir([channel_dir2,'/*AP.mat']))
@@ -72,8 +78,8 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
                 pd_name = pd1_listname(length(channel_dir1)-length('epochs')+1:end-5);
                 pd_pairname = sprintf('%s_ch%d_by_ch%d_%s_PLV',subject_dir,channel_pair,pd_name);
                 
-                pd1_list=textread([channel_dir1,'/',pd1_listname],'%s%*[^\n]');
-                pd2_list=textread([channel_dir2,'/',pd2_listname],'%s%*[^\n]');
+                pd1_list=text_read([channel_dir1,'/',pd1_listname],'%s%*[^\n]');
+                pd2_list=text_read([channel_dir2,'/',pd2_listname],'%s%*[^\n]');
 
                 no_epochs=length(pd2_list);
                 
@@ -153,6 +159,8 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         
         cd (present_dir)
         
+        end
+    
     end
     
 end
