@@ -113,7 +113,9 @@ if  strcmpi(regmode,'OLS') % OLS (QR decomposition)
 
     % loop through model orders
 
-    for i = 1:nummo
+    parfor i = 1:nummo
+        
+        XX_local = XX;
 
         q = morder(i);
 
@@ -131,8 +133,8 @@ if  strcmpi(regmode,'OLS') % OLS (QR decomposition)
 
         % stack lags
 
-        X0 = reshape(XX(:,1,q1:m,:),n,M);
-        XL = reshape(XX(:,2:q1,q1:m,:),nq,M);
+        X0 = reshape(XX_local(:,1,q1:m,:),n,M);
+        XL = reshape(XX_local(:,2:q1,q1:m,:),nq,M);
 
         owstate = warn_supp;
         A = X0/XL;                                         % OLS using QR decomposition

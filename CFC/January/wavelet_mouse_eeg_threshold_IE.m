@@ -17,7 +17,7 @@ if nargin<5
 end
 
 % Getting lists contained in list of lists.
-listnames=textread(challenge_list_name,'%s%*[^\n]');
+listnames=text_read(challenge_list_name,'%s%*[^\n]');
 no_challenges=length(listnames);
 challenge_list_name=challenge_list_name(1:end-5);
 
@@ -26,15 +26,17 @@ thresh_labels={'pt','zt','lt','zs','lzs'};
 thresh_titles={'Empirical p-Value Thresholded','Normal Thresholded','Lognormal Thresholded','Normal z-Scored','Lognormal z-Scored'};
 
 % Bands for PAC analysis.
-bands_lo=[1:.25:30]';
-bands_hi=[20:5:250]';
-bincenters=-.95:.1:.95;
+bands_lo=(1:.25:30)';
+bands_hi=(20:5:250)';
+% bincenters=-.95:.1:.95;
 
 nofits=length(thresh_titles);
 noamps=length(bands_lo);
 nophases=length(bands_hi);
 
 present_dir=pwd;
+
+MI_titles = cell(nofits,no_challenges);
 
 for j=1:no_challenges
     
@@ -66,7 +68,7 @@ for j=1:no_challenges
 
     listname=char(listnames(j));
 
-    filenames=textread(listname,'%s%*[^\n]');
+    filenames=text_read(listname,'%s%*[^\n]');
     filenum=length(filenames);
     
     listname=listname(1:end-5);
@@ -164,7 +166,7 @@ for j=1:no_challenges
             
             MI_plotter_Jan(avg_MI_thresh(:,:,k),['AVG_',cutoff_name(7:end-4),'_',thresh_labels{k}],bands_hi,bands_lo,MI_titles{k,j},'Hz');
             
-            close('all')
+%             close('all')
             
         end
         
@@ -186,12 +188,16 @@ try
         
         for k=1:nofits
             
-            figure_replotter([1:nofits:nofits*no_challenges],subplot_dims(1),subplot_dims(2),bands_lo,bands_hi,MI_titles(k,:));
+            figure_replotter([1:nofits:nofits*no_challenges],subplot_dims(1),subplot_dims(2),5,5,bands_lo,bands_hi,MI_titles(k,:));
             
             saveas(gcf,[challenge_list_name,'_',char(thresh_labels(k)),'_avgMI_thresh.fig'])
             
         end
         
     end
+    
+catch error
+    
+    display(error.message)
     
 end

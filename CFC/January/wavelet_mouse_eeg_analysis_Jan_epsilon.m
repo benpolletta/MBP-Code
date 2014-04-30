@@ -4,7 +4,7 @@ close('all')
 
 challenge_list_name=char(challenge_list);
 
-listnames=textread(challenge_list,'%s%*[^\n]');
+listnames=text_read(challenge_list,'%s%*[^\n]');
 no_challenges=length(listnames);
 challenge_list_name=challenge_list_name(1:end-5);
 
@@ -29,7 +29,7 @@ for j=1:no_challenges
     end
     
     listname=char(listnames(j));
-    filenames=textread(listname,'%s%*[^\n]');
+    filenames=text_read(listname,'%s%*[^\n]');
     filenum=length(filenames);
     
     dirname=listname(1:end-5);
@@ -118,11 +118,15 @@ if no_challenges>1
         figure_replotter_labels([2:2:2*no_challenges],subplot_dims(1),subplot_dims(2),5,6,bands_lo,bands_hi,titles,[],row_labels)
     
         saveas(gcf,[challenge_list_name,'_avgMI.fig'])
+        
+    catch error
+        
+        display(error.message)
     
     end
         
 end
 
-fclose('all')
+fclose('all');
 
 cd (present_dir);

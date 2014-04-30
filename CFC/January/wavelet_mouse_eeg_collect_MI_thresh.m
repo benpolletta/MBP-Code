@@ -9,7 +9,7 @@ close('all')
 
 epoch_list=char(epoch_list);
 
-[epoch_names,epoch_states]=textread(epoch_list,'%s%d%*[^\n]');
+[epoch_names,epoch_states]=text_read(epoch_list,'%s%d%*[^\n]');
 no_epochs=length(epoch_names);
 
 bands_lo=4:.25:12;

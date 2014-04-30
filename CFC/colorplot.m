@@ -1,4 +1,4 @@
-function colorplot(M,x_label,y_label,no_ticks)
+function colorplot(M,x_label,y_label,no_ticks,sig_decimals)
 
 [r,c]=size(M);
 M_ext=zeros(r+1,c+1);
@@ -15,7 +15,13 @@ if nargin > 1
         no_ticks = 5;
         
     end
+    
+    if nargin < 5
         
-    set(gca,'XTick',(1:floor(c/no_ticks):c)+.5,'YTick',(1:floor(r/no_ticks):r)+.5,'XTickLabel',round(100*x_label(1:floor(c/no_ticks):c))/100,'YTickLabel',round(100*y_label(1:floor(r/no_ticks):r))/100)
+        sig_decimals = 2;
+        
+    end
+        
+    set(gca,'XTick',(1:floor(c/no_ticks):c)+.5,'YTick',(1:floor(r/no_ticks):r)+.5,'XTickLabel',round((10^sig_decimals)*x_label(1:floor(c/no_ticks):c))/(10^sig_decimals),'YTickLabel',round((10^sig_decimals)*y_label(1:floor(r/no_ticks):r))/(10^sig_decimals))
     
 end

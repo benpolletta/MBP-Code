@@ -59,6 +59,7 @@ no_cycles=8;
 no_cycles_given=0;
 freq_resol=[];
 time_resol=[];
+filename = '';
 
 % Changing defaults.
 for i=1:floor(length(varargin)/2)
@@ -89,6 +90,8 @@ for i=1:floor(length(varargin)/2)
         freq_resol=cell2mat(varargin(2*i));
     elseif strcmp(varargin(2*i-1),'time_resol')==1
         time_resol=cell2mat(varargin(2*i));
+    elseif strcmp(varargin(2*i-1),'filename')==1
+        filename=char(varargin(2*i));
     end
 end
 
@@ -175,10 +178,22 @@ end
 bands=[bands-freqresol/2 bands bands+freqresol/2];
 
 for j=1:nobands
-
-    H(:,j)=conv(data,wavelet(j,:),'same');
+    
+    length_flip = min(sampling_freq,length(data));
+    
+    data_flipped = [flipud(data(1:length_flip)); data; flipud(data((end-length_flip+1):end))];
+    
+    conv_temp=conv(data_flipped,wavelet(j,:),'same');
+    
+    H(:,j) = conv_temp(sampling_freq+1:end-sampling_freq);
     
 end
 
 A=abs(H);
 P=angle(H);
+
+if ~isempty(filename)
+   
+    save([filename(1:end-4),'_HAP.mat'],'bands','H','A','P')
+    
+end

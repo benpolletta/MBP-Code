@@ -23,7 +23,7 @@ for i=1:subj_num
     
     cd (subject)
     
-    states=textread(char(epoch_files(i)),'%*s%d');
+    states=text_read(char(epoch_files(i)),'%*s%d');
     data=load(char(IE_files(i)));
     data=data.MI_all;
     
