@@ -113,13 +113,13 @@ if  strcmpi(regmode,'OLS') % OLS (QR decomposition)
 
     % loop through model orders
 
-    parfor i = 1:nummo
+    for i = 1:nummo
         
         XX_local = XX;
 
         q = morder(i);
 
-        if verb, fprintf('model order = %d',q); end
+%         if verb, fprintf('model order = %d',q); end
 
         if q >= m
             if ~verb, fprintf('model order = %d',q); end
