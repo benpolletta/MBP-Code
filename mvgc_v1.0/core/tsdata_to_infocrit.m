@@ -119,7 +119,7 @@ if  strcmpi(regmode,'OLS') % OLS (QR decomposition)
 
         q = morder(i);
 
-%         if verb, fprintf('model order = %d',q); end
+        if verb, fprintf('model order = %d',q); end
 
         if q >= m
             if ~verb, fprintf('model order = %d',q); end

@@ -1,4 +1,4 @@
-function [format]=make_format(no_entries,entry_format);
+function [format]=make_format(no_entries,entry_format)
 
 format=[];
 for i=1:no_entries
