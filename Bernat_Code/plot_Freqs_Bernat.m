@@ -74,7 +74,7 @@ end
 %% Creating bins.
 
 hr_bins{1} = linspace(min(All_params(:,1)),max(All_params(:,1)),100);
-hr_bins{2} = phase_freqs;
+hr_bins{2} = phase_freqs(1:2:length(phase_freqs));
 hr_bins{3} = amp_freqs;
 
 hr_param_labels = {'maxIE','pref_fp','pref_fa'};
@@ -202,7 +202,7 @@ for m = 1:no_measures
     
 end
 
-%% Plotting 1D Histograms, by State and by Channel.
+%% Plotting 1D Histograms, by State and (separately) by Channel.
 
 for m = 1:no_measures
     
