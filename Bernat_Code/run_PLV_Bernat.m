@@ -28,7 +28,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         
         index = index + 1;
         
-        if index > 0
+        if index > 3
         
         drug=drugs{d};
         
@@ -45,12 +45,24 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         periods2=text_read(period_list2,'%s');
         no_periods2=length(periods2);
         
-        if isempty(dir([channel_dir1,'/*AP.mat'])) || isempty(dir([channel_dir2,'/*AP.mat']))
+        if isempty(dir([channel_dir1,'/*AP.mat']))
             
             channels_listname = [subject_dir,'_channels.list'];
 %             delete(channels_listname)
             fid = fopen(channels_listname,'w');
-            fprintf(fid,'%s\n%s\n',[channel_dir1,'.list'],[channel_dir2,'.list']);
+            fprintf(fid,'%s\n',[channel_dir1,'.list']);
+            fclose(fid);
+            
+            wavelet_mouse_eeg_HAP(sampling_freq,channels_listname);
+            
+        end
+        
+        if isempty(dir([channel_dir2,'/*AP.mat']))
+            
+            channels_listname = [subject_dir,'_channels.list'];
+%             delete(channels_listname)
+            fid = fopen(channels_listname,'w');
+            fprintf(fid,'%s\n',[channel_dir2,'.list']);
             fclose(fid);
             
             wavelet_mouse_eeg_HAP(sampling_freq,channels_listname);
@@ -148,8 +160,8 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
             
             save([pair_dir,'/',pair_dir,'.mat'],'avg_PP','avg_PLV','avg_shuf_PP','avg_shuf_PLV','avg_thresh_PLV')
             
-            delete([channel_dir1,'/*AP.mat'])
-            delete([channel_dir2,'/*AP.mat'])
+%             delete([channel_dir1,'/*AP.mat'])
+%             delete([channel_dir2,'/*AP.mat'])
             
         else
             

@@ -195,13 +195,13 @@ for c3=1:no_cats3
             
             subplot(no_cats3,no_bands,(c3-1)*no_bands+b)
             
-            plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
+            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
             
             hold on
             
-            plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)+reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
+            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)+reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
             
-            plot(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)-reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
+            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)-reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
             
             set(gca,'XTick',band_ticks,'XTickLabel',band_labels)
             

@@ -154,7 +154,7 @@ for m = 1:no_measures
                         
                     end
                     
-                    handle(index) = plot(hist_bins{m}',histogram/sum(indices),[state_colors{s},channel_linestyles{c}]);
+                    handle(index) = plot(hist_bins{m}',histogram/sum(indices),[state_colors{s},channel_linestyles{c}],'LineWidth',1.5);
                     
                     sc_legend{index} = [state,', ',channel];
                     
@@ -236,7 +236,7 @@ for m = 1:no_measures
                     
                 end
                 
-                plot(hist_bins{m}',histogram/sum(indices),state_colors{s});
+                plot(hist_bins{m}',histogram/sum(indices),state_colors{s},'LineWidth',1.5);
                 
                 hold on
                 
@@ -293,7 +293,7 @@ for m = 1:no_measures
                     
                 end
                 
-                plot(hist_bins{m}',histogram/sum(indices),channel_linestyles{c});
+                plot(hist_bins{m}',histogram/sum(indices),channel_linestyles{c},'LineWidth',1.5);
                 
                 hold on
                 

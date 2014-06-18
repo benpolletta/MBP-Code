@@ -34,39 +34,49 @@ stat_labels={'median','mean','std'};
 long_stat_labels={'Median','Mean','St. Dev.'};
 no_stats=length(stat_labels);
 
-spec_stats=zeros(no_freqs,no_cats1,no_cats2,no_stats);
-
 close('all')
 
-for c1=1:no_cats1
+if isempty(dir([name,'_spec_stats_for_cplot.mat']))
     
-    cat1=char(cat1_labels{c1});
+    spec_stats=zeros(no_freqs,no_cats1,no_cats2,no_stats);
     
-    spec_cat1=spec(strcmp(cat1_vec,cat1),:);
-    
-    cat2_in_cat1=cat2_vec(strcmp(cat1_vec,cat1));
-    
-    for c2=1:no_cats2
+    for c1=1:no_cats1
         
-        cat2=char(cat2_labels{c2});
+        cat1=char(cat1_labels{c1});
         
-        spec_cat2=spec_cat1(strcmp(cat2_in_cat1,cat2),:);
+        spec_cat1=spec(strcmp(cat1_vec,cat1),:);
         
-        if ~isempty(spec_cat2) && size(spec_cat2,1)>=5
+        cat2_in_cat1=cat2_vec(strcmp(cat1_vec,cat1));
+        
+        for c2=1:no_cats2
             
-            spec_stats(:,c1,c2,1)=nanmedian(spec_cat2)';
+            cat2=char(cat2_labels{c2});
             
-            spec_stats(:,c1,c2,2)=nanmean(spec_cat2)';
+            spec_cat2=spec_cat1(strcmp(cat2_in_cat1,cat2),:);
             
-            spec_stats(:,c1,c2,3)=nanstd(spec_cat2)'/sqrt(size(spec_cat2,2));
-            
-        else
-            
-            spec_stats(:,c1,c2,1:3)=nan;
+            if ~isempty(spec_cat2) && size(spec_cat2,1)>=5
+                
+                spec_stats(:,c1,c2,1)=nanmedian(spec_cat2)';
+                
+                spec_stats(:,c1,c2,2)=nanmean(spec_cat2)';
+                
+                spec_stats(:,c1,c2,3)=nanstd(spec_cat2)'/sqrt(size(spec_cat2,2));
+                
+            else
+                
+                spec_stats(:,c1,c2,1:3)=nan;
+                
+            end
             
         end
         
     end
+    
+    save([name,'_spec_stats_for_cplot.mat'],'spec_stats','bands','band_names','cat1_labels','cat2_labels')
+    
+else
+   
+    load([name,'_spec_stats_for_cplot.mat'])
     
 end
 

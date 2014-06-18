@@ -25,7 +25,7 @@ MI_stats=nan(matrix_rows,matrix_columns,no_stats);
 
 close('all')
 
-for c3=1:no_cats3
+for c3=1:2%no_cats3
     
     cat3=char(cat3_labels{c3});
     

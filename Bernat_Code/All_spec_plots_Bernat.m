@@ -27,9 +27,9 @@ hrs=textread([name,'/',name,'_hrs.txt'],'%s');
 fourhrs=textread([name,'/',name,'_4hrs.txt'],'%s');
 sixmins=textread([name,'/',name,'_6mins.txt'],'%s');
 states=textread([name,'/',name,'_states.txt'],'%s');
-spec=load([name,'/',name,'_spec.txt']);
-spec_pct=load([name,'/',name,'_spec_pct.txt']);
-spec_zs=load([name,'/',name,'_spec_zs.txt']);
+spec=load([name,'/',name,'_spec.txt']); %spec = sqrt(spec);
+% spec_pct=load([name,'/',name,'_spec_pct.txt']);
+% spec_zs=load([name,'/',name,'_spec_zs.txt']);
 
 %% Plots by 4 Hours.
 
@@ -58,7 +58,7 @@ spec_zs=load([name,'/',name,'_spec_zs.txt']);
 % 
 % cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_hrs_by_state'],freqs,[0 200],'',stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_zs)
 
-%% Plots by Hour.
+% Plots by Hour.
 
 no_pre=4; no_post=12; no_hrs=no_pre+no_post;
 hr_labels=cell(no_hrs,1); short_hr_labels=cell(no_hrs,1); hr_corder=zeros(no_hrs,3);
@@ -87,6 +87,8 @@ end
 
 % State-dependent.
 
+cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_hrs_by_state_nobands'],freqs,[0 200],'',stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec)
+
 % cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec)
 % 
 % cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_hrs_by_state'],freqs,[0 200],'',stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,spec_pct)
@@ -102,15 +104,15 @@ end
 
 %% Plots by 6 Minute Periods.
 
-no_pre=4; no_post=12;
+% no_pre=4; no_post=12;
 
-[pd_labels,pd_corder]=make_period_labels(no_pre,no_post,'6mins');
+% [pd_labels,pd_corder]=make_period_labels(no_pre,no_post,'6mins');
 
 % State-independent only.
 
-% cplot_collected_spec_by_categories('Spectral Power',[name,'/',name,'_spec_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,spec)
+% cplot_collected_spec_by_categories('Spectral Power',[name,'/',name,'_spec_6mins'],freqs,[0 200],'',stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,spec)
 
-cplot_collected_spec_by_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,spec_pct)
+% cplot_collected_spec_by_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_6mins'],freqs,[0 200],'',stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,spec_pct)
 
 % cplot_collected_spec_by_categories('Power, z-Scored',[name,'/',name,'_spec_zs_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,spec_zs)
 

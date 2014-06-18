@@ -1,12 +1,23 @@
-function [handle]=figure_replotter(numbers,rows,cols,x_tick_no,y_tick_no,bands_lo,bands_hi,labels)
-% function [max_MI_all,MI_all]=figure_replotter(numbers,rows,cols,bands_lo,bands_hi,labels)
+function [handle]=figure_replotter(numbers,rows,cols,x_tick_no,y_tick_no,x_tick_labels,y_tick_labels,labels)
+% function [max_MI_all,MI_all]=figure_replotter(numbers,rows,cols,x_tick_labels,y_tick_labels,labels)
 
 % 'labels' can contain either a title for each figure to be replotted, in
 % which case it has length rows*cols, or it can contain cols labels for the
 % columns, followed by rows labels for the rows.
 
-nophases=length(bands_lo);
-noamps=length(bands_hi);
+x_tick_labels_selected = linspace(x_tick_labels(1),x_tick_labels(2),x_tick_no);
+for xt=1:x_tick_no
+   [~,x_tick_selected(xt)] = min(abs(x_tick_labels-x_tick_labels_selected(xt))); 
+end
+
+y_tick_labels_selected = linspace(y_tick_labels(1),y_tick_labels(2),y_tick_no);
+for yt=1:y_tick_no
+   [~,y_tick_selected(yt)] = min(abs(y_tick_labels-y_tick_labels_selected(yt))); 
+end
+
+
+nophases=length(x_tick_labels);
+noamps=length(y_tick_labels);
 
 MI_all=nan(noamps,nophases,rows*cols);
 
@@ -60,24 +71,33 @@ for i=1:length(numbers)
     else
         imagesc(MI_all(:,:,i))
     end
+    
     axis xy
-    if min_MI<max_MI
-%         caxis([min_MI max_MI])
-        caxis([0 max_MI])
+    
+    if ~any(isnan([min_MI max_MI])) && ~any(isinf([min_MI max_MI]))
+        
+%         if min_MI < max_MI
+%             caxis([min_MI max_MI])
+%         end
+        
+        if 0 < max_MI
+            caxis([0 max_MI])
+        end
+        
     end
     
 %     if length(numbers)==1
     
-    if iscell(bands_lo)
-        set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',bands_lo(1:floor(nophases/x_tick_no):end))
+    if iscell(x_tick_labels)
+        set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',x_tick_labels(1:floor(nophases/x_tick_no):end))
     else
-        set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',round(bands_lo(1:floor(nophases/x_tick_no):end)))
+        set(gca,'XTick',1:floor(nophases/x_tick_no):nophases,'XTickLabel',round(x_tick_labels(1:floor(nophases/x_tick_no):end)))
     end
        
-    if iscell(bands_hi)
-        set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',bands_hi(1:floor(noamps/y_tick_no):end))
+    if iscell(y_tick_labels)
+        set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',y_tick_labels(1:floor(noamps/y_tick_no):end))
     else
-        set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',round(bands_hi(1:floor(noamps/y_tick_no):end)))
+        set(gca,'YTick',1:floor(noamps/y_tick_no):noamps,'YTickLabel',round(y_tick_labels(1:floor(noamps/y_tick_no):end)))
     end
     
 %     else
@@ -91,14 +111,14 @@ for i=1:length(numbers)
         
         if col==1
             ylabel('Amp.-Giving Freq. (Hz)')
-%             set(gca,'YTick',1:4:noamps,'YTickLabel',bands_hi(1:4:end))
+%             set(gca,'YTick',1:4:noamps,'YTickLabel',y_tick_labels(1:4:end))
         elseif col==cols
             colorbar
         end
         
         if row==rows
             xlabel('Phase-Giving Freq. (Hz)')
-%             set(gca,'XTick',1:4:nophases,'XTickLabel',bands_lo(1:4:end))
+%             set(gca,'XTick',1:4:nophases,'XTickLabel',x_tick_labels(1:4:end))
         end
         
     elseif length(labels)==rows+cols
@@ -107,16 +127,16 @@ for i=1:length(numbers)
             title(labels{col})
         elseif row==rows
             xlabel('Phase-Giving Freq. (Hz)')
-%             set(gca,'XTick',1:4:nophases,'XTickLabel',bands_lo(1:4:end))
+%             set(gca,'XTick',1:4:nophases,'XTickLabel',x_tick_labels(1:4:end))
         end
         
         if col==1
             if iscell(labels{cols+row})
                 ylabel([labels{cols+row};'Amp.-Giving Freq. (Hz)'])
-%                 set(gca,'YTick',1:4:noamps,'YTickLabel',bands_hi(1:4:end))
+%                 set(gca,'YTick',1:4:noamps,'YTickLabel',y_tick_labels(1:4:end))
             else
                 ylabel([cellstr(labels{cols+row});'Amp.-Giving Freq. (Hz)'])
-%                 set(gca,'YTick',1:4:noamps,'YTickLabel',bands_hi(1:4:end))
+%                 set(gca,'YTick',1:4:noamps,'YTickLabel',y_tick_labels(1:4:end))
             end
         elseif col==cols
             colorbar

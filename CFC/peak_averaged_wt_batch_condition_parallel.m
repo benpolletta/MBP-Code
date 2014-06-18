@@ -71,6 +71,8 @@ for c=1:condition_num
     
     subplot(2,1,1)
     imagesc(t,freqs,zscore(mean_wt(:,:,c)')')
+    c_axis = caxis;
+    caxis([0 c_axis(2)])
     set(gca,'YDir','normal');
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
     title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform'])
@@ -87,7 +89,7 @@ end
 
 save([conditions_path,'/',conditions_name(1:end-5),'_',num2str(peak_freq),'_peak_wav.mat'],'mean_wt','mean_peak_segments')
 
-wt_max = max(max(max(mean_wt))); wt_min = min(min(min(mean_wt)));
+wt_max = max(max(max(zscore(mean_wt)))); wt_min = min(min(min(zscore(mean_wt))));
 
 figure;
 
@@ -96,8 +98,8 @@ figure;
 for c = 1:condition_num
 
     subplot(s_r,s_c,c)
-%     caxis([wt_min wt_max])
     imagesc(t,freqs,zscore(mean_wt(:,:,c)')')
+    caxis([0 wt_max])
     colorbar
     set(gca,'YDir','normal');
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
