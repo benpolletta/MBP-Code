@@ -24,11 +24,11 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
     
     channel_pair=[subj_chan1 subj_chan2];
     
-    for d=1:length(drugs)
+    for d=1:1%length(drugs)
         
         index = index + 1;
         
-        if index > 3
+        if index > 1 %3*4 + 1
         
         drug=drugs{d};
         
@@ -100,7 +100,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
                 pd_PP=nan(no_epochs,no_bands_hi+no_bands_lo);
                 pd_PLV=nan(no_epochs,no_bands_hi+no_bands_lo);
                 
-                for e=1:no_epochs
+                parfor e=1:no_epochs
                 
                     epoch1_name = pd1_list{e};
                     epoch2_name = pd2_list{e};
@@ -160,8 +160,8 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
             
             save([pair_dir,'/',pair_dir,'.mat'],'avg_PP','avg_PLV','avg_shuf_PP','avg_shuf_PLV','avg_thresh_PLV')
             
-%             delete([channel_dir1,'/*AP.mat'])
-%             delete([channel_dir2,'/*AP.mat'])
+            delete([channel_dir1,'/*AP.mat'])
+            delete([channel_dir2,'/*AP.mat'])
             
         else
             

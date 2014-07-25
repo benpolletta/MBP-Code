@@ -1,6 +1,6 @@
 % channels=5;
-% channels=[1 3 4 5];
-channels=6;
+channels=[1 3 4 5 6];
+% channels=6;
 
 drugs={'MK801','NVP','Ro25','saline'}; 
 no_drugs=length(drugs);

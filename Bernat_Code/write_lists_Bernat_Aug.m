@@ -69,7 +69,7 @@ for d=1:no_drugs
     
     record_name=[char(subject),'_',char(drugs{d})];
     
-    [R,NR]=textread([record_name,'_VS_no_header.txt'],'%*s%d%*d%d');
+    [R,NR] = text_read([record_name,'_VS_no_header.txt'],'%*s%d%*d%d');
     NR(R==1)=0;
     W=ones(size(R));
     W(R==1)=0;

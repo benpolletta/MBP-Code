@@ -117,7 +117,7 @@ no_pre=4; no_post=12;
 
 cplot_collected_spec_by_categories(titles{1},[dir,'/',dir(1:end-4),'_PLV_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,PLV)
 
-cplot_collected_spec_by_categories(titles{2},[dir,'/',dir(1:end-4),'_PLV_thresh_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,PLV_thresh)
+% cplot_collected_spec_by_categories(titles{2},[dir,'/',dir(1:end-4),'_PLV_thresh_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,PLV_thresh)
 
 cplot_collected_spec_by_categories(titles{3},[dir,'/',dir(1:end-4),'_PLV_zs_6mins'],freqs,bands,band_names,stops,pd_corder,{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,PLV_zs)
 

@@ -6,16 +6,16 @@ close('all')
 
 name=['ALL_',channel_label];
 
-drugs=textread([name,'/',name,'_',measure,'_drugs.txt'],'%s');
-subjects=textread([name,'/',name,'_',measure,'_subjects.txt'],'%s');
-hrs=textread([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
-fourhrs=textread([name,'/',name,'_',measure,'_4hr_periods.txt'],'%s');
-states=textread([name,'/',name,'_',measure,'_states.txt'],'%s');
+drugs=text_read([name,'/',name,'_',measure,'_drugs.txt'],'%s');
+subjects=text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
+% hrs=text_read([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
+fourhrs=text_read([name,'/',name,'_',measure,'_4hr_periods.txt'],'%s');
+states=text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
 summed_struct=load([name,'/',name,'_',measure,'_summed.mat']);
 band_labels=summed_struct.band_labels;
 no_bands=length(band_labels);
 summed_MI=summed_struct.summed_MI;
-summed_MI_4hr=summed_struct.summed_MI_4hr;
+% summed_MI_4hr=summed_struct.summed_MI_4hr;
 clear summed_struct
 
 %% Setting up directory to save files.
@@ -33,7 +33,7 @@ no_drugs=length(drug_labels);
 state_labels={'R','NR','W'};
 no_states=length(state_labels);
 
-long_state_labels={'REM','NREM / Quiet Wake','Active Wake'};
+% long_state_labels={'REM','NREM / Quiet Wake','Active Wake'};
 state_markers={'.r','.g','.b'};
 state_sizes=[20 10 10];
 
@@ -41,12 +41,12 @@ states_rearranged=[2 3 1];
 
 %% Setting up information about periods (time since injection).
 
-hours_plotted=[-4 16];
+% hours_plotted=[-4 16];
 
-sampling_freq=1000;
+% sampling_freq=1000;
 seconds_per_epoch=4096/250;
-epochs_per_min=60/seconds_per_epoch;
-epochs_per_hour=60*60/seconds_per_epoch;
+% epochs_per_min=60/seconds_per_epoch;
+% epochs_per_hour=60*60/seconds_per_epoch;
 
 %% Cycling through subjects.
 
@@ -57,10 +57,10 @@ for s=1:6
     subject=subject_labels{s};
     
     subj_summed_MI=summed_MI(strcmp(subjects,subject),:);
-    subj_summed_MI_4hr=summed_MI_4hr(strcmp(subjects,subject),:);
+    % subj_summed_MI_4hr=summed_MI_4hr(strcmp(subjects,subject),:);
     subj_drugs=drugs(strcmp(subjects,subject));
     subj_states=states(strcmp(subjects,subject));
-    subj_hrs=hrs(strcmp(subjects,subject));
+    % subj_hrs=hrs(strcmp(subjects,subject));
     subj_4hrs=fourhrs(strcmp(subjects,subject));
     
 %     if strcmp(subject,'A99') || strcmp(subject,'A102')
@@ -76,14 +76,18 @@ for s=1:6
     
     summed_MI_max=zeros(no_drugs,no_bands);
     
+    inj_epoch = nan(no_drugs, 1);
+    start_epoch = nan(no_drugs, 1);
+    end_epoch = nan(no_drugs, 1);
+    
     for d=1:no_drugs
         
         drug=drug_labels{d};
         
         drug_summed_MI=subj_summed_MI(strcmp(subj_drugs,drug),:);
-        drug_summed_MI_4hr=subj_summed_MI_4hr(strcmp(subj_drugs,drug),:);
+        % drug_summed_MI_4hr=subj_summed_MI_4hr(strcmp(subj_drugs,drug),:);
         drug_states=subj_states(strcmp(subj_drugs,drug));
-        drug_hrs=subj_hrs(strcmp(subj_drugs,drug));
+        % drug_hrs=subj_hrs(strcmp(subj_drugs,drug));
         drug_4hrs=subj_4hrs(strcmp(subj_drugs,drug));
         
         inj_epoch(d)=find(strcmp(drug_4hrs,'post1to4'), 1 );
@@ -94,19 +98,20 @@ for s=1:6
         inj_epoch(d)=inj_epoch(d)-start_epoch(d);
         
         drug_summed_MI=drug_summed_MI(epochs,:);
-        drug_summed_MI_4hr=drug_summed_MI_4hr(epochs,:);
+        % drug_summed_MI_4hr=drug_summed_MI_4hr(epochs,:);
         drug_states=drug_states(epochs);
-        drug_hrs=drug_hrs(epochs);
-        drug_4hrs=drug_4hrs(epochs);
+        % drug_hrs=drug_hrs(epochs);
+        % drug_4hrs=drug_4hrs(epochs);
         
         total_epochs=length(epochs);
         t=((1:total_epochs)-inj_epoch(d))*seconds_per_epoch/(60*60);
         
         %% Normalizing summed MI.
         
-        drug_summed_MI_mean=ones(size(drug_summed_MI))*diag(nanmean(drug_summed_MI));
-        drug_summed_MI_std=ones(size(drug_summed_MI))*diag(nanstd(drug_summed_MI));
-        drug_summed_MI_norm=(drug_summed_MI-drug_summed_MI_mean)./drug_summed_MI_std;
+        % drug_summed_MI_mean=ones(size(drug_summed_MI))*diag(nanmean(drug_summed_MI));
+        % drug_summed_MI_std=ones(size(drug_summed_MI))*diag(nanstd(drug_summed_MI));
+        % drug_summed_MI_norm=(drug_summed_MI-drug_summed_MI_mean)./drug_summed_MI_std;
+        drug_summed_MI_norm = zscore(drug_summed_MI);
         
         summed_MI_max(d,:)=nanmax(drug_summed_MI);
         
@@ -132,6 +137,10 @@ for s=1:6
                 
                 title({[subject,', ',char(channel_label)];'Normalized Summed MI'})
             
+            catch error
+                
+                display(error.msg)
+                
             end
             
         end
@@ -186,6 +195,10 @@ for s=1:6
                 try
                 
                     title({[subject,', ',char(channel_label)];[band_labels{b},' Summed MI']})
+                    
+                catch error
+                    
+                    display(error.msg)
                 
                 end
                     

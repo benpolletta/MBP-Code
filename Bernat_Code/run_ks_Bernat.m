@@ -41,7 +41,7 @@ for s=1:no_subs
            
             for f=1:no_f_pairs
                 
-                test_data=ALL_hr_MI(strcmp(subject_list,subject) & strcmp(drug_list,drug) & strcmp(hrs_list,hour),f);
+                test_data = ALL_hr_MI(strcmp(subject_list,subject) & strcmp(drug_list,drug) & strcmp(hrs_list,hour),f);
                 
                 if sum(~isnan(test_data))>0
                     
@@ -65,7 +65,7 @@ for s=1:no_subs
                 
                 for f=1:no_f_pairs
                     
-                    test_data=ALL_hr_MI(strcmp(subject_list,subject) & strcmp(drug_list,drug) & strcmp(fourhrs_list,hour) & strcmp(state_list,state),f);
+                    test_data = ALL_hr_MI(strcmp(subject_list,subject) & strcmp(drug_list,drug) & strcmp(fourhrs_list,hour) & strcmp(state_list,state),f);
                     
                     if sum(~isnan(test_data))>0
                         
