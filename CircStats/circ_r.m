@@ -36,6 +36,7 @@ if nargin < 2 || isempty(w)
   % if no specific weighting has been specified
   % assume no binning has taken place
 	w = ones(size(alpha));
+    w(isnan(alpha)) = nan;
 else
   if size(w,2) ~= size(alpha,2) || size(w,1) ~= size(alpha,1) 
     error('Input dimensions do not match');
@@ -48,10 +49,10 @@ if nargin < 3 || isempty(d)
 end
 
 % compute weighted sum of cos and sin of angles
-r = sum(w.*exp(1i*alpha),dim);
+r = nansum(w.*exp(1i*alpha), dim);
 
 % obtain length 
-r = abs(r)./sum(w,dim);
+r = abs(r)./nansum(w, dim);
 
 % for data with known spacing, apply correction factor to correct for bias
 % in the estimation of r (see Zar, p. 601, equ. 26.16)

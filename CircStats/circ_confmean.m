@@ -40,6 +40,7 @@ if nargin < 3 || isempty(w)
   % if no specific weighting has been specified
   % assume no binning has taken place
 	w = ones(size(alpha));
+    w(isnan(alpha)) = nan;
 else
   if size(w,2) ~= size(alpha,2) || size(w,1) ~= size(alpha,1) 
     error('Input dimensions do not match');
@@ -53,7 +54,7 @@ end
 
 % compute ingredients for conf. lim.
 r = circ_r(alpha,w,d,dim);
-n = sum(w,dim);
+n = nansum(w,dim);
 R = n.*r;
 c2 = chi2inv((1-xi),1);
 
