@@ -37,9 +37,9 @@ for i=1:length(numbers)
         col=cols;
     end
     
-%     if numbers(i)~=4 & numbers(i)~=7 & numbers(i)~=8
-%     MI=MI(1:end-1,1:end-1);
-%     end
+    % if numbers(i)~=4 & numbers(i)~=7 & numbers(i)~=8
+    % MI=MI(1:end-1,1:end-1);
+    % end
     
     [na,np]=size(MI);
     ny=y_sub_indices(y_sub_indices<=na);
