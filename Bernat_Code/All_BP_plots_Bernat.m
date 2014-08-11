@@ -32,6 +32,8 @@ for i=1:no_bands
     long_band_freq_labels{i}=[long_band_labels{i},' (',num2str(band_limits(i,1)),' to ',num2str(band_limits(i,2)),' Hz)'];
 end
 
+%% Plots by 4 hours and state.
+
 p=1;
 for i=1:1
     fourhr_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
@@ -50,6 +52,8 @@ cplot_collected_BP_by_3_categories('Power, Percent Change from Baseline',[name,'
 
 cplot_collected_BP_by_3_categories('Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_zs)
 
+%% Plots by hour.
+
 p=1;
 for i=4:-1:1
     hr_labels{p}=['Hour ',num2str(i),' Preinjection'];
@@ -67,6 +71,22 @@ cplot_collected_BP_by_3_categories('Spectral Power',[name,'/',name,'_BP_hrs_by_s
 cplot_collected_BP_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_pct)
    
 cplot_collected_BP_by_3_categories('Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_zs)
+
+%% Plots by 6 min.
+
+c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1];%[1 .6 0; .6 .4 .8; .59 .29 0; .21 .37 .23];
+
+no_pre=2; no_post=8;
+
+[pd_labels,pd_corder]=make_period_labels(no_pre,no_post,'6mins');
+
+lineplot_collected_BP_by_3_categories('MI, z-Scored by Hour',[name,'/',name,'_summed_hrMI_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI,stat)
+
+lineplot_collected_BP_by_3_categories('MI, z-Scored by Hour',[name,'/',name,'_summed_4hrMI_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_4hr,stat)
+
+lineplot_collected_BP_by_categories('MI, z-Scored by Hour',[name,'/',name,'_summed_hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI,stat,c_order)
+
+lineplot_collected_BP_by_categories('MI, z-Scored by Hour',[name,'/',name,'_summed_4hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI_4hr,stat,c_order)
 
 end
 
