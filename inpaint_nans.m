@@ -89,7 +89,7 @@ nan_count=length(nan_list);
 nan_list=[nan_list,nr,nc];
 
 % supply default method
-if (nargin<2)|isempty(method)
+if (nargin<2)||isempty(method)
   method = 0;
 elseif ~ismember(method,0:4)
   error 'If supplied, method must be one of: {0,1,2,3,4}.'

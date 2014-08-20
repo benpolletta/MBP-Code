@@ -29,7 +29,7 @@ for i=1:length(numbers)
     figure(numbers(i))
     axxes=findall(gcf,'Type','axes');
     Chilluns=get(axxes(end),'Children');
-    MI=get(Chilluns,'CData');
+    MI = get(Chilluns(end),'CData');
     
     row = ceil(i/cols);
     col = mod(i,cols)+1;
@@ -80,17 +80,26 @@ for i=1:length(numbers)
         elseif strcmp(clims,'all')
             if min_data<max_data
                 caxis([min_data max_data])
-                %         caxis([0 max_data])
+            end
+        elseif strcmp(clims,'all+')
+            if min_data<max_data
+                caxis([0 max_data])
             end
         elseif strcmp(clims,'rows')
             caxis([min(min_data_all(row,:)) max(max_data_all(row,:))])
+        elseif strcmp(clims,'rows+')
+            caxis([0 max(max_data_all(row,:))])
         elseif strcmp(clims,'columns')
             caxis([min(min_data_all(:,col)) max(max_data_all(:,col))])
+            colorbar
+        elseif strcmp(clims,'columns+')
+            caxis([0 max(max_data_all(:,col))])
+            colorbar
         end
         
-%         if col==cols
-%             colorbar
-%         end
+        if col==cols
+            colorbar
+        end
         
     else
         

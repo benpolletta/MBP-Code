@@ -33,6 +33,8 @@ for i=1:no_bands
     long_band_freq_labels{i}=[long_band_labels{i},' (',num2str(band_limits(i,1)),' to ',num2str(band_limits(i,2)),' Hz)'];
 end
 
+c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1];%[1 .6 0; .6 .4 .8; .59 .29 0; .21 .37 .23];
+
 %% Plots by 4 hours and state.
 
 % p=1;
@@ -73,9 +75,14 @@ lineplot_collected_BP_by_3_categories('Power, Percent Change from Baseline',[nam
    
 lineplot_collected_BP_by_3_categories('Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_zs,stat)
 
-%% Plots by 6 min.
+lineplot_collected_BP_by_categories('Spectral Power',[name,'/',name,'_BP_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP,stat,c_order)
 
-c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1];%[1 .6 0; .6 .4 .8; .59 .29 0; .21 .37 .23];
+lineplot_collected_BP_by_categories('Power, Pct. Change from Baseline',[name,'/',name,'_BP_pct_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_pct,stat,c_order)
+
+lineplot_collected_BP_by_categories('Power, z-Scored by Hour',[name,'/',name,'_BP_zs_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_zs,stat,c_order)
+
+
+%% Plots by 6 min.
 
 no_pre=2; no_post=8;
 
@@ -91,7 +98,7 @@ lineplot_collected_BP_by_categories('Spectral Power',[name,'/',name,'_BP_6min'],
 
 lineplot_collected_BP_by_categories('Power, Pct. Change from Baseline',[name,'/',name,'_BP_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_pct,stat,c_order)
 
-lineplot_collected_BP_by_categories('MI, z-Scored by Hour',[name,'/',name,'_BP_zs_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_zs,stat,c_order)
+lineplot_collected_BP_by_categories('Power, z-Scored by Hour',[name,'/',name,'_BP_zs_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_zs,stat,c_order)
 
 end
 

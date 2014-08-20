@@ -90,16 +90,6 @@ end
 
 % State-dependent.
 
-cplot_collected_spec_by_3_categories(titles{1},[dir,'/',dir(1:end-4),'_PLV_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PLV)
-
-cplot_collected_spec_by_3_categories(titles{2},[dir,'/',dir(1:end-4),'_PLV_thresh_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PLV_thresh)
- 
-cplot_collected_spec_by_3_categories(titles{3},[dir,'/',dir(1:end-4),'_PLV_zs_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PLV_zs)
-
-cplot_collected_spec_by_3_categories(titles{4},[dir,'/',dir(1:end-4),'_PLV_pct_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PLV_pct)
-
-cplot_collected_phase_by_3_categories(titles{5},[dir,'/',dir(1:end-4),'_PP_hrs_by_state'],freqs,bands,band_names,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PP)
-
 % cplot_collected_spec_by_3_categories_3_14(titles{1},[dir,'/',dir(1:end-4),'_PLV_hrs_by_state'],freqs,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PLV)
 % 
 % cplot_collected_spec_by_3_categories_3_14(titles{2},[dir,'/',dir(1:end-4),'_PLV_thresh_hrs_by_state'],freqs,stops,hr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,PLV_thresh)

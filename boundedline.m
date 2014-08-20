@@ -274,6 +274,45 @@ if hascmap
     plotdata(:,5) = num2cell(cmap,2);
 end
 
+% Splitting lines w/ nans in them.
+
+plotdata_supp = cell(0, 7);
+
+is_nan = zeros(size(plotdata,1),1);
+
+for k = 1:size(plotdata,1)
+    
+    naninds = isnan(plotdata{k,1}) | isnan(plotdata{k,2}) | isnan(plotdata{k,6}) | isnan(plotdata{k,7});
+    
+    if any(naninds)
+        
+        is_nan(k) = 1;
+    
+        notnaninds = [0 ~naninds 0];
+        notnanstarts = find(diff(notnaninds) == 1);
+        notnanends = find(diff(notnaninds) == -1) - 1;
+    
+        nopolys = length(notnanstarts);
+        
+        for l = 1:nopolys
+            
+            poly_indices = notnanstarts(l):notnanends(l);
+            
+            xdata = plotdata{k,1}(poly_indices);
+            ydata = plotdata{k,2}(poly_indices);
+            lodata = plotdata{k,6}(poly_indices);
+            hidata = plotdata{k,7}(poly_indices);
+            
+            plotdata_supp = [plotdata_supp; {xdata ydata plotdata{k,3:5} lodata hidata}];
+            
+        end
+        
+    end
+    
+end
+
+plotdata = [plotdata(~is_nan, :); plotdata_supp];
+
 
 %--------------------
 % Plot
@@ -310,7 +349,7 @@ for iln = 1:nline
         alpha{iln} = 1;
     end
 end
-    
+
 % Plot patches and lines
 
 if verLessThan('matlab', '8.4.0')
@@ -373,7 +412,7 @@ end
 
 function [xp, yp] = calcpatch(xl, yl, isvert, lo, hi)
 
-ismissing = any(isnan([xl;yl;lo;hi]),2);
+% ismissing = any(isnan([xl;yl;lo;hi]),2);
 
 if isvert
     xp = [xl fliplr(xl)];
@@ -383,10 +422,10 @@ else
     yp = [yl fliplr(yl)];
 end
 
-if any(ismissing)
-    warning('NaNs in bounds; inpainting');
-    xp = inpaint_nans(xp');
-    yp = inpaint_nans(yp');
-end
+% if any(ismissing)
+%     warning('NaNs in bounds; inpainting');
+%     xp = inpaint_nans(xp');
+%     yp = inpaint_nans(yp');
+% end
 
 
