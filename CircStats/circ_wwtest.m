@@ -1,4 +1,4 @@
-function [pval table] = circ_wwtest(varargin)
+function [pval, table] = circ_wwtest(varargin)
 % [pval, table] = circ_wwtest(alpha, idx, [w])
 % [pval, table] = circ_wwtest(alpha1, alpha2, [w1, w2])
 %   Parametric Watson-Williams multi-sample test for equal means. Can be
@@ -135,15 +135,15 @@ function [alpha, idx, w] = processInput(varargin)
     idx = [ones(size(alpha1)); 2*ones(size(alpha2))];
     w = ones(size(alpha));
   elseif nargin==2
-    alpha = varargin{1}(:);
-    idx = varargin{2}(:);
+    alpha = varargin{1}(:); size(alpha, 1)
+    idx = varargin{2}(:); size(idx, 1)
     if ~(size(idx,1)==size(alpha,1))
       error('Input dimensions do not match.')
     end
     w = ones(size(alpha));  
   elseif nargin==3
-    alpha = varargin{1}(:);
-    idx = varargin{2}(:);
+    alpha = varargin{1}(:); size(alpha, 1)
+    idx = varargin{2}(:); size(idx, 1)
     w = varargin{3}(:);
     if ~(size(idx,1)==size(alpha,1))
       error('Input dimensions do not match.')

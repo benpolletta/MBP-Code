@@ -1,4 +1,4 @@
-function [t, freqs, Morlet, mean_peak_segment, no_peaks] = peak_averaged_wavelet_transform(data, peak_freq, peak_freq_cycles, sampling_freq, plot_opt, tit_le)
+function [t, freqs, Morlet_power, Morlet_phase, mean_peak_segment, no_peaks] = peak_averaged_wavelet_transform(data, peak_freq, peak_freq_cycles, sampling_freq, plot_opt, tit_le)
 
 [Peak_segments, ~] = peak_averaged_signal(data, peak_freq, peak_freq, peak_freq_cycles, sampling_freq, 0, '');
 
@@ -13,7 +13,7 @@ no_cycles = linspace(3,21,no_freqs);
 
 wavelets = dftfilt3(freqs, no_cycles, sampling_freq, 'winsize', sampling_freq);
 
-Morlet = zeros(no_freqs,segment_length);
+[Morlet_power, Morlet_phase] = deal(zeros(no_freqs,segment_length));
 
 for p = 1:no_peaks
    
@@ -31,11 +31,15 @@ for p = 1:no_peaks
         
     end
     
-    Morlet = Morlet + abs(wt_temp);
+    Morlet_power = Morlet_power + abs(wt_temp);
+    
+    Morlet_phase = Morlet_phase + angle(wt_temp);
     
 end
 
-Morlet = Morlet/no_peaks;
+Morlet_power = Morlet_power/no_peaks;
+
+Morlet_phase = Morlet_phase/no_peaks;
 
 mean_peak_segment = mean(Peak_segments);
 
@@ -50,13 +54,19 @@ if plot_opt > 0
     figure;
     
     subplot(2,1,1)
-    imagesc(t,freqs,zscore(Morlet')')
+    imagesc(t,freqs,zscore(Morlet_power')')
     set(gca,'YDir','normal');
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
-    title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform'])
-%     set(gca,'YTick',freqs(1:floor(no_freqs/5):no_freqs))
+    title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Power)'])
+    % set(gca,'YTick',freqs(1:floor(no_freqs/5):no_freqs))
     
     subplot(2,1,2)
+    imagesc(t,freqs,Morlet_phase)
+    set(gca,'YDir','normal');
+    xlabel('Time (s)'); ylabel('Frequency (Hz)');
+    title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Phase)'])
+    
+    subplot(2,1,3)
     plot(t,mean_peak_segment)
     axis('tight'); box off;
     xlabel('Time (s)'); ylabel('mV');

@@ -201,7 +201,7 @@ for c1 = 2:no_cats1
     
 end
     
-save([name, '_BP_stats.mat'], 'BP_stats', 'band_labels', 'cat1_labels', 'cat2_labels')
+save([name, '_BP_stats.mat'], 'BP_stats', 'band_labels', 'cat1_labels', 'cat2_labels', 'stat_labels')
         
 %% Lineplotting power by all cat2 categories (x-axis), in a single figure, with rows given by bands.
 
@@ -257,7 +257,7 @@ for b=1:no_bands
             
         end
         
-        title({Title,[stat,' MI']})
+        title([stat, ' ', Title])
         
     end
     

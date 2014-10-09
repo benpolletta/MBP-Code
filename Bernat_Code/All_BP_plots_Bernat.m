@@ -49,13 +49,15 @@ c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1];%[1 .6 0; .6 .4 .8; .59 .29 0; .21 .
 %     p=p+1;
 % end
 % 
-% cplot_collected_BP_by_3_categories('Spectral Power',[name,'/',name,'_BP_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP)
+% cplot_collected_BP_by_3_categories([channel_label, ', Spectral Power',[name,'/',name,'_BP_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP)
 % 
-% cplot_collected_BP_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_pct)
+% cplot_collected_BP_by_3_categories([channel_label, ', Power, Percent Change from Baseline',[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_pct)
 % 
-% cplot_collected_BP_by_3_categories('Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_zs)
+% cplot_collected_BP_by_3_categories([channel_label, ', Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_zs)
 
 %% Plots by hour.
+
+hr_labels = cell(24, 1); short_hr_labels = cell(24, 1);
 
 p=1;
 for i=4:-1:1
@@ -63,24 +65,23 @@ for i=4:-1:1
     short_hr_labels{p}=['pre',num2str(i)];
     p=p+1;
 end
-for i=1:12
+for i=1:20
     hr_labels{p}=['Hour ',num2str(i),' Postinjection'];
     short_hr_labels{p}=['post',num2str(i)];
     p=p+1;
 end
 
-lineplot_collected_BP_by_3_categories('Spectral Power',[name,'/',name,'_BP_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP,stat)
+lineplot_collected_BP_by_3_categories([channel_label, ', Spectral Power'],[name,'/',name,'_BP_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP,stat)
 
-lineplot_collected_BP_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_pct,stat)
+lineplot_collected_BP_by_3_categories([channel_label, ',Power, Pct. Change from Baseline'],[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_pct,stat)
    
-lineplot_collected_BP_by_3_categories('Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_zs,stat)
+lineplot_collected_BP_by_3_categories([channel_label, ', Power, z-Scored'],[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,BP_zs,stat)
 
-lineplot_collected_BP_by_categories('Spectral Power',[name,'/',name,'_BP_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP,stat,c_order)
+lineplot_collected_BP_by_categories([channel_label, ', Spectral Power'],[name,'/',name,'_BP_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP,stat,c_order)
 
-lineplot_collected_BP_by_categories('Power, Pct. Change from Baseline',[name,'/',name,'_BP_pct_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_pct,stat,c_order)
+lineplot_collected_BP_by_categories([channel_label, ', Power, Pct. Change from Baseline'],[name,'/',name,'_BP_pct_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_pct,stat,c_order)
 
-lineplot_collected_BP_by_categories('Power, z-Scored by Hour',[name,'/',name,'_BP_zs_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_zs,stat,c_order)
-
+lineplot_collected_BP_by_categories([channel_label, ', Power, z-Scored by Hour'],[name,'/',name,'_BP_zs_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_zs,stat,c_order)
 
 %% Plots by 6 min.
 
@@ -88,17 +89,17 @@ no_pre=2; no_post=8;
 
 [pd_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
 
-lineplot_collected_BP_by_3_categories('Spectral Power',[name,'/',name,'_BP_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,BP,stat)
+lineplot_collected_BP_by_3_categories([channel_label, ', Spectral Power'],[name,'/',name,'_BP_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,BP,stat)
 
-lineplot_collected_BP_by_3_categories('Power, Pct. Change from Baseline',[name,'/',name,'_BP_pct_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,BP_pct,stat)
+lineplot_collected_BP_by_3_categories([channel_label, ', Power, Pct. Change from Baseline'],[name,'/',name,'_BP_pct_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,BP_pct,stat)
 
-lineplot_collected_BP_by_3_categories('Power, z-Scored',[name,'/',name,'_BP_zs_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,BP_zs,stat)
+lineplot_collected_BP_by_3_categories([channel_label, ', Power, z-Scored'],[name,'/',name,'_BP_zs_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,BP_zs,stat)
 
-lineplot_collected_BP_by_categories('Spectral Power',[name,'/',name,'_BP_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP,stat,c_order)
+lineplot_collected_BP_by_categories([channel_label, ', Spectral Power'],[name,'/',name,'_BP_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP,stat,c_order)
 
-lineplot_collected_BP_by_categories('Power, Pct. Change from Baseline',[name,'/',name,'_BP_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_pct,stat,c_order)
+lineplot_collected_BP_by_categories([channel_label, ', Power, Pct. Change from Baseline'],[name,'/',name,'_BP_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_pct,stat,c_order)
 
-lineplot_collected_BP_by_categories('Power, z-Scored by Hour',[name,'/',name,'_BP_zs_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_zs,stat,c_order)
+lineplot_collected_BP_by_categories([channel_label, ', Power, z-Scored by Hour'],[name,'/',name,'_BP_zs_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_zs,stat,c_order)
 
 end
 

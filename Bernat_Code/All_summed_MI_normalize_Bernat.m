@@ -13,7 +13,7 @@ subjects = text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
 fourhrs = text_read([name,'/',name,'_',measure,'_4hr_periods.txt'],'%s');
 load([name,'/',name,'_',measure,'_summed.mat']);
 
-summed_MI_pct = nan(size(summed_MI));
+[summed_MI_pct, summed_MI_4hr_pct] = deal(nan(size(summed_MI)));
 
 for s = 1:no_subjects
     
@@ -23,21 +23,29 @@ for s = 1:no_subjects
         
         record_MI = summed_MI(record_indices, :);
         
+        record_MI_4hr = summed_MI_4hr(record_indices, :);
+        
         record_4hr_periods = fourhrs(record_indices);
         
         baseline_indices = strcmp(record_4hr_periods,'pre8to5') | strcmp(record_4hr_periods,'pre4to1');
         
         baseline_mean = ones(size(record_MI))*diag(nanmean(record_MI(baseline_indices, :)));
         
-        pct_MI = 100*(record_MI - baseline_mean)./baseline_mean - 100*ones(size(record_MI));
+        baseline_mean_4hr = ones(size(record_MI_4hr))*diag(nanmean(record_MI_4hr(baseline_indices, :)));
+        
+        pct_MI = 100*(record_MI - baseline_mean)./baseline_mean;
+        
+        pct_MI_4hr = 100*(record_MI_4hr - baseline_mean_4hr)./baseline_mean_4hr;
        
         summed_MI_pct(record_indices, :) = pct_MI;
+        
+        summed_MI_4hr_pct(record_indices, :) = pct_MI_4hr;
 
     end
     
 end
 
-save([name,'/',name,'_',measure,'_summed_pct.mat'], 'summed_MI_pct')
+save([name,'/',name,'_',measure,'_summed_pct.mat'], 'summed_MI_pct', 'summed_MI_4hr_pct')
 
 
 
