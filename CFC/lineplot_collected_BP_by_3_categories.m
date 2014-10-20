@@ -149,4 +149,4 @@ for b=1:no_bands
     
 end
     
-save([name, '.mat'], 'BP_stats', 'band_labels', 'cat1_labels', 'cat2_labels')
+save([name, '.mat'], 'BP_stats', 'band_labels', 'cat1_labels', 'cat2_labels', 'cat3_labels')

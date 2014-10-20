@@ -45,7 +45,7 @@ mean_peak_segment = mean(Peak_segments);
 
 if ~isempty(tit_le)
 
-    save([tit_le,'_',num2str(peak_freq),'_peak_wav.mat'],'Morlet','freqs','t','mean_peak_segment','no_peaks','peak_freq','sampling_freq');
+    save([tit_le,'_',num2str(peak_freq),'_peak_wav.mat'],'Morlet_power','Morlet_phase','freqs','t','mean_peak_segment','no_peaks','peak_freq','sampling_freq');
     
 end
 
@@ -53,20 +53,20 @@ if plot_opt > 0
     
     figure;
     
-    subplot(2,1,1)
+    subplot(3,1,1)
     imagesc(t,freqs,zscore(Morlet_power')')
     set(gca,'YDir','normal');
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
     title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Power)'])
     % set(gca,'YTick',freqs(1:floor(no_freqs/5):no_freqs))
     
-    subplot(2,1,2)
+    subplot(3,1,2)
     imagesc(t,freqs,Morlet_phase)
     set(gca,'YDir','normal');
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
     title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Phase)'])
     
-    subplot(2,1,3)
+    subplot(3,1,3)
     plot(t,mean_peak_segment)
     axis('tight'); box off;
     xlabel('Time (s)'); ylabel('mV');

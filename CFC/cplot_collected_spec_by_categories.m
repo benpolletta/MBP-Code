@@ -72,7 +72,7 @@ if isempty(dir([name,'_spec_stats_for_cplot.mat']))
         
     end
     
-    save([name,'_spec_stats_for_cplot.mat'],'spec_stats','bands','band_names','cat1_labels','cat2_labels')
+    save([name,'_spec_stats_for_cplot.mat'],'spec_stats','cat1_labels','cat2_labels')
     
 else
    
@@ -93,7 +93,7 @@ for b=1:no_bands
     
 end
 
-for c1=1:no_cats1
+for c1=4:no_cats1
     
     cat1=char(cat1_labels{c1});
     
@@ -164,8 +164,14 @@ for c1=1:no_cats1
             subplot(no_cats1,no_bands,(c1-1)*no_bands+(no_bands+1-b))%(no_bands,no_cats1,(b-1)*no_cats1+c1)
             
             imagesc(reshape(spec_stats(band_indices{b},c1,:,s),band_width,no_cats2))
-                        
-            caxis(color_lim(b,:,s))
+            
+            % band_names{b}, long_stat_labels{s}
+                      
+            if ~any(isnan(color_lim(b,:,s)))
+                
+                caxis(color_lim(b,:,s))
+                
+            end
             
             axis xy
             

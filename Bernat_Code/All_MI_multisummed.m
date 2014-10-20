@@ -18,11 +18,16 @@ no_rectangles=no_als*no_pls;
 name=['ALL_',channel_label];
 MI=load([name,'/',name,'_',measure_suffix,'_hr_MI.txt']);
 MI_4hr=load([name,'/',name,'_',measure_suffix,'_4hr_MI.txt']);
+MI_pct=load([name,'/',name,'_',measure_suffix,'_hr_MI_pct.txt']);
+MI_4hr_pct=load([name,'/',name,'_',measure_suffix,'_4hr_MI_pct.txt']);
+
 
 %% Summing MI over amplitude and frequency rectangles, saving.
 
 summed_MI=nan(size(MI,1),no_rectangles);
 summed_MI_4hr=nan(size(MI_4hr,1),no_rectangles);
+summed_MI_pct=nan(size(MI_pct,1),no_rectangles);
+summed_MI_4hr_pct=nan(size(MI_4hr_pct,1),no_rectangles);
 
 band_labels=cell(no_rectangles,1);
 
@@ -40,6 +45,8 @@ for al=1:no_als
         
         summed_MI(:,r)=sum(MI(:,rectangle_indices),2);
         summed_MI_4hr(:,r)=sum(MI_4hr(:,rectangle_indices),2);
+        summed_MI_pct(:,r)=sum(MI_pct(:,rectangle_indices),2);
+        summed_MI_4hr_pct(:,r)=sum(MI_4hr_pct(:,rectangle_indices),2);
         
         r=r+1;
         
@@ -47,5 +54,5 @@ for al=1:no_als
     
 end
 
-save([name,'/',name,'_',measure_suffix,'_summed.mat'],'band_labels','summed_MI','summed_MI_4hr')
+save([name,'/',name,'_',measure_suffix,'_summed.mat'],'band_labels','summed_MI','summed_MI_4hr','summed_MI_pct','summed_MI_4hr_pct')
         

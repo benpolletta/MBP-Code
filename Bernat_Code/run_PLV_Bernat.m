@@ -14,11 +14,11 @@ present_dir=pwd;
 load('subjects.mat')
 load('drugs.mat')
 
-index = 0; % For when it gets stopped in the middle somwhere...
+index = 0 % For when it gets stopped in the middle somwhere...
 
-for s=1:min(length(chan1_channels),length(chan2_channels))
+for s=3:min(length(chan1_channels),length(chan2_channels))
     
-    subject=subjects{s};
+    subject=subjects{s}
     subj_chan1=chan1_channels(s);
     subj_chan2=chan2_channels(s);
     
@@ -26,21 +26,21 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
     
     for d=1:1%length(drugs)
         
-        index = index + 1;
+        index = index + 1
         
-        if index > 1 %3*4 + 1
+        if index > 0 %3*4 + 1
         
         drug=drugs{d};
         
         subject_dir=[subject,'_',drug];
         cd (subject_dir)
         
-        channel_dir1=[subject_dir,'_chan',num2str(channel_pair(1)),'_epochs'];
+        channel_dir1=[subject_dir,'_chan',num2str(channel_pair(1)),'_epochs']
         period_list1=[channel_dir1,'/',channel_dir1(1:end-length('_epochs')),'_hours_master.list'];
         periods1=text_read(period_list1,'%s');
         no_periods1=length(periods1);
         
-        channel_dir2=[subject_dir,'_chan',num2str(channel_pair(2)),'_epochs'];
+        channel_dir2=[subject_dir,'_chan',num2str(channel_pair(2)),'_epochs']
         period_list2=[channel_dir2,'/',channel_dir2(1:end-length('_epochs')),'_hours_master.list'];
         periods2=text_read(period_list2,'%s');
         no_periods2=length(periods2);
@@ -71,7 +71,7 @@ for s=1:min(length(chan1_channels),length(chan2_channels))
         
         if no_periods1==no_periods2
             
-            pair_dir=sprintf('%s_ch%d_by_ch%d_PLV',subject_dir,channel_pair);
+            pair_dir=sprintf('%s_ch%d_by_ch%d_PLV',subject_dir,channel_pair)
             mkdir (pair_dir)
             
             avg_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);

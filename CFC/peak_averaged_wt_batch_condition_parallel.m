@@ -1,4 +1,4 @@
-function [mean_wt_power, mean_wt_phase, mean_peak_segments] = peak_averaged_wt_batch_condition_parallel(conditions_name, peak_freq, peak_freq_cycles, sampling_freq)
+function [mean_wt_power, mean_wt_phase, mean_peak_segments, total_peaks] = peak_averaged_wt_batch_condition_parallel(conditions_name, peak_freq, peak_freq_cycles, sampling_freq)
 
 % Finds peaks in trace filtered at frequency peak_freq, spaced at least
 % no_target_cycles cycles (at frequency target_freq) apart. Selects data
@@ -26,12 +26,13 @@ else
     
 end
     
-condition_names=textread([conditions_path,conditions_name],'%s');
+condition_names=text_read([conditions_path, '/', conditions_name],'%s');
 condition_num=length(condition_names);
 list_legend = cell(condition_num,1);
 
 [mean_wt_power, mean_wt_phase] = deal(nan(no_freqs, segment_length, condition_num));
-mean_peak_segments=nan(segment_length,condition_num);
+mean_peak_segments = nan(segment_length, condition_num);
+total_peaks = nan(condition_num, 1);
 
 for c=1:condition_num
     
@@ -40,7 +41,7 @@ for c=1:condition_num
     list_dir = [list_legend{c},'_peak-triggered_wt'];
     mkdir (list_dir)
     
-    filenames=textread(listname,'%s');
+    filenames=text_read(listname,'%s');
     filenum=length(filenames);
     
     [All_wt_power, All_wt_phase] = deal(nan(no_freqs, segment_length, filenum));
@@ -54,7 +55,7 @@ for c=1:condition_num
         
         [~, ~, file_wt_power, file_wt_phase, file_mean_peak_segment, file_peak_no] = peak_averaged_wavelet_transform(data, peak_freq, peak_freq_cycles, sampling_freq, 0, [list_dir,'/',filename(1:end-4)]);
         
-        All_wt_power(:,:,f) = file_wt_power*file_peak_no;
+        All_wt_power(:, :, f) = file_wt_power*file_peak_no;
         
         All_wt_phase(:, :, f) = file_wt_phase*file_peak_no;
         
@@ -64,8 +65,10 @@ for c=1:condition_num
         
     end
     
-    save([list_dir,'/',listname(1:end-5),'_',num2str(peak_freq),'_peak_wav.mat'],'All_wt','All_mean_peak_segments','no_peaks','peak_freq','sampling_freq')
+    save([list_dir,'/',listname(1:end-5),'_',num2str(peak_freq),'_peak_wav.mat'],'All_wt_power','All_wt_phase','All_mean_peak_segments','no_peaks','peak_freq','sampling_freq')
 
+    total_peaks(c) = sum(no_peaks);
+    
     mean_wt_power(:,:,c) = sum(All_wt_power,3)/sum(no_peaks);
     
     mean_wt_phase(:, :, c) = sum(All_wt_phase, 3)/sum(no_peaks);
@@ -74,7 +77,7 @@ for c=1:condition_num
     
     figure;
     
-    subplot(2,1,1)
+    subplot(3,1,1)
     imagesc(t,freqs,zscore(mean_wt_power(:,:,c)')')
     c_axis = caxis;
     caxis([0 c_axis(2)])
@@ -82,7 +85,7 @@ for c=1:condition_num
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
     title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Power)'])
     
-    subplot(2,1,2)
+    subplot(3,1,2)
     imagesc(t,freqs,mean_wt_phase(:,:,c))
     c_axis = caxis;
     caxis([0 c_axis(2)])
@@ -90,7 +93,7 @@ for c=1:condition_num
     xlabel('Time (s)'); ylabel('Frequency (Hz)');
     title([num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Phase)'])
     
-    subplot(2,1,3)
+    subplot(3,1,3)
     plot(t,mean_peak_segments(:,c))
     axis('tight'); box off;
     xlabel('Time (s)'); ylabel('mV');
@@ -100,7 +103,7 @@ for c=1:condition_num
     
 end
 
-save([conditions_path,'/',conditions_name(1:end-5),'_',num2str(peak_freq),'_peak_wav.mat'],'mean_wt','mean_peak_segments')
+save([conditions_path,'/',conditions_name(1:end-5),'_',num2str(peak_freq),'_peak_wav.mat'],'mean_wt_power','mean_wt_phase','mean_peak_segments','total_peaks')
 
 wt_pow_max = max(max(max(zscore(mean_wt_power)))); %wt_pow_min = min(min(min(zscore(mean_wt_power))));
 

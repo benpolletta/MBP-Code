@@ -51,17 +51,21 @@ for i=1:20
     p=p+1;
 end
 
-% "Raw" summed MI.
+% "Raw" summed PLV.
 
-lineplot_collected_BP_by_3_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_hr_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,summed_PLV,stat)
+lineplot_collected_BP_by_3_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_hr_by_state'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,summed_PLV,stat)
 
-lineplot_collected_BP_by_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_hr'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV,stat,c_order)
+lineplot_collected_BP_by_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_hr'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV,stat,c_order)
 
-% Summed MI as a percentage of baseline.
+% Summed PLV as a percentage of baseline.
 
-lineplot_collected_BP_by_3_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_hr_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,summed_PLV_pct,stat)
+lineplot_collected_BP_by_3_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_hr_by_state'],...
+    {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,summed_PLV_pct,stat)
 
-lineplot_collected_BP_by_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_hr'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV_pct,stat,c_order)
+lineplot_collected_BP_by_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_hr'],...
+    {band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV_pct,stat,c_order)
 
 %% Lineplots by 6 min period.
 
@@ -69,17 +73,21 @@ no_pre=2; no_post=8;
 
 [pd_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
 
-% "Raw" summed MI.
+% "Raw" summed PLV.
 
-lineplot_collected_BP_by_3_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_PLV,stat)
+lineplot_collected_BP_by_3_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_6min_by_state'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_PLV,stat)
 
-lineplot_collected_BP_by_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV,stat,c_order)
+lineplot_collected_BP_by_categories([title_name, ' PLV'],[name,'/',name(1 : end - 4),'_summed_PLV_6min'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV,stat,c_order)
 
-% Summed MI as a percentage of baseline.
+% Summed PLV as a percentage of baseline.
 
-lineplot_collected_BP_by_3_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_PLV_pct,stat)
+lineplot_collected_BP_by_3_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_6min_by_state'],...
+    {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_PLV_pct,stat)
 
-lineplot_collected_BP_by_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV_pct,stat,c_order)
+lineplot_collected_BP_by_categories([title_name, ' PLV, Pct. Change from Baseline'],[name,'/',name(1 : end - 4),'_summed_PLV_pct_6min'],...
+    {band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV_pct,stat,c_order)
 
 end
 

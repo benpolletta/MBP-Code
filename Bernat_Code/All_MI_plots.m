@@ -24,9 +24,12 @@ no_drugs=length(drug_labels);
 fig_dir=[name,'/',name,'_',measure,'_MI'];
 mkdir (fig_dir)
 
+norms = {'', '_pct'}; no_norms = length(norms);
+
 %% Figures by hour.
 
-MI=load([name,'/',name,'_',measure,'_hr_MI.txt'],'%s');
+MI = load([name,'/',name,'_',measure,'_hr_MI.txt'],'%s');
+MI_pct = load([name,'/',name,'_',measure,'_hr_MI_pct.txt'],'%s');
 
 period_labels = cell(16,1);
 short_period_labels = cell(16,1);
@@ -43,13 +46,14 @@ for i=1:12
 end
 no_periods = length(period_labels);
 
-% for d=1:no_drugs
-% 
-%     cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI)
-% 
-% end
+for d=1:no_drugs
     
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
+    cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI)
+    cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_pct_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI_pct)
+    
+end
+    
+% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
 
 % %%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 

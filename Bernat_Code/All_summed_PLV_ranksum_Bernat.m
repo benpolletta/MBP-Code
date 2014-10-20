@@ -28,9 +28,9 @@ load([name, '/', name, '_summed.mat'])
 %     p=p+1;
 % end
 % 
-% cplot_collected_BP_by_3_categories('Modulation Index, z-Scored by Hour'],[name,'/',name(1 : end - 4),'_summed_PLV_hr_by_4hr'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,summed_PLV)
+% cplot_collected_BP_by_3_categories('Modulation Index, z-Scored by Hour'],[name,'/',name(1 : end - 4),'_summed_PLV_hr_by_4hr'],{band_labels, band_labels},{state_labels, state_labels},{drug_labels, drug_labels},{short_fourhr_labels, fourhr_labels},states,drugs,fourhrs,summed_PLV)
 % 
-% cplot_collected_BP_by_3_categories('Modulation Index, z-Scored by State Every 4 Hrs',[name,'/',name(1 : end - 4),'_summed_MI_4hr_by_4hr'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,summed_MI_4hr)
+% cplot_collected_BP_by_3_categories('Modulation Index, z-Scored by State Every 4 Hrs',[name,'/',name(1 : end - 4),'_summed_MI_4hr_by_4hr'],{band_labels, band_labels},{state_labels, state_labels},{drug_labels, drug_labels},{short_fourhr_labels, fourhr_labels},states,drugs,fourhrs,summed_MI_4hr)
 
 %% Lineplots by hr period.
 
@@ -48,17 +48,19 @@ for i=1:20
     p=p+1;
 end
 
-% "Raw" summed MI.
+% "Raw" summed PLV.
 
-% stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_hr_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,summed_PLV)
+stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_hr_by_state'],{band_labels, band_labels},...
+    {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,summed_PLV)
 
-stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_hr'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV)
+% stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_hr'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV)
 
-% Summed MI as a percentage of baseline.
+% Summed PLV as a percentage of baseline.
 
-% stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_hr_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, hr_labels},drugs,states,hrs,summed_PLV_pct)
+stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_hr_by_state'],{band_labels, band_labels},...
+    {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,summed_PLV_pct)
 
-stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_hr'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV_pct)
+% stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_hr'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,summed_PLV_pct)
 
 %% Lineplots by 6 min period.
 
@@ -66,17 +68,19 @@ no_pre=2; no_post=8;
 
 [pd_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
 
-% "Raw" summed MI.
+% "Raw" summed PLV.
 
-% stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_PLV)
+stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_6min_by_state'],{band_labels, band_labels},...
+    {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_PLV)
 
-stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV)
+% stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV)
 
-% Summed MI as a percentage of baseline.
+% Summed PLV as a percentage of baseline.
 
-% stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_6min_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_PLV_pct)
+stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_6min_by_state'],{band_labels, band_labels},...
+    {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_PLV_pct)
 
-stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV_pct)
+% stats_collected_BP_by_categories([name,'/',name(1 : end - 4),'_summed_PLV_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_PLV_pct)
 
 end
 

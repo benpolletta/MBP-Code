@@ -23,7 +23,7 @@ stat_labels={'median','mean','std'};
 long_stat_labels={'Median','Mean','St. Dev.'};
 no_stats=length(stat_labels);
 
-BP_stats=zeros(no_bands,no_cats1,no_cats2,no_stats);
+BP_stats=zeros(no_bands, no_cats1, no_cats2, no_cats3, no_stats);
 
 close('all')
 
@@ -53,19 +53,34 @@ for c3=1:no_cats3
             
             if ~isempty(BP_cat2) && size(BP_cat2,1)>=5
                 
-                BP_stats(:,c1,c2,1)=nanmedian(BP_cat2)';
+                BP_stats(:,c1,c2,c3,1)=nanmedian(BP_cat2)';
                 
-                BP_stats(:,c1,c2,2)=nanmean(BP_cat2)';
+                BP_stats(:,c1,c2,c3,2)=nanmean(BP_cat2)';
                 
-                BP_stats(:,c1,c2,3)=nanstd(BP_cat2)'/sqrt(size(BP_cat2,2));
+                BP_stats(:,c1,c2,c3,3)=nanstd(BP_cat2)'/sqrt(size(BP_cat2,2));
                 
             else
                 
-                BP_stats(:,c1,c2,1:3)=nan;
+                BP_stats(:,c1,c2,c3,1:3)=nan;
                 
             end
             
         end
+        
+    end
+    
+end
+
+save([name, '_cplot_data.mat'], 'BP_stats', 'cat1_labels', 'cat2_labels', 'cat3_labels', 'band_labels',...
+    'long_cat1_labels', 'long_cat2_labels', 'long_cat3_labels', 'long_band_labels')
+
+for c3=1:no_cats3
+    
+    cat3=char(cat3_labels{c3});
+    
+    for c1=1:no_cats1
+    
+        cat1=char(cat1_labels{c1});
         
         %% Colorplotting all bands, by all of cat2 categories, in row c3 of a figure dedicated to cat1 category c1.
         

@@ -21,6 +21,8 @@ close('all')
 
 figs=nan(3,no_cats1*no_cats2);
 
+MI_stats = nan(matrix_rows, matrix_columns, no_cats1, no_cats2, 3);
+
 for c1=1:no_cats1
     
     cat1=char(cat1_labels{c1});
@@ -37,11 +39,11 @@ for c1=1:no_cats1
         
         if ~isempty(MI_cat2) && size(MI_cat2,1)~=1
             
-            MI_stats(:,:,1)=reshape(nanmedian(MI_cat2),matrix_rows,matrix_columns);
+            MI_stats(:,:,c1,c2,1)=reshape(nanmedian(MI_cat2),matrix_rows,matrix_columns);
             
-            MI_stats(:,:,2)=reshape(nanmean(MI_cat2),matrix_rows,matrix_columns);
+            MI_stats(:,:,c1,c2,2)=reshape(nanmean(MI_cat2),matrix_rows,matrix_columns);
             
-            MI_stats(:,:,3)=reshape(nanstd(MI_cat2),matrix_rows,matrix_columns);
+            MI_stats(:,:,c1,c2,3)=reshape(nanstd(MI_cat2),matrix_rows,matrix_columns);
             
         else
             
@@ -51,7 +53,7 @@ for c1=1:no_cats1
                 
         for m=1:no_stats
             
-            figure(), imagesc(MI_stats(:,:,m))
+            figure(), imagesc(MI_stats(:,:,c1,c2,m))
             
             figs(m,(c1-1)*no_cats2+c2)=gcf;
             
@@ -64,6 +66,8 @@ for c1=1:no_cats1
     end
     
 end
+
+save([name, '_cplot_data.mat'], 'MI_stats', 'long_cat1_labels', 'cat1_labels', 'long_cat2_labels', 'cat2_labels', 'stat_labels')
 
 if no_cats2==1
     
@@ -84,6 +88,5 @@ for m=1:no_stats
     set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
     
     print(gcf,'-dpdf',[name,'_',stat_labels{m},'.pdf']);
-        
     
 end
