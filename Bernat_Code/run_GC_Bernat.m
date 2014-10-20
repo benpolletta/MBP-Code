@@ -100,11 +100,11 @@ for s = 1:no_subjects
                     
                     sig = reshape(sig, 9, 1); sig([1 5 9]) = [];
                     
-                    f = reshape(f, [9 1 f_length]); f([1 5 9], :, :) = [];
+                    f = reshape(f, [1 9 f_length]); f(:, [1 5 9], :) = [];
                     
                     pd_GC(e, :) = [moAIC info.error F pval sig];
                     
-                    pd_GC_spec(e, :, :) = reshape(reshape(f, [6 f_length])', [1 f_length 6]);
+                    pd_GC_spec(e, :, :) = permute(f, [1 3 2]);
                     
                 end
                 
