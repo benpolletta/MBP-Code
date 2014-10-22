@@ -68,11 +68,11 @@ for n = 1:no_norms
                     
                     caxis([min_by_drug(d,s,c,n) max_by_drug(d, s, c, n)])
                     
-                    if h == 10
-                    
-                        colorbar
-                    
-                    end
+                    % if h == 10
+                    % 
+                    %     colorbar
+                    % 
+                    % end
                     
                     axis xy
                     
@@ -100,9 +100,11 @@ for n = 1:no_norms
                 
             end
             
-            for h = 5:10
+            no_hours = 5;
+            
+            for h = (1:no_hours) + 4
                 
-                subplot(no_channels + 2, 6, no_channels*6 + h - 4)
+                subplot(no_channels + 2, no_hours, no_channels*no_hours + h - 4)
             
                 plot(amp_freqs', reshape(max_amp_data(:, d, h, s, :, n), no_afs, no_channels))
                 
@@ -116,17 +118,15 @@ for n = 1:no_norms
                 
                 xlabel('Amp. Freq. (Hz)')
                 
-                if h == 6
+                if h == 5
                     
                     legend(short_channel_names, 'Location', 'NorthWest')
-                    
-                elseif h == 5
                     
                     ylabel({['Max. ', long_stats{s}, ' MI']; long_norms{n}})
                     
                 end
                 
-                subplot(no_channels + 2, 6, (no_channels + 1)*6 + h - 4)
+                subplot(no_channels + 2, no_hours, (no_channels + 1)*no_hours + h - 4)
             
                 plot(phase_freqs', reshape(max_phase_data(:, d, h, s, :, n), no_pfs, no_channels))
                 

@@ -53,7 +53,7 @@ for s = 1:no_subjects
             avg_GC = nan(no_periods, 8);
             avg_GC_spec = nan(no_periods, f_length, 2);
             
-            %% Calculating PLV and shuffled PLV by period.
+            %% Calculating GC by period.
             
             for pd = 1:no_periods
                 
@@ -71,7 +71,7 @@ for s = 1:no_subjects
 
                 no_epochs=length(pd_list{2});
                 
-                %% Calculating PLV.
+                %% Calculating GC.
                 
                 pd_GC = nan(no_epochs, 8);
                 pd_GC_spec = nan(no_epochs, f_length, 2);

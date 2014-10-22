@@ -1,4 +1,4 @@
-function run_peak_avg_wt_Bernat
+function run_peak_avg_wt_Bernat(peak_freqs, start_index)
 
 peak_freq_cycles = 3; sampling_freq = 1000;
 
@@ -8,9 +8,15 @@ load('channels')
 
 % max_phase = get_peak_freqs;
 
-peak_freqs = [2.25 6.5 8]; no_peak_freqs = length(peak_freqs);
+if isempty(start_index), start_index = 0; end
 
-for p = 2:no_peak_freqs
+if isempty(peak_freqs), peak_freqs = [2.25 6.5 8]; end
+
+no_peak_freqs = length(peak_freqs);
+
+for p = 1:no_peak_freqs
+    
+    index = 1;
     
     for c = 1:no_channels
         
@@ -18,17 +24,23 @@ for p = 2:no_peak_freqs
             
             for d = 1:no_drugs
                 
-                record_dir = [subjects{s}, '_', drugs{d}];
+                if index > start_index
+                    
+                    record_dir = [subjects{s}, '_', drugs{d}];
+                    
+                    channel_dir = [record_dir, '_chan', num2str(location_channels{c}(s))];
+                    
+                    cd (['/home/bp/Bernat_NMDAR_antagonists/', record_dir])
+                    
+                    master_list = [channel_dir, '_epochs/', channel_dir, '_hours_master.list'];
+                    
+                    peak_averaged_wt_batch_condition_parallel(master_list, peak_freqs(p), peak_freq_cycles, sampling_freq);
+                    
+                    cd '/home/bp/Bernat_NMDAR_antagonists'
                 
-                channel_dir = [record_dir, '_chan', num2str(location_channels{c}(s))];
-                
-                cd (['/home/bp/Bernat_NMDAR_antagonists/', record_dir])
-                
-                master_list = [channel_dir, '_epochs/', channel_dir, '_hours_master.list'];
-                
-                peak_averaged_wt_batch_condition_parallel(master_list, peak_freqs(p), peak_freq_cycles, sampling_freq);
-                
-                cd '/home/bp/Bernat_NMDAR_antagonists'
+                end
+                    
+                index = index + 1;
                 
             end
             

@@ -12,7 +12,7 @@ peak_freq_wavelet=dftfilt3(peak_freq, 7, sampling_freq, 'winsize', segment_lengt
 
 [listname,listpath]=uigetfile('*list','Choose a list of files to calculate peak-averaged signal.');
 
-filenames=textread([listpath,listname],'%s');
+filenames=text_read([listpath,listname],'%s');
 filenum=length(filenames);
 
 fid=fopen([listname(1:end-5),'_',num2str(target_freq),'_spaced_',num2str(peak_freq),'_peak_avg.txt'],'w');
