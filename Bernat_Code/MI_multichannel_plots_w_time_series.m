@@ -13,17 +13,18 @@ stats={'median','mean','std'}; no_stats = length(stats);
 long_stats={'Median','Mean','St. Dev.'};
 
 norms={'', 'pct_'}; no_norms = length(norms);
-long_norms={'', 'Pct. Change From Baseline'};
+long_norms={'', '% Change'};% From Baseline'};
 
 no_pre=4; no_post=12;
-[hr_labels, ~, long_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
+[hr_labels, ~, long_hr_labels] = make_period_labels(no_pre, no_post, 'hrs');
 no_hr_periods = length(hr_labels);
 
 no_pre=4; no_post=16;
-[BP_hr_labels, ~, long_BP_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
+[BP_hr_labels, ~, long_BP_hr_labels] = make_period_labels(no_pre, no_post, 'hrs');
 no_BP_hr_periods = length(BP_hr_labels);
+short_BP_hr_labels = -4:12; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
 
-tick_spacing = floor(no_BP_hr_periods/4);
+tick_spacing = floor(no_BP_hr_periods/5);
 
 no_bands = 6;
 
@@ -126,13 +127,17 @@ for n = 1:no_norms
                     
                     axis xy
                     
-                    ylabel({channel_names{c};'Amp. Freq. (Hz)'})
+                    if h == 3
                     
+                        ylabel({channel_names{c}})%;'Amp. Freq. (Hz)'})
+                    
+                    end
+                        
                     if c == 1
                         
                         if h == 3
                             
-                            title({drugs{d}; [long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{h}})
+                            title({[drugs{d}, ', ', long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{h}})
                             
                         else
                             
@@ -140,9 +145,9 @@ for n = 1:no_norms
                             
                         end
                         
-                    elseif c == 3
+                    % elseif c == 3
                         
-                        xlabel('Phase Freq. (Hz)')
+                        % xlabel('Phase Freq. (Hz)')
                         
                     end
                     
@@ -168,11 +173,11 @@ for n = 1:no_norms
                 
                 ylim([yl(1) max(max_by_drug(d, s, :, n), [], 3)])
                 
-                xlabel('Amp. Freq. (Hz)')
+                %xlabel('Amp. Freq. (Hz)')
                 
                 if h == 5
                     
-                    legend(short_channel_names, 'Location', 'NorthWest')
+                    legend(short_channel_names, 'Location', 'NorthWest', 'FontSize', 6)
                     
                     ylabel({['Max. ', long_stats{s}, ' MI']; long_norms{n}})
                     
@@ -188,7 +193,7 @@ for n = 1:no_norms
                 
                 ylim([yl(1) max(max_by_drug(d, s, :, n), [], 3)])
                 
-                xlabel('Phase Freq. (Hz)')
+                xlabel('Freq. (Hz)')
                 
                 if h == 5
                     
@@ -206,8 +211,6 @@ for n = 1:no_norms
                     
                     clear plot_stats plot_test
                     
-                    plot_stats = nan(size(All_BP_stats, 1), 2*size(All_BP_stats, 2));
-                    
                     plot_stats = [All_BP_stats(:, :, b, 1, 1) All_BP_stats(:, :, b, 1, d)];
                         
                     plot_test(:, :) = [nan(size(All_BP_test(:, :, b, d - 1))) All_BP_test(:, :, b, d - 1)];
@@ -222,7 +225,7 @@ for n = 1:no_norms
                     
                     med_range = max(max(plot_stats(:, :, 1))) - med_min;
                     
-                    test_multiplier = ones(size(plot_test))*diag(med_min - [.05 .05 .1 .1 .15 .15]*med_range);
+                    test_multiplier = ones(size(plot_test))*diag(med_min - [nan nan nan 0.05 .1 .15]*med_range);
                     
                     subplot(no_channels + 2 + (d > 1), no_bands, (no_channels + 2)*no_bands + b)
                     
@@ -233,11 +236,11 @@ for n = 1:no_norms
                     if b == 1
                     
                         legend({'Front., sal.', 'Occi., sal.', 'CA1, sal.', ['Front., ', drugs{d}], ['Occi., ', drugs{d}], ['CA1, ', drugs{d}]},...
-                            'Location', 'NorthWest')
+                            'Location', 'NorthWest', 'FontSize', 6)
                     
                     end
                         
-                    set(gca, 'XTick', 1:tick_spacing:no_BP_hr_periods, 'XTickLabel', BP_hr_labels(1:tick_spacing:end))
+                    set(gca, 'XTick', 1:tick_spacing:no_BP_hr_periods, 'XTickLabel', short_BP_hr_labels(1:tick_spacing:end))
                     
                     axis tight
                     
@@ -245,7 +248,7 @@ for n = 1:no_norms
                     
                     title(band_labels{b})
                     
-                    xlabel('Time Rel. Injection (Hr.)')
+                    xlabel('Time Rel. Inj. (h)')
                     
                 end
                 

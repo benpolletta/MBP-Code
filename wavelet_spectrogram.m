@@ -1,4 +1,4 @@
-function ws = wavelet_spectrogram(data, sampling_freq, freqs, no_cycles)
+function ws = wavelet_spectrogram(data, sampling_freq, freqs, no_cycles, save_opt, filename)
 
 [data_length, no_channels] = size(data);
 
@@ -24,5 +24,11 @@ for ch = 1:no_channels
         ws(:, f, ch) = conv_prod((flip_length + 1):(end - flip_length));
         
     end
+    
+end
+
+if save_opt == 1
+    
+    save([filename, '.mat'], 'ws', 'freqs', 'no_cycles', 'sampling_freq')
     
 end

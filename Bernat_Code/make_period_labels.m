@@ -16,7 +16,7 @@ if strcmp(format,'hrs')
         
         period_labels{index}=['pre',num2str(p)];
         
-        long_period_labels{index}=['Hour ',num2str(p),' Preinjection'];
+        long_period_labels{index}=['Hour ',num2str(p),' Preinj.'];
         
         pd_corder(index,:)=(index-1)*[1 1 1]/(2*hrs_pre);
         
@@ -28,7 +28,7 @@ if strcmp(format,'hrs')
         
         period_labels{index}=['post',num2str(p)];
     
-        long_period_labels{index}=['Hour ',num2str(p),' Postinjection'];
+        long_period_labels{index}=['Hour ',num2str(p),' Postinj.'];
         
         pd_corder(index,:)=(p-1)*[0 1 1]/hrs_post+(hrs_post-p)*[1 0 1]/hrs_post;
         
@@ -52,7 +52,7 @@ elseif strcmp(format,'4hrs')
         
         period_labels{index}=['pre',num2str(p),'to',num2str(p-3)];
         
-        long_period_labels{index}=['Hours ',num2str(p),' to ',num2str(p-3),' Preinjection'];
+        long_period_labels{index}=['Hours ',num2str(p),' to ',num2str(p-3),' Preinj.'];
         
         pd_corder(index,:)=(index-1)*[1 1 1]/(2*(hrs_pre/4));
         
@@ -64,7 +64,7 @@ elseif strcmp(format,'4hrs')
     
         period_labels{index}=['post',num2str(p-3),'to',num2str(p)];
     
-        long_period_labels{index}=['Hours ',num2str(p-3),' to ',num2str(p),' Postinjection'];
+        long_period_labels{index}=['Hours ',num2str(p-3),' to ',num2str(p),' Postinj.'];
         
         pd_corder(index,:)=(p/4-1)*[0 1 1]/(hrs_post/4)+(hrs_post-p)*[1 0 1]/hrs_post;
         
