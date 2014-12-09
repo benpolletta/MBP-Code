@@ -20,6 +20,7 @@ PLV_fid=fopen([dir,'/',dir(1:end-4),'_PLV.txt'],'w');
 PLV_thresh_fid=fopen([dir,'/',dir(1:end-4),'_PLV_thresh.txt'],'w');
 PLV_zs_fid=fopen([dir,'/',dir(1:end-4),'_PLV_zs.txt'],'w');
 PLV_pct_fid=fopen([dir,'/',dir(1:end-4),'_PLV_pct.txt'],'w');
+PLV_thresh_pct_fid=fopen([dir,'/',dir(1:end-4),'_PLV_thresh_pct.txt'],'w');
 PP_fid=fopen([dir,'/',dir(1:end-4),'_PP.txt'],'w');
 
 for d = 1:drug_num
@@ -63,6 +64,9 @@ for d = 1:drug_num
         baseline_PLV = ones(size(subj_PLV))*diag(nanmean(subj_PLV(baseline_indices,:)));
         subj_PLV_pct = 100*subj_PLV./baseline_PLV-100*ones(size(subj_PLV));
         
+        baseline_PLV_thresh = ones(size(subj_PLV_thresh))*diag(nanmean(subj_PLV_thresh(baseline_indices,:)));
+        subj_PLV_thresh_pct = 100*subj_PLV_thresh./baseline_PLV_thresh-100*ones(size(subj_PLV_thresh));
+        
         [no_epochs,no_freqs] = size(subj_PLV);
         PLV_format = make_format(no_freqs,'f');
         
@@ -78,6 +82,7 @@ for d = 1:drug_num
             fprintf(PLV_thresh_fid,PLV_format,subj_PLV_thresh(e,:));
             fprintf(PLV_zs_fid,PLV_format,subj_PLV_zs(e,:));
             fprintf(PLV_pct_fid,PLV_format,subj_PLV_pct(e,:));
+            fprintf(PLV_thresh_pct_fid,PLV_fromat,subj_PLV_thresh_pct(e,:));
             fprintf(PP_fid,PLV_format,subj_PP(e,:));
             
         end
