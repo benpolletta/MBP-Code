@@ -43,10 +43,24 @@ if rows<cols
 end
 clear rows cols
 
+% Comb filtering at 60 Hz harmonics.
+
+for f = 1:3
+    
+    notch_freq = 60*f;
+    
+    [n,Wn] = buttord(2*(notch_freq + 5*[-1, 1])/sampling_freq, 2*(notch_freq + 2.5*[1, -1])/sampling_freq, 1, 20);
+    
+    [z, p, k] = butter(n,Wn,'stop'); [sos, g] = zp2sos(z, p, k); h = dfilt.df2sos(sos, g);
+    
+    data = filtfilthd(h, data, 'reflect');
+    
+end
+
 % Extracting components, amplitudes, and phases.
 
-[bands_lo,~,A_lo,P_lo]=filter_wavelet_Jan(data,'sampling_freq',sampling_freq,'bands',bands_lo);
-[bands_hi,~,A_hi,P_hi]=filter_wavelet_Jan(data,'sampling_freq',sampling_freq,'bands',bands_hi);
+[bands_lo,~,A_lo,P_lo] = filter_wavelet_Jan(data,'sampling_freq',sampling_freq,'bands',bands_lo);
+[bands_hi,~,A_hi,P_hi] = filter_wavelet_Jan(data,'sampling_freq',sampling_freq,'bands',bands_hi);
 
 % Saving.
 

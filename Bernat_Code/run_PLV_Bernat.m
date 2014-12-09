@@ -16,7 +16,7 @@ load('drugs.mat')
 
 index = 0; % For when it gets stopped in the middle somwhere...
 
-for s=3:min(length(chan1_channels),length(chan2_channels))
+for s = 1:min(length(chan1_channels),length(chan2_channels))
     
     subject=subjects{s};
     subj_chan1=chan1_channels(s);
@@ -24,7 +24,7 @@ for s=3:min(length(chan1_channels),length(chan2_channels))
     
     channel_pair=[subj_chan1 subj_chan2];
     
-    for d=1:1%length(drugs)
+    for d = 1:length(drugs)
         
         index = index + 1;
         
@@ -82,7 +82,7 @@ for s=3:min(length(chan1_channels),length(chan2_channels))
             
             %% Calculating PLV and shuffled PLV by period.
             
-            for pd=1:no_periods1
+            for pd = 1:no_periods1
                 
                 pd1_listname=periods1{pd};
                 pd2_listname=periods2{pd};
@@ -100,7 +100,7 @@ for s=3:min(length(chan1_channels),length(chan2_channels))
                 pd_PP=nan(no_epochs,no_bands_hi+no_bands_lo);
                 pd_PLV=nan(no_epochs,no_bands_hi+no_bands_lo);
                 
-                parfor e=1:no_epochs
+                parfor e = 1:no_epochs
                 
                     epoch1_name = pd1_list{e};
                     epoch2_name = pd2_list{e};
@@ -132,7 +132,7 @@ for s=3:min(length(chan1_channels),length(chan2_channels))
                 shuf_PP=zeros(no_shufs,no_bands_hi+no_bands_lo);
                 shuf_PLV=zeros(no_shufs,no_bands_hi+no_bands_lo);
                 
-                parfor sh=1:no_shufs
+                parfor sh = 1:no_shufs
                     
                     epoch1_name = pd1_shuf_list{sh};
                     epoch2_name = pd2_shuf_list{sh};
