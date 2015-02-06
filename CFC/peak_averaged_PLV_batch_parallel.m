@@ -20,9 +20,9 @@ no_freqs = length(freqs);
 
 if isempty(listnames)
 
-    [listnames{1}, ~]=uigetfile('*list','Choose first list of files to calculate peak-averaged signal.');
+    [listnames{1}, ~]=uigetfile('*list', 'Choose first list of files to calculate peak-averaged signal.');
 
-    [listnames{2}, conditions_path]=uigetfile('*list','Choose second list of files to calculate peak-averaged signal.');
+    [listnames{2}, conditions_path]=uigetfile('*list', 'Choose second list of files to calculate peak-averaged signal.');
 
 else
     
@@ -50,7 +50,7 @@ if range(filenum) == 0
     All_mean_peak_segments = nan(filenum, segment_length, 2);
     no_peaks = nan(filenum, 1);
     
-    for f=1:filenum
+    parfor f=1:filenum
         
         data1 = load(filenames{1}{f});
         data2 = load(filenames{2}{f});
@@ -61,11 +61,12 @@ if range(filenum) == 0
         
         All_mean_peak_segments(f, :, :) = reshape(file_mean_peak_segment, [1 size(file_mean_peak_segment)])*file_peak_no;
         
-        no_peaks(f)=file_peak_no;
+        no_peaks(f) = file_peak_no;
         
     end
     
-    save([analysis_name,'/',analysis_name,'_',num2str(peak_freq),'_peak_PLV.mat'],'All_PLV','All_mean_peak_segments','no_peaks','peak_freq','sampling_freq','peak_freq_cycles')
+    save([analysis_name,'/',analysis_name,'_',num2str(peak_freq),'_peak_PLV.mat'],...
+        'All_PLV','All_mean_peak_segments','no_peaks','peak_freq','sampling_freq','peak_freq_cycles')
 
     total_peaks = sum(no_peaks);
     

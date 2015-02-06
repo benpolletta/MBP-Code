@@ -49,7 +49,7 @@ for f = 1:3
     
     notch_freq = 60*f;
     
-    [n,Wn] = buttord(2*(notch_freq + 5*[-1, 1])/sampling_freq, 2*(notch_freq + 2.5*[1, -1])/sampling_freq, 1, 20);
+    [n,Wn] = buttord(2*(notch_freq + 5*[-1 1])/sampling_freq, 2*(notch_freq + 2.5*[-1 1])/sampling_freq, 1, 20);
     
     [z, p, k] = butter(n,Wn,'stop'); [sos, g] = zp2sos(z, p, k); h = dfilt.df2sos(sos, g);
     

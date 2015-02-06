@@ -18,7 +18,7 @@ no_freqs = length(freqs);
 
 if isempty(conditions_name)
 
-    [conditions_name,conditions_path]=uigetfile('*list','Choose a list of lists to calculate peak-averaged signal.');
+    [conditions_name, conditions_path] = uigetfile('*list','Choose a list of lists to calculate peak-averaged signal.');
 
 else
     
@@ -59,9 +59,9 @@ for c=1:condition_num
         
         All_wt_phase(:, :, f) = file_wt_phase*file_peak_no;
         
-        All_mean_peak_segments(f,:) = file_mean_peak_segment*file_peak_no;
+        All_mean_peak_segments(f, :) = file_mean_peak_segment*file_peak_no;
         
-        no_peaks(f)=file_peak_no;
+        no_peaks(f) = file_peak_no;
         
     end
     
@@ -69,11 +69,11 @@ for c=1:condition_num
 
     total_peaks(c) = sum(no_peaks);
     
-    mean_wt_power(:,:,c) = sum(All_wt_power,3)/sum(no_peaks);
+    mean_wt_power(:, :, c) = sum(All_wt_power, 3)/sum(no_peaks);
     
     mean_wt_phase(:, :, c) = sum(All_wt_phase, 3)/sum(no_peaks);
     
-    mean_peak_segments(:,c) = sum(All_mean_peak_segments)'/sum(no_peaks);
+    mean_peak_segments(:, c) = sum(All_mean_peak_segments)'/sum(no_peaks);
     
     figure;
     
@@ -124,6 +124,8 @@ for c = 1:condition_num
     title({list_legend{c};[num2str(peak_freq),' Hz Peak-Triggered Wavelet Transform (Mean Power)']})
     
 end
+    
+save_as_pdf(gcf,[conditions_path,'/',conditions_name(1:end-5),'_',num2str(peak_freq),'_peak_wav_pow'])
 
 figure;
 
@@ -139,4 +141,4 @@ for c = 1:condition_num
     
 end
     
-save_as_pdf(gcf,[conditions_path,'/',conditions_name(1:end-5),'_',num2str(peak_freq),'_peak_wav'])
+save_as_pdf(gcf,[conditions_path,'/',conditions_name(1:end-5),'_',num2str(peak_freq),'_peak_wav_phase'])

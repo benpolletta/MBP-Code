@@ -7,7 +7,9 @@ no_freqs = length(freqs);
 
 if isempty(no_cycles), no_cycles = 7*ones(no_freqs,1); end
     
-wavelets = dftfilt3(freqs, no_cycles, sampling_freq, 'winsize', sampling_freq);
+window_size = max(no_cycles*(sampling_freq/min(freqs)), sampling_freq);
+
+wavelets = dftfilt3(freqs, no_cycles, sampling_freq, 'winsize', window_size);
 
 ws = nan(data_length, no_freqs, no_channels);
 

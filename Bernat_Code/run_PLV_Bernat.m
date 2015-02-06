@@ -45,7 +45,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
         periods2=text_read(period_list2,'%s');
         no_periods2=length(periods2);
         
-        if isempty(dir([channel_dir1,'/*AP.mat']))
+        %if isempty(dir([channel_dir1,'/*AP.mat']))
             
             channels_listname = [subject_dir,'_channels.list'];
 %             delete(channels_listname)
@@ -55,9 +55,9 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
             
             wavelet_mouse_eeg_HAP(sampling_freq,channels_listname);
             
-        end
+        %end
         
-        if isempty(dir([channel_dir2,'/*AP.mat']))
+        %if isempty(dir([channel_dir2,'/*AP.mat']))
             
             channels_listname = [subject_dir,'_channels.list'];
 %             delete(channels_listname)
@@ -67,7 +67,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
             
             wavelet_mouse_eeg_HAP(sampling_freq,channels_listname);
             
-        end
+        %end
         
         if no_periods1==no_periods2
             
