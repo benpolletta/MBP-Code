@@ -3,7 +3,7 @@ function run_cross_PAC_Bernat(no_shufs, chan1_channels, chan2_channels)
 % pair_dir = sprintf('All_%s_A_by_%s_P_PAC', chan1_name, chan2_name);
 % mkdir (pair_dir)
 
-sampling_freq = 1000;
+sampling_freq = 1000; nobins = 20;
 
 bands_lo = 1:.25:12;
 no_bands_lo = length(bands_lo);
