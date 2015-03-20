@@ -71,7 +71,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
         
         if no_periods1==no_periods2
             
-            pair_dir=sprintf('%s_ch%d_by_ch%d_PLV',subject_dir,channel_pair);
+            pair_dir=sprintf('%s_ch%d_A_by_ch%d_P_PAC', subject_dir, channel_pair);
             mkdir (pair_dir)
             
             avg_MI=nan(no_periods1,no_bands_hi*no_bands_lo);
@@ -85,7 +85,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 pd2_listname=periods2{pd};
                 
                 pd_name = pd1_listname(length(channel_dir1)-length('epochs')+1:end-5);
-                pd_pairname = sprintf('%s_ch%d_by_ch%d_%s_PLV',subject_dir,channel_pair,pd_name);
+                pd_pairname = sprintf('%s_ch%d_A_by_ch%d_P_%s_PAC', subject_dir, channel_pair, pd_name);
                 
                 pd1_list=text_read([channel_dir1,'/',pd1_listname],'%s%*[^\n]');
                 pd2_list=text_read([channel_dir2,'/',pd2_listname],'%s%*[^\n]');
