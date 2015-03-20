@@ -1,4 +1,4 @@
-function run_PLV_Bernat(no_shufs,chan1_channels,chan2_channels)
+function run_cross_PAC_Bernat(no_shufs,chan1_channels,chan2_channels)
 
 % pair_dir=sprintf('All_%s_by_%s_cohy',chan1_name,chan2_name);
 % mkdir (pair_dir)
@@ -74,11 +74,8 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
             pair_dir=sprintf('%s_ch%d_by_ch%d_PLV',subject_dir,channel_pair);
             mkdir (pair_dir)
             
-            avg_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
-            avg_PP=nan(no_periods1,no_bands_hi+no_bands_lo);
-            avg_shuf_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
-            avg_shuf_PP=nan(no_periods1,no_bands_hi+no_bands_lo);
-            avg_thresh_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
+            avg_MI=nan(no_periods1,no_bands_hi*no_bands_lo);
+            avg_thresh_MI=nan(no_periods1,no_bands_hi*no_bands_lo);
             
             %% Calculating PLV and shuffled PLV by period.
             
@@ -116,9 +113,11 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 end
                 
                 avg_PP(pd,:)=nanmean(exp(sqrt(-1)*pd_PP));
-                avg_PLV(pd,:)=nanmean(pd_PLV);
+                avg_MI(pd,:)=nanmean(pd_PLV);
                 
                 %% Shuffling.
+            
+                avg_shuf_MI=nan(no_shufs,no_bands_hi*no_bands_lo);
                 
                 [ch1_indices,ch2_indices]=random_pairs(no_shufs,no_epochs);
                 no_shufs = length(ch1_indices);
@@ -148,7 +147,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 end
                 
                 avg_shuf_PP(pd,:) = nanmean(exp(sqrt(-1)*shuf_PP));
-                avg_shuf_PLV(pd,:) = nanmean(shuf_PLV);
+                avg_shuf_MI(pd,:) = nanmean(shuf_PLV);
                 
                 thresh_PLV = (pd_PLV - repmat(nanmean(shuf_PLV),no_epochs,1))./repmat(nanstd(shuf_PLV),no_epochs,1);
                 

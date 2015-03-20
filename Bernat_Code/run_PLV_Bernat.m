@@ -76,8 +76,6 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
             
             avg_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
             avg_PP=nan(no_periods1,no_bands_hi+no_bands_lo);
-            avg_shuf_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
-            avg_shuf_PP=nan(no_periods1,no_bands_hi+no_bands_lo);
             avg_thresh_PLV=nan(no_periods1,no_bands_hi+no_bands_lo);
             
             %% Calculating PLV and shuffled PLV by period.
@@ -119,6 +117,9 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 avg_PLV(pd,:)=nanmean(pd_PLV);
                 
                 %% Shuffling.
+                
+                avg_shuf_PLV=nan(no_shufs,no_bands_hi+no_bands_lo);
+                avg_shuf_PP=nan(no_shufs,no_bands_hi+no_bands_lo);
                 
                 [ch1_indices,ch2_indices]=random_pairs(no_shufs,no_epochs);
                 no_shufs = length(ch1_indices);
