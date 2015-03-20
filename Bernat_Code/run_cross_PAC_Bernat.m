@@ -1,6 +1,6 @@
-function run_cross_PAC_Bernat(no_shufs,chan1_channels,chan2_channels)
+function run_cross_PAC_Bernat(no_shufs, chan1_channels, chan2_channels)
 
-% pair_dir=sprintf('All_%s_by_%s_cohy',chan1_name,chan2_name);
+% pair_dir = sprintf('All_%s_A_by_%s_P_PAC', chan1_name, chan2_name);
 % mkdir (pair_dir)
 
 sampling_freq = 1000;
@@ -94,8 +94,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 
                 %% Calculating PLV.
                 
-                pd_PP=nan(no_epochs,no_bands_hi+no_bands_lo);
-                pd_PLV=nan(no_epochs,no_bands_hi+no_bands_lo);
+                pd_MI = nan(no_epochs, no_bands_hi*no_bands_lo);
                 
                 parfor e = 1:no_epochs
                 
@@ -105,19 +104,23 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                     mat1 = load([channel_dir1,'/',epoch1_name(1:end-4),'_AP.mat']);
                     mat2 = load([channel_dir2,'/',epoch2_name(1:end-4),'_AP.mat']);
                     
-                    [PP,plv]=PLV([mat1.P_lo mat1.P_hi],[mat2.P_lo mat2.P_hi]);
+                    % Computing amplitude vs. phase curves.
                     
-                    pd_PP(e,:)=PP;
-                    pd_PLV(e,:)=plv;
+                    [~, M] = amp_v_phase_Jan(nobins, mat1.A_hi, mat2.P_lo);
+                    
+                    % Finding inverse entropy measure for each pair of modes.
+                    
+                    MI = inv_entropy_no_save(M);
+
+                    pd_MI(e, :) = reshape(MI, 1, no_bands_hi*no_bands_lo);
                     
                 end
                 
-                avg_PP(pd,:)=nanmean(exp(sqrt(-1)*pd_PP));
-                avg_MI(pd,:)=nanmean(pd_PLV);
+                avg_MI(pd, :) = nanmean(pd_MI);
                 
                 %% Shuffling.
             
-                avg_shuf_MI=nan(no_shufs,no_bands_hi*no_bands_lo);
+                avg_shuf_MI = nan(no_shufs,no_bands_hi*no_bands_lo);
                 
                 [ch1_indices,ch2_indices]=random_pairs(no_shufs,no_epochs);
                 no_shufs = length(ch1_indices);
@@ -126,10 +129,9 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 pd2_shuf_list = pd2_list(ch2_indices);
                 
                 shuffle_indices = [ch1_indices ch2_indices];
-                save([pair_dir,'/',pd_pairname,'_shuffles.mat'],'shuffle_indices')
+                save([pair_dir,'/',pd_pairname,'_shuffles.mat'], 'shuffle_indices')
                 
-                shuf_PP=zeros(no_shufs,no_bands_hi+no_bands_lo);
-                shuf_PLV=zeros(no_shufs,no_bands_hi+no_bands_lo);
+                shuf_MI = zeros(no_shufs,no_bands_hi+no_bands_lo);
                 
                 parfor sh = 1:no_shufs
                     
@@ -139,25 +141,29 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                     mat1 = load([channel_dir1,'/',epoch1_name(1:end-4),'_AP.mat']);
                     mat2 = load([channel_dir2,'/',epoch2_name(1:end-4),'_AP.mat']);
                     
-                    [PP,plv]=PLV([mat1.P_lo mat1.P_hi],[mat2.P_lo mat2.P_hi]);
+                    % Computing amplitude vs. phase curves.
                     
-                    shuf_PP(sh,:)=PP;
-                    shuf_PLV(sh,:)=plv;
+                    [~, M] = amp_v_phase_Jan(nobins, mat1.A_hi, mat2.P_lo);
+                    
+                    % Finding inverse entropy measure for each pair of modes.
+                    
+                    MI = inv_entropy_no_save(M);
+                    
+                    shuf_MI(sh,:) = reshape(MI, 1, no_bands_hi*no_bands_lo);
                     
                 end
                 
-                avg_shuf_PP(pd,:) = nanmean(exp(sqrt(-1)*shuf_PP));
-                avg_shuf_MI(pd,:) = nanmean(shuf_PLV);
+                avg_shuf_MI(pd,:) = nanmean(shuf_MI);
                 
-                thresh_PLV = (pd_PLV - repmat(nanmean(shuf_PLV),no_epochs,1))./repmat(nanstd(shuf_PLV),no_epochs,1);
+                thresh_MI = (pd_MI - repmat(nanmean(shuf_MI),no_epochs,1))./repmat(nanstd(shuf_MI),no_epochs,1);
                 
-                avg_thresh_PLV(pd,:) = nanmean(thresh_PLV);
+                avg_thresh_MI(pd,:) = nanmean(thresh_MI);
                 
-                save([pair_dir,'/',pd_pairname,'.mat'],'pd_PP','pd_PLV','shuf_PP','shuf_PLV','thresh_PLV')
+                save([pair_dir,'/',pd_pairname,'.mat'], 'pd_MI', 'shuf_MI', 'thresh_MI')
                 
             end
             
-            save([pair_dir,'/',pair_dir,'.mat'],'avg_PP','avg_PLV','avg_shuf_PP','avg_shuf_PLV','avg_thresh_PLV')
+            save([pair_dir,'/',pair_dir,'.mat'], 'avg_MI', 'avg_shuf_MI', 'avg_thresh_MI')
             
             delete([channel_dir1,'/*AP.mat'])
             delete([channel_dir2,'/*AP.mat'])
