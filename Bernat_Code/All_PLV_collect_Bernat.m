@@ -82,7 +82,7 @@ for d = 1:drug_num
             fprintf(PLV_thresh_fid,PLV_format,subj_PLV_thresh(e,:));
             fprintf(PLV_zs_fid,PLV_format,subj_PLV_zs(e,:));
             fprintf(PLV_pct_fid,PLV_format,subj_PLV_pct(e,:));
-            fprintf(PLV_thresh_pct_fid,PLV_fromat,subj_PLV_thresh_pct(e,:));
+            fprintf(PLV_thresh_pct_fid,PLV_format,subj_PLV_thresh_pct(e,:));
             fprintf(PP_fid,PLV_format,subj_PP(e,:));
             
         end
