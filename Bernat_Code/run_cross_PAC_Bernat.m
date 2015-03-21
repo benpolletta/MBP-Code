@@ -131,7 +131,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
                 shuffle_indices = [ch1_indices ch2_indices];
                 save([pair_dir,'/',pd_pairname,'_shuffles.mat'], 'shuffle_indices')
                 
-                shuf_MI = zeros(no_shufs,no_bands_hi+no_bands_lo);
+                shuf_MI = zeros(no_shufs, no_bands_hi*no_bands_lo);
                 
                 parfor sh = 1:no_shufs
                     
