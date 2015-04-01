@@ -5,15 +5,15 @@ function [handle]=figure_replotter(numbers,rows,cols,x_tick_no,y_tick_no,x_tick_
 % which case it has length rows*cols, or it can contain cols labels for the
 % columns, followed by rows labels for the rows.
 
-x_tick_labels_selected = linspace(x_tick_labels(1),x_tick_labels(2),x_tick_no);
-for xt=1:x_tick_no
-   [~,x_tick_selected(xt)] = min(abs(x_tick_labels-x_tick_labels_selected(xt))); 
-end
-
-y_tick_labels_selected = linspace(y_tick_labels(1),y_tick_labels(2),y_tick_no);
-for yt=1:y_tick_no
-   [~,y_tick_selected(yt)] = min(abs(y_tick_labels-y_tick_labels_selected(yt))); 
-end
+% x_tick_labels_selected = linspace(x_tick_labels(1),x_tick_labels(2),x_tick_no);
+% for xt=1:x_tick_no
+%    [~,x_tick_selected(xt)] = min(abs(x_tick_labels-x_tick_labels_selected(xt))); 
+% end
+% 
+% y_tick_labels_selected = linspace(y_tick_labels(1),y_tick_labels(2),y_tick_no);
+% for yt=1:y_tick_no
+%    [~,y_tick_selected(yt)] = min(abs(y_tick_labels-y_tick_labels_selected(yt))); 
+% end
 
 
 nophases=length(x_tick_labels);

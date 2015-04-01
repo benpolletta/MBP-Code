@@ -25,23 +25,23 @@ MI_stats=nan(matrix_rows,matrix_columns,no_stats);
 
 close('all')
 
-for c3=1:2%no_cats3
+for c3 = 1:no_cats3
     
-    cat3=char(cat3_labels{c3});
+    cat3 = char(cat3_labels{c3});
     
-    MI_cat3=MI(strcmp(cat3_vec,cat3),:);
+    MI_cat3 = MI(strcmp(cat3_vec,cat3),:);
     
-    cat1_in_cat3=cat1_vec(strcmp(cat3_vec,cat3));
+    cat1_in_cat3 = cat1_vec(strcmp(cat3_vec,cat3));
     
-    cat2_in_cat3=cat2_vec(strcmp(cat3_vec,cat3));
+    cat2_in_cat3 = cat2_vec(strcmp(cat3_vec,cat3));
     
-    figs=nan(3,no_cats1*no_cats2);
+    figs = nan(3,no_cats1*no_cats2);
     
-    for c1=1:no_cats1
+    for c1 = 1:no_cats1
         
-        cat1=char(cat1_labels{c1});
+        cat1 = char(cat1_labels{c1});
         
-        MI_cat1=MI_cat3(strcmp(cat1_in_cat3,cat1),:);
+        MI_cat1 = MI_cat3(strcmp(cat1_in_cat3,cat1),:);
         
         cat2_in_cat1=cat2_in_cat3(strcmp(cat1_in_cat3,cat1));
         

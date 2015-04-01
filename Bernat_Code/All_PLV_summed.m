@@ -28,8 +28,10 @@ name = sprintf('ALL_%s_by_%s_PLV', channel_label1, channel_label2);
 PLV = load([name, '/', name, '.txt']);
 PLV_zs = load([name, '/', name, '_zs.txt']);
 PLV_pct = load([name, '/', name, '_pct.txt']);
+PLV_thresh = load([name, '/', name, '_thresh.txt']);
+PLV_thresh_pct = load([name, '/', name, '_thresh_pct.txt']);
 
-%% Summing MI over amplitude and frequency rectangles, saving.
+%% Summing PLV over frequency intervals, saving.
 
 [summed_PLV, summed_PLV_zs, summed_PLV_pct] = deal(nan(size(PLV,1), no_fls));
 
@@ -44,8 +46,10 @@ for fl = 1:no_fls
     summed_PLV(:, fl) = sum(PLV(:, freq_indices), 2);
     summed_PLV_pct(:, fl) = sum(PLV_pct(:, freq_indices), 2);
     summed_PLV_zs(:, fl) = sum(PLV_zs(:, freq_indices), 2);
+    summed_PLV_thresh(:, fl) = sum(PLV_thresh(:, freq_indices), 2);
+    summed_PLV_thresh_pct(:, fl) = sum(PLV_thresh_pct(:, freq_indices), 2);
     
 end
 
-save([name, '/', name,'_summed.mat'], 'band_labels', 'summed_PLV', 'summed_PLV_pct', 'summed_PLV_zs')
+save([name, '/', name,'_summed.mat'], 'band_labels', 'summed_PLV', 'summed_PLV_pct', 'summed_PLV_zs', 'summed_PLV_thresh', 'summed_PLV_thresh_pct')
         

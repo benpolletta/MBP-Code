@@ -36,7 +36,7 @@ no_stats=length(stat_labels);
 
 close('all')
 
-if isempty(dir([name,'_spec_stats_for_cplot.mat']))
+% if isempty(dir([name,'_spec_stats_for_cplot.mat']))
     
     spec_stats=zeros(no_freqs,no_cats1,no_cats2,no_stats);
     
@@ -74,11 +74,14 @@ if isempty(dir([name,'_spec_stats_for_cplot.mat']))
     
     save([name,'_spec_stats_for_cplot.mat'],'spec_stats','cat1_labels','cat2_labels')
     
-else
-   
-    load([name,'_spec_stats_for_cplot.mat'])
-    
-end
+% else
+%    
+%     load([name,'_spec_stats_for_cplot.mat'])
+%     
+%     no_cats1=length(cat1_labels);
+%     no_cats2=length(cat2_labels);
+%     
+% end
 
 color_lim = zeros(no_bands,2,no_stats);
 
@@ -93,7 +96,7 @@ for b=1:no_bands
     
 end
 
-for c1=4:no_cats1
+for c1 = 1:no_cats1
     
     cat1=char(cat1_labels{c1});
     

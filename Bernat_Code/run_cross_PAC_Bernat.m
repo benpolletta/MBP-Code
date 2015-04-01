@@ -71,7 +71,7 @@ for s = 1:min(length(chan1_channels),length(chan2_channels))
         
         if no_periods1==no_periods2
             
-            pair_dir=sprintf('%s_ch%d_A_by_ch%d_P_PAC', subject_dir, channel_pair);
+            pair_dir = sprintf('%s_ch%d_A_by_ch%d_P_PAC', subject_dir, channel_pair);
             mkdir (pair_dir)
             
             avg_MI=nan(no_periods1,no_bands_hi*no_bands_lo);
