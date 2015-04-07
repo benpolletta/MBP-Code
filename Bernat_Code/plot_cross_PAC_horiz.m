@@ -6,11 +6,11 @@ no_drugs = length(drugs);
 
 amps=20:5:200; phases=1:.25:12;
 
-for i = 1:no_chan_pairs*10, xlabels{i}='Phase Freq. (Hz)'; end
-
 channels={'Frontal','Occipital','CA1'};
 
 channel_pairs = [1 3; 3 1]; no_chan_pairs = size(chan_pairs, 1);
+
+for i = 1:no_chan_pairs*10, xlabels{i} = 'Phase Freq. (Hz)'; end
 
 stats={'median','mean'};
 long_stats={'Median','Mean'};
