@@ -29,7 +29,7 @@ for c = 1:no_chan_pairs
         
         index = 1;
         
-        for d = [4 1 2 3]
+        for d = 1:4 % [4 1 2 3]
             
             ylabels{index} = {[long_stats{s},' ', channels{chan_pairs(c, 1)}, ' by ', channels{chan_pairs(c, 1)}, ' MI, ', drugs{d}]; 'Amp. Freq. (Hz)'};
             
