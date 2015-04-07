@@ -43,7 +43,7 @@ for c = 1:no_chan_pairs
             
         end
         
-        figure_replotter_labels(1:4*length(pd_labels), 4, no_pds, 'rows+', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
+        figure_replotter_labels(1:4*length(pd_labels), 4, no_pds, 'rows', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
         
         saveas(gcf,[channel_name,'/',channel_name,norm,'_MI_horiz_',stats{s},'.fig'])
         set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
@@ -75,7 +75,7 @@ for d = 1:no_drugs
             
         end
         
-        figure_replotter_labels(1:no_chan_pairs*no_pds, no_chan_pairs, no_pds, 'rows+', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
+        figure_replotter_labels(1:no_chan_pairs*no_pds, no_chan_pairs, no_pds, 'rows', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
         
         saveas(gcf, ['ALL_', drugs{d}, '_cross_MI_horiz_', stats{s}, '.fig'])
         set(gcf, 'PaperOrientation', 'landscape', 'PaperUnits', 'normalized', 'PaperPosition', [0 0 1 1])
