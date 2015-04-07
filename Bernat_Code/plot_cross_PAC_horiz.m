@@ -34,7 +34,7 @@ for c = 1:no_chan_pairs
             
             for p=1:length(pd_labels)
                 
-                open([channel_name, '/', channel_name, norm, '_hr_', drugs{d}, '_', drugs{d}, '_', pd_labels{p}, '_', stats{s}, '.fig'])
+                open([channel_name, '/', channel_name, norm, '_hrs_', drugs{d}, '_', drugs{d}, '_', pd_labels{p}, '_', stats{s}, '.fig'])
                 
             end
             
