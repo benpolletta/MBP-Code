@@ -7,8 +7,6 @@ function [max_data_all,data_all]=figure_replotter_labels(numbers,rows,cols,clims
 x_dim=length(x_tick_labels);
 x_tick_selected=1:floor(x_dim/x_tick_no):x_dim;
 y_dim=length(y_tick_labels);
-y_dim
-y_tick_no
 y_tick_selected=1:floor(y_dim/y_tick_no):y_dim;
 
 data_all=nan(y_dim,x_dim,rows*cols);
