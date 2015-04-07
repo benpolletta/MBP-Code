@@ -85,12 +85,12 @@ for n = 1:no_norms
         
         if strcmp(state_flag, 'state')
             
-            cplot_collected_MI_by_3_categories([dir,'/',dir(1:end-4),'_PLV',norms{n},'_',period_flag,'_by_state'],rows,cols,phase_freqs,amp_freqs,...
+            cplot_collected_MI_by_3_categories([dir,'/',dir(1:end-4),'_PAC',norms{n},'_',period_flag,'_by_state_',drug_labels{d}],rows,cols,phase_freqs,amp_freqs,...
                 {drug_labels(d), drug_labels(d)},{state_labels, state_labels},{pd_labels, long_pd_labels},drugs,states,periods,PAC_data)
             
         else
             
-            cplot_collected_MI_by_categories([dir,'/',dir(1:end-4),'_PLV',norms{n},'_',period_flag],rows,cols,phase_freqs,amp_freqs,...
+            cplot_collected_MI_by_categories([dir,'/',dir(1:end-4),'_PAC',norms{n},'_',period_flag,'_',drug_labels{d}],rows,cols,phase_freqs,amp_freqs,...
                 {drug_labels(d), drug_labels(d)},{pd_labels, long_pd_labels},drugs,periods,PAC_data)
             
         end
