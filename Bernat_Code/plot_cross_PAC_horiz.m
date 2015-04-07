@@ -44,9 +44,9 @@ for c = 1:no_chan_pairs
         
         figure_replotter_labels(1:4*length(pd_labels), 4, no_pds, 4, 7, phases, amps, pd_labels, xlabels, ylabels)
         
-        saveas(gcf,[channel_name,'/',measure_name,'_MI_horiz_',stats{s},'.fig'])
+        saveas(gcf,[channel_name,'/',channel_name,norm,'_MI_horiz_',stats{s},'.fig'])
         set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
-        print(gcf,'-dpdf',[channel_name,'/',measure_name,'_MI_horiz_',stats{s},'.pdf'])
+        print(gcf,'-dpdf',[channel_name,'/',channel_name,norm,'_MI_horiz_',stats{s},'.pdf'])
         
         close('all')
         
@@ -68,7 +68,7 @@ for d = 1:no_drugs
             
             for p=1:length(pd_labels)
                 
-                open([channel_name, '/', channel_name, norm, '_hr_', drugs{d}, '_', drugs{d}, '_', pd_labels{p}, '_', stats{s}, '.fig'])
+                open([channel_name, '/', channel_name, norm, '_hrs_', drugs{d}, '_', drugs{d}, '_', pd_labels{p}, '_', stats{s}, '.fig'])
                 
             end
             
@@ -86,21 +86,21 @@ for d = 1:no_drugs
     
 end
 
-for c=1:length(channels)
-    
-    for s=1:length(stats)
-        
-        open(['ALL_',channels{c},'/ALL_',channels{c},'_p0.99_IEzs_MI_horiz_',stats{s},'.fig'])
-        
-    end
-    
-end
+% for c=1:length(channels)
+%     
+%     for s=1:length(stats)
+%         
+%         open(['ALL_',channels{c},'/ALL_',channels{c},'_p0.99_IEzs_MI_horiz_',stats{s},'.fig'])
+%         
+%     end
+%     
+% end
 
 for d=1:4
     
     for s=1:length(stats)
         
-        open(['ALL_',drugs{d},'_MI_horiz_',stats{s},'.fig'])
+        open(['ALL_',drugs{d},'_cross_MI_horiz_',stats{s},'.fig'])
         
     end
     
