@@ -33,21 +33,21 @@ for c = 1:no_chan_pairs
             
             ylabels{index} = {long_stats{s}; [channels{chan_pairs(c, 1)}, ' by ', channels{chan_pairs(c, 2)}, ', ', drugs{d}]; 'Amp. Freq. (Hz)'};
             
-            for p=1:length(pd_labels)
+            for p=1:no_pds
                 
                 open([channel_name, '/', channel_name, norm, '_hrs_', drugs{d}, '_', drugs{d}, '_', pd_labels{p}, '_', stats{s}, '.fig'])
                 
             end
             
-            index=index+1;
+            index = index+1;
             
         end
         
-        figure_replotter_labels(1:4*length(pd_labels), 4, no_pds, 'rows', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
+        figure_replotter_labels(1:4*no_pds, 4, no_pds, 'rows', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
         
-        saveas(gcf,[channel_name,'/',channel_name,norm,'_MI_horiz_',stats{s},'.fig'])
-        set(gcf,'PaperOrientation','landscape','PaperUnits','normalized','PaperPosition',[0 0 1 1])
-        print(gcf,'-dpdf',[channel_name,'/',channel_name,norm,'_MI_horiz_',stats{s},'.pdf'])
+        saveas(gcf, [channel_name, '/', channel_name, norm, '_MI_horiz_', stats{s}, '.fig'])
+        set(gcf, 'PaperOrientation', 'landscape', 'PaperUnits', 'normalized', 'PaperPosition', [0 0 1 1])
+        print(gcf, '-dpdf', [channel_name, '/', channel_name, norm, '_MI_horiz_', stats{s}, '.pdf'])
         
         close('all')
         
@@ -67,7 +67,7 @@ for d = 1:no_drugs
             
             channel_name = sprintf('ALL_%s_A_by_%s_P_PAC', channels{chan_pairs(c, :)});
             
-            for p=1:length(pd_labels)
+            for p = 1:length(pd_labels)
                 
                 open([channel_name, '/', channel_name, norm, '_hrs_', drugs{d}, '_', drugs{d}, '_', pd_labels{p}, '_', stats{s}, '.fig'])
                 
