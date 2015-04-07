@@ -10,7 +10,8 @@ channels={'Frontal','Occipital','CA1'};
 
 chan_pairs = [1 3; 3 1]; no_chan_pairs = size(chan_pairs, 1);
 
-stats={'Median', 'Mean'};
+stats = {'median', 'mean'};
+long_stats = {'Median', 'Mean'};
 
 [pd_labels, pd_corder] = make_period_labels(2,8,'hrs'); no_pds = length(pd_labels);
 
@@ -30,7 +31,7 @@ for c = 1:no_chan_pairs
         
         for d = [4 1 2 3]
             
-            ylabels{index} = {[stats{s},' ', channels{chan_pairs(c, 1)}, ' by ', channels{chan_pairs(c, 1)}, ' MI, ', drugs{d}]; 'Amp. Freq. (Hz)'};
+            ylabels{index} = {[long_stats{s},' ', channels{chan_pairs(c, 1)}, ' by ', channels{chan_pairs(c, 1)}, ' MI, ', drugs{d}]; 'Amp. Freq. (Hz)'};
             
             for p=1:length(pd_labels)
                 
@@ -62,7 +63,7 @@ for d = 1:no_drugs
         
         for c = 1:no_chan_pairs
             
-            ylabels{c} = {[stats{s},' ',channels{c},' MI, ',drugs{d}];'Amp. Freq. (Hz)'};
+            ylabels{c} = {[long_stats{s},' ',channels{c},' MI, ',drugs{d}];'Amp. Freq. (Hz)'};
             
             channel_name = sprintf('ALL_%s_A_by_%s_P_PAC', channels{chan_pairs(c, :)});
             
