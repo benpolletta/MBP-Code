@@ -123,11 +123,7 @@ for n = 1:no_norms
             
             for d = 1:no_drugs
                 
-                size(All_cplot_data)
-                
-                max_hr_indices(d, s, c, n) + 4
-                
-                All_cplot_for_plot(:, :, d + 1, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4, s, c, n);
+                All_cplot_for_plot(:, :, d + 1, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4 - 1, s, c, n);
                 
             end
             
@@ -179,11 +175,11 @@ for n = 1:no_norms
                 
                 if c == 1
                     
-                    title({[drugs{d}, ', ', long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d, s, c, n) + 4}})
+                    title({[drugs{d}, ', ', long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d, s, c, n) + 4 - 1}})
                     
                 else
                     
-                    title(max_hr_indices(d, s, c, n) + 4)
+                    title(long_hr_labels{max_hr_indices(d, s, c, n) + 4 - 1})
                     
                 end
             
