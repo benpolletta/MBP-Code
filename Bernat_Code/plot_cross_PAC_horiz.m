@@ -25,7 +25,7 @@ for c = 1:no_chan_pairs
             
     channel_name = sprintf('ALL_%s_A_by_%s_P_PAC', channels{chan_pairs(c, :)});
     
-    for s=1:length(stats)
+    for s = 1:length(stats)
         
         index = 1;
         
