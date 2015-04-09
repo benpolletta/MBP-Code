@@ -48,7 +48,7 @@ for n=1:no_norms
 
         %% Getting preinjection data.
         
-        if isempty([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection'])
+        if isempty(dir([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection.mat']))
             
             hr_periods = text_read([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_periods.txt'],'%s');
             
@@ -64,7 +64,7 @@ for n=1:no_norms
             
         else
             
-            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection'])
+            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection.mat'])
             
         end
             
