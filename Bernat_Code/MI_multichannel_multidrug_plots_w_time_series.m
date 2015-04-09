@@ -133,6 +133,10 @@ for n = 1:no_norms
     
 end
 
+size(max(max(max(All_cplot_for_plot)), [], 5))
+
+no_drugs, no_stats, no_norms
+
 max_by_drug = reshape(max(max(max(All_cplot_for_plot)), [], 5), no_drugs, no_stats, no_norms);
 
 min_by_drug = reshape(min(min(min(All_cplot_for_plot)), [], 5), no_drugs, no_stats, no_norms);
