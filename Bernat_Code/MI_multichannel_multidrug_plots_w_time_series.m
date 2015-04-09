@@ -123,7 +123,7 @@ handle = nan(no_drugs, no_norms, no_stats);
 
 All_cplot_for_plot = nan(no_afs, no_pfs, no_drugs + 1, no_stats, no_channels, no_norms);
 
-All_cplot_for_plot(:, :, 1, :, :, :) = permute(preinj_data(:, :, :, :, :), [1 2 6 3 4 5]);
+% All_cplot_for_plot(:, :, 1, :, :, :) = permute(preinj_data(:, :, :, :, :), [1 2 6 3 4 5]);
 
 for n = 1:no_norms
     
