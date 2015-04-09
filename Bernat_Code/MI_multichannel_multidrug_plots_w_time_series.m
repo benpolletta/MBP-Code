@@ -48,15 +48,25 @@ for n=1:no_norms
 
         %% Getting preinjection data.
         
-        hr_periods = text_read([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_periods.txt'],'%s');
-        
-        MI = load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '.txt']);
-        
-        preinj_indices = strcmp(hr_periods, 'pre1') | strcmp(hr_periods, 'pre2');
-        
-        preinj_data(:, :, 1, c, n) = reshape(nanmedian(MI(preinj_indices, :)), no_afs, no_pfs);
-        
-        preinj_data(:, :, 2, c, n) = reshape(nanmean(MI(preinj_indices, :)), no_afs, no_pfs);
+        if isempty([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection'])
+            
+            hr_periods = text_read([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_periods.txt'],'%s');
+            
+            MI = load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '.txt']);
+            
+            preinj_indices = strcmp(hr_periods, 'pre1') | strcmp(hr_periods, 'pre2');
+            
+            preinj_data(:, :, 1, c, n) = reshape(nanmedian(MI(preinj_indices, :)), no_afs, no_pfs);
+            
+            preinj_data(:, :, 2, c, n) = reshape(nanmean(MI(preinj_indices, :)), no_afs, no_pfs);
+            
+            save([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection'], 'preinj_data')
+            
+        else
+            
+            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection'])
+            
+        end
             
         %% Getting colorplot data.
         
@@ -113,13 +123,15 @@ handle = nan(no_drugs, no_norms, no_stats);
 
 All_cplot_for_plot = nan(no_afs, no_pfs, no_drugs + 1, no_stats, no_channels, no_norms);
 
+All_cplot_for_plot(:, :, 1, s, c, n) = permute(preinj_data(:, :, s, c, n), [1 2 6 3 4 5]);
+
 for n = 1:no_norms
     
     for c = 1:no_channels
         
         for s = 1:no_stats
             
-            All_cplot_for_plot(:, :, 1, s, c, n) = preinj_data(:, :, s, c, n);
+            % All_cplot_for_plot(:, :, 1, s, c, n) = preinj_data(:, :, s, c, n);
             
             for d = 1:no_drugs
                 
@@ -133,13 +145,9 @@ for n = 1:no_norms
     
 end
 
-size(max(max(max(All_cplot_for_plot)), [], 5))
+max_by_drug = reshape(max(max(max(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
 
-no_drugs, no_stats, no_norms
-
-max_by_drug = reshape(max(max(max(All_cplot_for_plot)), [], 5), no_drugs, no_stats, no_norms);
-
-min_by_drug = reshape(min(min(min(All_cplot_for_plot)), [], 5), no_drugs, no_stats, no_norms);
+min_by_drug = reshape(min(min(min(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
 
 for n = 1:no_norms
     
