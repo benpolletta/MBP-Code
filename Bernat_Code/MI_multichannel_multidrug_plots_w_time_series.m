@@ -181,6 +181,8 @@ for n = 1:no_norms
                 
                 imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, d, s, c, n))
                 
+                min_by_drug(d, s, n), max_by_drug(d, s, n)
+                
                 caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
                 
                 axis xy
