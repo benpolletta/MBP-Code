@@ -187,7 +187,7 @@ for n = 1:no_norms
                 
                 if c == 1
                     
-                    title({[drugs{d}, ', ', long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d, s, c, n) + 4 - 1}})
+                    title({[drugs{d - 1}, ', ', long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d, s, c, n) + 4 - 1}})
                     
                 else
                     
@@ -221,7 +221,7 @@ for n = 1:no_norms
                     
                     if b == 1 && d == 2
                         
-                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d}], ['Occi., ', drugs{d}], ['CA1, ', drugs{d}]},...
+                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d - 1}], ['CA1, ', drugs{d - 1}]},...
                             'Location', 'NorthWest', 'FontSize', 6)
                         
                     end
@@ -232,7 +232,7 @@ for n = 1:no_norms
                     
                     ylim([med_min - .2*med_range, med_min + 1.05*med_range])
                     
-                    title([drugs{d}, ', ', band_labels{b}])
+                    title([drugs{d - 1}, ', ', band_labels{b}])
                     
                     xlabel('Time Rel. Inj. (h)')
                     
@@ -251,12 +251,8 @@ end
 for n=1:no_norms
     
     for s=1:no_stats
-        
-        for d=1:no_drugs
             
-            open(['ALL_',drugs{d},'_MI',norms{n},'_multichannel_', stats{s}, '.fig'])
-            
-        end
+        open(['ALL_MI',norms{n},'_multichannel_multidrug_', stats{s}, '.fig'])
         
     end
     
