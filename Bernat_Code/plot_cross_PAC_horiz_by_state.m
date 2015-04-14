@@ -111,7 +111,7 @@ for d = 1:4
                 
             end
             
-            figure_replotter_labels(1:no_chan_pairs*no_pds, no_chan_pairs, no_pds, 4, 7, 'rows',...
+            figure_replotter_labels_subregion(1:no_chan_pairs*no_pds, no_chan_pairs, no_pds, 4, 7, 'rows',...
                 phases, amps, phase_range, amp_range, pd_labels, xlabels, ylabels)
             
             save_as_pdf(gcf, ['ALL_', drugs{d}, '_cross_MI_horiz_', states{st}, '_', stats{s}, freq_label])
