@@ -39,13 +39,13 @@ elseif strcmp(period_flag, '4hrs')
     
     if strcmp(state_flag, 'state')
     
-        no_pre = 1; no_post = 4;
+        no_pre = 4; no_post = 16;
     
         rows = 3; cols = 5;
         
     else
         
-        no_pre = 2; no_post = 6;
+        no_pre = 8; no_post = 24;
         
         rows = 2; cols = 4;
     

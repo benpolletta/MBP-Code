@@ -1,4 +1,4 @@
-function plot_cross_PAC_horiz(norm)
+function plot_cross_PAC_horiz(norm, freq_label, phase_range, amp_range)
 
 load('drugs.mat')
 
@@ -20,6 +20,8 @@ xlabels = cell(no_chan_pairs*no_pds, 1);
 for i = 1:no_chan_pairs*no_pds, xlabels{i} = 'Phase Freq. (Hz)'; end
 
 ylabels = cell(4, 1);
+
+%% Figures by drug.
 
 for c = 1:no_chan_pairs
             
@@ -43,17 +45,30 @@ for c = 1:no_chan_pairs
             
         end
         
-        figure_replotter_labels(1:4*no_pds, 4, no_pds, 'rows', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
+        if isempty(phase_range)
+            
+            phase_range = [min(phases) max(phases)];
         
-        saveas(gcf, [channel_name, '/', channel_name, norm, '_MI_horiz_', stats{s}, '.fig'])
-        set(gcf, 'PaperOrientation', 'landscape', 'PaperUnits', 'normalized', 'PaperPosition', [0 0 1 1])
-        print(gcf, '-dpdf', [channel_name, '/', channel_name, norm, '_MI_horiz_', stats{s}, '.pdf'])
+        end
+            
+        if isempty(amp_range)
+        
+            amp_range = [min(amps) max(amps)];
+            
+        end
+            
+        figure_replotter_labels_subregion(1:4*no_pds, 4, no_pds, 'rows', 4, 7,...
+            phases, amps, phase_range, amp_range, pd_labels, xlabels, ylabels)
+            
+        save_as_pdf(gcf, [channel_name, '/', channel_name, norm, '_MI_horiz_', stats{s}, freq_label])
         
         close('all')
         
     end
     
 end
+
+%% Figures by channel pair.
 
 clear ylabels
 
@@ -75,11 +90,22 @@ for d = 1:no_drugs
             
         end
         
-        figure_replotter_labels(1:no_chan_pairs*no_pds, no_chan_pairs, no_pds, 'rows', 4, 7, phases, amps, pd_labels, xlabels, ylabels)
+        if isempty(phase_range)
+            
+            phase_range = [min(phases) max(phases)];
         
-        saveas(gcf, ['ALL_', drugs{d}, '_cross_MI_horiz_', stats{s}, '.fig'])
-        set(gcf, 'PaperOrientation', 'landscape', 'PaperUnits', 'normalized', 'PaperPosition', [0 0 1 1])
-        print(gcf, '-dpdf', ['ALL_', drugs{d}, '_cross_MI_horiz_', stats{s}, '.pdf'])
+        end
+            
+        if isempty(amp_range)
+        
+            amp_range = [min(amps) max(amps)];
+            
+        end
+        
+        figure_replotter_labels_subregion(1:no_chan_pairs*no_pds, no_chan_pairs, no_pds, 'rows', 4, 7,...
+            phases, amps, phase_range, amp_range, pd_labels, xlabels, ylabels)
+        
+        save_as_pdf(gcf, ['ALL_', drugs{d}, '_cross_MI_horiz_', stats{s}, freq_label])
         
         close('all')
         
@@ -87,21 +113,23 @@ for d = 1:no_drugs
     
 end
 
-% for c=1:length(channels)
-%     
-%     for s=1:length(stats)
-%         
-%         open(['ALL_',channels{c},'/ALL_',channels{c},'_p0.99_IEzs_MI_horiz_',stats{s},'.fig'])
-%         
-%     end
-%     
-% end
+for c = 1:no_chan_pairs
+            
+    channel_name = sprintf('ALL_%s_A_by_%s_P_PAC', channels{chan_pairs(c, :)});
+    
+    for s = 1:length(stats)
+        
+        open([channel_name, '/', channel_name, norm, '_MI_horiz_', stats{s}, freq_label, '.fig'])
+        
+    end
+    
+end
 
 for d=1:4
     
     for s=1:length(stats)
         
-        open(['ALL_',drugs{d},'_cross_MI_horiz_',stats{s},'.fig'])
+        open(['ALL_', drugs{d}, '_cross_MI_horiz_', stats{s}, freq_label, '.fig'])
         
     end
     

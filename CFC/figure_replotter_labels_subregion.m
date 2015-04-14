@@ -4,21 +4,23 @@ function [max_data_all,data_all]=figure_replotter_labels_subregion(numbers,rows,
 % which case it has length rows*cols, or it can contain cols labels for the
 % columns, followed by rows labels for the rows.
 
-x_sub_indices=find(x_subregion(1)<=x_tick_labels & x_tick_labels <= x_subregion(2));
-x_tick_sub=x_tick_labels(x_sub_indices);
-x_dim=length(x_tick_sub);
-x_tick_labels_selected = linspace(x_subregion(1),x_subregion(2),x_tick_no);
-for xt=1:x_tick_no
-   [~,x_tick_selected(xt)] = min(abs(x_tick_sub-x_tick_labels_selected(xt))); 
+x_sub_indices = find(x_subregion(1) <= x_tick_labels & x_tick_labels <= x_subregion(2));
+x_tick_sub = x_tick_labels(x_sub_indices);
+x_dim = length(x_tick_sub);
+x_tick_labels_selected = linspace(x_subregion(1), x_subregion(2), x_tick_no);
+for xt = 1:x_tick_no
+   [~, x_tick_selected(xt)] = min(abs(x_tick_sub - x_tick_labels_selected(xt))); 
 end
+x_tick_labels_selected = round(x_tick_labels_selected*10)/10;
 
-y_sub_indices=find(y_subregion(1)<=y_tick_labels & y_tick_labels <= y_subregion(2));
-y_tick_sub=y_tick_labels(y_sub_indices);
-y_dim=length(y_tick_sub);
-y_tick_labels_selected = linspace(y_subregion(1),y_subregion(2),y_tick_no);
-for yt=1:y_tick_no
-   [~,y_tick_selected(yt)] = min(abs(y_tick_sub-y_tick_labels_selected(yt))); 
+y_sub_indices = find(y_subregion(1) <= y_tick_labels & y_tick_labels <= y_subregion(2));
+y_tick_sub = y_tick_labels(y_sub_indices);
+y_dim = length(y_tick_sub);
+y_tick_labels_selected = linspace(y_subregion(1), y_subregion(2), y_tick_no);
+for yt = 1:y_tick_no
+   [~, y_tick_selected(yt)] = min(abs(y_tick_sub - y_tick_labels_selected(yt))); 
 end
+y_tick_labels_selected = round(y_tick_labels_selected*10)/10;
 
 data_all=nan(y_dim,x_dim,rows,cols);
 max_data_all = nan(rows,cols);

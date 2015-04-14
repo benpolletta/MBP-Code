@@ -115,7 +115,7 @@ for n=1:no_norms
     
 end
 
-[~, max_hr_indices] = max(max(max(All_cplot_data(:, :, :, 4:end, :, :, :))), [], 4);
+[~, max_hr_indices] = nanmax(nanmax(nanmax(All_cplot_data(:, :, :, 4:end, :, :, :))), [], 4);
 
 max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
 
@@ -131,7 +131,7 @@ for n = 1:no_norms
         
         for s = 1:no_stats
             
-            % All_cplot_for_plot(:, :, 1, s, c, n) = preinj_data(:, :, s, c, n);
+            All_cplot_for_plot(:, :, 1, s, c, n) = preinj_data(:, :, s, c, n);
             
             for d = 1:no_drugs
                 
@@ -145,9 +145,9 @@ for n = 1:no_norms
     
 end
 
-max_by_drug = reshape(max(max(max(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
 
-min_by_drug = reshape(min(min(min(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
 
 for n = 1:no_norms
     
@@ -181,8 +181,6 @@ for n = 1:no_norms
                 
                 imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, d, s, c, n))
                 
-                min_by_drug(d, s, n), max_by_drug(d, s, n)
-                
                 caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
                 
                 axis xy
@@ -201,13 +199,13 @@ for n = 1:no_norms
                 
                 if d > 1
                     
-                    for b = bands_plotted
+                    for b = 1:no_bands_plotted
                         
                         clear plot_stats plot_test
                         
-                        plot_stats = [All_BP_stats(:, :, b, 1, 1) All_BP_stats(:, :, b, 1, d)];
+                        plot_stats = [All_BP_stats(:, :, bands_plotted(b), 1, 1) All_BP_stats(:, :, bands_plotted(b), 1, d)];
                         
-                        plot_test(:, :) = [nan(size(All_BP_test(:, :, b, d - 1))) All_BP_test(:, :, b, d - 1)];
+                        plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), d - 1))) All_BP_test(:, :, bands_plotted(b), d - 1)];
                         
                         plot_test(plot_test == 0) = nan;
                         
