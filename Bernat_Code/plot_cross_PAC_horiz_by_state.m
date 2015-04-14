@@ -132,7 +132,7 @@ for c=1:no_chan_pairs
         
         for st=1:no_states
             
-            open([channel_name, '/', channel_name, '_cross_MI_horiz_', states{st}, '_', stats{s}, '.fig'])
+            open([channel_name, '/', channel_name, '_cross_MI_horiz_', states{st}, '_', stats{s}, freq_label, '.fig'])
             
         end
         
