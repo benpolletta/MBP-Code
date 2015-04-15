@@ -237,7 +237,7 @@ for n = 1:no_norms
                     
                     if d == 2
                         
-                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d}], ['CA1, ', drugs{d}]},...
+                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', 'Fr., drug', 'Occi., drug', 'CA1, drug'},...
                             'Location', 'NorthWest', 'FontSize', 6)
                         
                     end
