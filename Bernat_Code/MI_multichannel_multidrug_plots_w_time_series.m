@@ -20,7 +20,7 @@ no_hr_periods = length(hr_labels);
 no_pre=4; no_post=16;
 [BP_hr_labels, ~, ~] = make_period_labels(no_pre, no_post, 'hrs');
 no_BP_hr_periods = length(BP_hr_labels);
-short_BP_hr_labels = -4:12; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
+short_BP_hr_labels = -4:16; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
 
 tick_spacing = floor(no_BP_hr_periods/5);
 
