@@ -194,49 +194,53 @@ for n = 1:no_norms
                     title(long_hr_labels{max_hr_indices(d - 1, s, c, n) + 4 - 1})
                     
                 end
-            
-                %% Plotting time series w/ stats.
                 
-                for b = 1:no_bands_plotted
+            end
+            
+        end
+            
+        %% Plotting time series w/ stats.
+        
+        for d = 3:no_drugs
+            
+            for b = 1:no_bands_plotted
+                
+                clear plot_stats plot_test
+                
+                plot_stats = [All_BP_stats(:, :, bands_plotted(b), 1, 1) All_BP_stats(:, :, bands_plotted(b), 1, d)];
+                
+                plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), d - 1))) All_BP_test(:, :, bands_plotted(b), d - 1)];
+                
+                plot_test(plot_test == 0) = nan;
+                
+                med_min = min(min(plot_stats(:, :, 1)));
+                
+                med_range = max(max(plot_stats(:, :, 1))) - med_min;
+                
+                test_multiplier = ones(size(plot_test))*diag(med_min - [nan nan nan 0.05 .1 .15]*med_range);
+                
+                subplot(no_channels + no_bands_plotted, no_drugs - 1, (no_channels + (b - 1))*(no_drugs - 1) + d - 2)
+                
+                set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'--','-','*','*'}, 'ColorOrder', c_order)
+                
+                plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier])
+                
+                if b == 1 && d == 3
                     
-                    clear plot_stats plot_test
-                    
-                    plot_stats = [All_BP_stats(:, :, bands_plotted(b), 1, 1) All_BP_stats(:, :, bands_plotted(b), 1, d)];
-                    
-                    plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), d - 1))) All_BP_test(:, :, bands_plotted(b), d - 1)];
-                    
-                    plot_test(plot_test == 0) = nan;
-                    
-                    med_min = min(min(plot_stats(:, :, 1)));
-                    
-                    med_range = max(max(plot_stats(:, :, 1))) - med_min;
-                    
-                    test_multiplier = ones(size(plot_test))*diag(med_min - [nan nan nan 0.05 .1 .15]*med_range);
-                    
-                    subplot(no_channels + no_bands_plotted, no_drugs - 1, (no_channels + (b - 1))*(no_drugs - 1) + d - 1)
-                    
-                    set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'--','-','*','*'}, 'ColorOrder', c_order)
-                    
-                    plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier])
-                    
-                    if b == 1 && d == 2
-                        
-                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d - 1}], ['CA1, ', drugs{d - 1}]},...
-                            'Location', 'NorthWest', 'FontSize', 6)
-                        
-                    end
-                    
-                    set(gca, 'XTick', 1:tick_spacing:no_BP_hr_periods, 'XTickLabel', short_BP_hr_labels(1:tick_spacing:end))
-                    
-                    axis tight
-                    
-                    ylim([med_min - .2*med_range, med_min + 1.05*med_range])
-                    
-                    title([drugs{d - 1}, ', ', band_labels{b}])
-                    
-                    xlabel('Time Rel. Inj. (h)')
+                    legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d - 1}], ['CA1, ', drugs{d - 1}]},...
+                        'Location', 'NorthWest', 'FontSize', 6)
                     
                 end
+                
+                set(gca, 'XTick', 1:tick_spacing:no_BP_hr_periods, 'XTickLabel', short_BP_hr_labels(1:tick_spacing:end))
+                
+                axis tight
+                
+                ylim([med_min - .2*med_range, med_min + 1.05*med_range])
+                
+                title([drugs{d - 1}, ', ', band_labels{b}])
+                
+                xlabel('Time Rel. Inj. (h)')
                 
             end
             
