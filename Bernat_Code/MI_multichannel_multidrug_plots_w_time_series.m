@@ -169,7 +169,7 @@ for n = 1:no_norms
             
             if c == 1
                 
-                title(['Preinjection, ', long_stats{s}, ' MI, ', long_norms{n}])
+                title({'Preinjection,'; [long_stats{s}, ' MI, ', long_norms{n}]; 'Hours 1 & 2 Preinjection'})
                 
             end
             
@@ -187,7 +187,7 @@ for n = 1:no_norms
                 
                 if c == 1
                     
-                    title({[drugs{d - 1}, ', ', long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d - 1, s, c, n) + 4 - 1}})
+                    title({drugs{d - 1}; [long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d - 1, s, c, n) + 4 - 1}})
                     
                 else
                     
@@ -225,22 +225,34 @@ for n = 1:no_norms
                 
                 plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier])
                 
-                if b == 1 && d == 2
-                    
-                    legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d}], ['CA1, ', drugs{d}]},...
-                        'Location', 'NorthWest', 'FontSize', 6)
-                    
-                end
-                
                 set(gca, 'XTick', 1:tick_spacing:no_BP_hr_periods, 'XTickLabel', short_BP_hr_labels(1:tick_spacing:end))
                 
                 axis tight
                 
                 ylim([med_min - .2*med_range, med_min + 1.05*med_range])
                 
-                title([drugs{d - 1}, ', ', band_labels{b}])
+                if b == 1
+                    
+                    title(drugs{d - 1})
+                    
+                    if d == 2
+                        
+                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d}], ['CA1, ', drugs{d}]},...
+                            'Location', 'NorthWest', 'FontSize', 6)
+                        
+                    end
+                    
+                elseif b == no_bands_plotted
+                    
+                    xlabel('Time Rel. Inj. (h)')
+                    
+                end
                 
-                xlabel('Time Rel. Inj. (h)')
+                if d == 2
+                    
+                    ylabel(band_labels{b})
+                    
+                end
                 
             end
             
