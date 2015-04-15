@@ -233,7 +233,7 @@ for n = 1:no_norms
                 
                 if b == 1
                     
-                    title(drugs{d - 1})
+                    title(drugs{d})
                     
                     if d == 2
                         
