@@ -177,7 +177,7 @@ for n = 1:no_norms
                 
                 %% Plotting comodulograms.
                 
-                subplot(no_channels + no_bands_plotted, no_drugs + 1, (c - 1)*(no_drugs + 1) + d + 1)
+                subplot(no_channels + no_bands_plotted, no_drugs + 1, (c - 1)*(no_drugs + 1) + d)
                 
                 imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, d, s, c, n))
                 
