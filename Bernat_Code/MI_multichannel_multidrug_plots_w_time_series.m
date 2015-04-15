@@ -225,7 +225,7 @@ for n = 1:no_norms
                 
                 plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier])
                 
-                if b == 1 && d == 3
+                if b == 1 && d == 2
                     
                     legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', ['Fr., ', drugs{d - 1}], ['Occi., ', drugs{d}], ['CA1, ', drugs{d}]},...
                         'Location', 'NorthWest', 'FontSize', 6)
