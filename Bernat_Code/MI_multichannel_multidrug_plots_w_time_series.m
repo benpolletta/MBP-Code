@@ -28,6 +28,8 @@ no_bands = 6;
             
 bands_plotted = [2 5 6]; no_bands_plotted = length(bands_plotted);
 
+drug_p_val_index = [1 4 2 3];
+
 c_order = [0 0 1; 0 .5 0; 1 0 0];
     
 clear titles xlabels ylabels
@@ -91,7 +93,7 @@ for n=1:no_norms
         
         BP_stats_new = reshape(BP_stats_new, BPs_dims(1), 1, BPs_dims(2), BPs_dims(3), BPs_dims(4));
         
-        All_BP_stats(:, c, :, :, :, n) = BP_stats_new(1:no_BP_hr_periods, :, :, [1 4 5], :);
+        All_BP_stats(:, c, :, :, :, n) = BP_stats_new(1:no_BP_hr_periods, :, :, [1 4 5], :); % [1 4 5] are where the median, mean, and std are.
         
         %% Getting stats p-values.
         
@@ -209,7 +211,7 @@ for n = 1:no_norms
                 
                 plot_stats = [All_BP_stats(:, :, bands_plotted(b), 1, 1) All_BP_stats(:, :, bands_plotted(b), 1, d)];
                 
-                plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), d))) All_BP_test(:, :, bands_plotted(b), d)];
+                plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), drug_p_val_index(d)))) All_BP_test(:, :, bands_plotted(b), drug_p_val_index(d))];
                 
                 plot_test(plot_test == 0) = nan;
                 
