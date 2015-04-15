@@ -240,7 +240,7 @@ for n = 1:no_norms
                     if d == 2
                         
                         legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', 'Fr., drug', 'Occi., drug', 'CA1, drug'},...
-                            'Location', 'NorthWest', 'FontSize', 6)
+                            'Location', 'NorthEast', 'FontSize', 6)
                         
                     end
                     
