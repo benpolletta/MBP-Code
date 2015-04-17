@@ -117,7 +117,7 @@ for n=1:no_norms
     
 end
 
-[~, max_hr_indices] = nanmax(nanmax(nanmax(All_cplot_data(:, :, :, 4:end, :, :, :))), [], 4);
+[~, max_hr_indices] = nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 4);
 
 max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
 
