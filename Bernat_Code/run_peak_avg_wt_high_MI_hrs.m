@@ -20,13 +20,13 @@ for run = 1:2
     
     for c = 1:no_channels
         
-        for s = 1:no_subjects
+        for d = 1:no_drugs
             
-            for d = 1:no_drugs
-                    
-                    hr_label = sprintf('post%d', high_MI_hrs(c, d, run))
-                    
-                    hr_phase = max_phase(high_MI_hrs(c, d, run) + 4, d, c)
+            hr_label = sprintf('post%d', high_MI_hrs(c, d, run))
+            
+            hr_phase = max_phase(high_MI_hrs(c, d, run) + 4, d, c)
+            
+            for s = 1:no_subjects
                 
                 if index > start_index
                     
