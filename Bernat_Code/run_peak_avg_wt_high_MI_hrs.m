@@ -23,12 +23,12 @@ for run = 1:2
         for s = 1:no_subjects
             
             for d = 1:no_drugs
-                
-                if index > start_index
                     
                     hr_label = sprintf('post%d', high_MI_hrs(c, d, run))
                     
                     hr_phase = max_phase(high_MI_hrs(c, d, run) + 4, d, c)
+                
+                if index > start_index
                     
                     record_dir = [subjects{s}, '_', drugs{d}];
                     
