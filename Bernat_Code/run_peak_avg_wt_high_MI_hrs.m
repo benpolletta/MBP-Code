@@ -36,7 +36,7 @@ for run = 1:2
                     
                     cd (['/home/bp/Bernat_NMDAR_antagonists/', record_dir])
                     
-                    hour_list = [channel_dir, '_epochs/', channel_dir, '_', hr_label, '.list'];
+                    hour_list = [channel_dir, '_', hr_label, '.list'];
                     
                     peak_averaged_wt_batch_parallel(hour_list, hr_phase, peak_freq_cycles, sampling_freq);
                     
