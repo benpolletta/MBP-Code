@@ -1,5 +1,8 @@
 function add_stars(handle, t, logical, side_vec, c_order)
 
+% Adds stars to a boundedline type plot. Logical is whether or not to add
+% a star. Side vec is 0 for below & 1 for above. c_order is color of stars.
+
 [~, c] = size(logical);
 
 mult_vec = (1:c)*.1;
