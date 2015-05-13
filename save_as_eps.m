@@ -1,4 +1,4 @@
-function save_as_pdf(handle,title)
+function save_as_eps(handle,title)
 
 saveas(handle, [title,'.fig'])
 
@@ -6,4 +6,4 @@ saveas(handle, [title,'.fig'])
 % set(textobj, 'FontSize', 8)
 
 set(handle, 'PaperOrientation', 'landscape', 'PaperUnits', 'normalized', 'PaperPosition', [0 0 1 1])
-print(handle, '-deps', [title,'.eps'])
+print(handle, '-depsc', [title,'.eps'])
