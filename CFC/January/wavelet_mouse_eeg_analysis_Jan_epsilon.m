@@ -1,6 +1,8 @@
-function wavelet_mouse_eeg_analysis_Jan_epsilon(sampling_freq,challenge_list,titles,row_labels,subplot_dims)
+function wavelet_mouse_eeg_analysis_Jan_epsilon(sampling_freq,challenge_list,titles,row_labels,subplot_dims,start_index)
 
 close('all')
+
+if isempty(start_index), start_index = 1; end
 
 challenge_list_name=char(challenge_list);
 
@@ -38,7 +40,7 @@ for j=1:no_challenges
     avg_M=zeros(length(bincenters),length(bands_hi),length(bands_lo));
     avg_MI=zeros(length(bands_hi),length(bands_lo));
     
-    for k=1:filenum
+    parfor k=start_index:filenum
 
         filename=char(filenames(k));
 

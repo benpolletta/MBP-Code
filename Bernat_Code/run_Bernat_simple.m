@@ -1,4 +1,4 @@
-function run_Bernat_simple(subject,drug)
+function run_Bernat_simple(subject,drug,start_index)
 
 sampling_freq=1000;
 
@@ -25,8 +25,8 @@ subplot_dims=[1,no_channels];
 
 challenge_descriptor=[subject,' ',drug];
 
-tic; wavelet_mouse_eeg_analysis_Jan_epsilon(sampling_freq,challenge_list,channel_labels,{''},subplot_dims); toc;
-tic; wavelet_mouse_eeg_canolty_MI(challenge_list,challenge_descriptor,channel_labels,subplot_dims); toc;
+tic; wavelet_mouse_eeg_analysis_Jan_epsilon(sampling_freq,challenge_list,channel_labels,{''},subplot_dims,start_index); toc;
+% tic; wavelet_mouse_eeg_canolty_MI(challenge_list,challenge_descriptor,channel_labels,subplot_dims); toc;
 % tic; wavelet_mouse_eeg_PLV(sampling_freq,challenge_list,challenge_descriptor,channel_labels,subplot_dims); toc;
 
 noshufs=1000;
@@ -62,8 +62,8 @@ for c=1:no_channels
         tic; wavelet_mouse_eeg_file_shuffle_IE(noshufs,thresholds,challenge_list); toc;
         tic; wavelet_mouse_eeg_threshold_IE(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
         
-        tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
-        tic; wavelet_mouse_eeg_threshold_canolty_MI(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
+% %         tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
+% %         tic; wavelet_mouse_eeg_threshold_canolty_MI(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 %         tic; wavelet_mouse_eeg_file_shuffle_PLV(noshufs,thresholds,sampling_freq,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 
 %         [rows,cols]=subplot_size(no_lists);

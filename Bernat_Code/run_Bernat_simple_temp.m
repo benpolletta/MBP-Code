@@ -44,7 +44,7 @@ for c=1:no_channels
     for l=1:no_master_lists
         
         challenge_list=[channel_dir(1:end-length('_epochs')),'_',list_suffixes{l},'_master.list'];
-        lists=textread(challenge_list,'%s');
+        lists=textread(['../',challenge_list],'%s');
         no_lists=length(lists);
         for m=1:no_lists
             listname=char(lists(m));
@@ -58,8 +58,8 @@ for c=1:no_channels
         tic; wavelet_mouse_eeg_file_shuffle_IE(noshufs,thresholds,challenge_list); toc;
         tic; wavelet_mouse_eeg_threshold_IE(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
         
-        tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
-        tic; wavelet_mouse_eeg_threshold_canolty_MI(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
+%         tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
+%         tic; wavelet_mouse_eeg_threshold_canolty_MI(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 %         tic; wavelet_mouse_eeg_file_shuffle_PLV(noshufs,thresholds,sampling_freq,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 
         [rows,cols]=subplot_size(no_lists);
