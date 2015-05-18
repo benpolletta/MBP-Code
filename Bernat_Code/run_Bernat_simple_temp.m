@@ -44,7 +44,7 @@ for c=1:no_channels
     for l=1:no_master_lists
         
         challenge_list=[channel_dir(1:end-length('_epochs')),'_',list_suffixes{l},'_master.list'];
-        lists=textread(['../',challenge_list],'%s');
+        lists=textread(challenge_list,'%s');
         no_lists=length(lists);
         for m=1:no_lists
             listname=char(lists(m));
