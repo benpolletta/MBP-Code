@@ -67,7 +67,7 @@ for c=1:no_channels
 %         tic; wavelet_mouse_eeg_file_shuffle_PLV(noshufs,thresholds,sampling_freq,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 
 %         [rows,cols]=subplot_size(no_lists);
-%         avg_fft_save(challenge_list,1000,4096*4,challenge_labels,[rows,cols]);
+        avg_fft_save(challenge_list,1000,4096*4) % ,challenge_labels,[rows,cols]);
 
         close('all')
         
