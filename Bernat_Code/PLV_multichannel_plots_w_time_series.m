@@ -136,7 +136,8 @@ for n = 1:no_norms
                     
                     subplot(no_chan_pairs + 2 + (d > 1), 2, (c - 1)*2 + b)
                     
-                    imagesc(str2num(char(sixmin_labels)), freqs(band_indices{b}), reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), sum(band_indices{b}), no_6min_periods))
+                    imagesc(str2num(char(sixmin_labels))/60, freqs(band_indices{b}),...
+                        reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), sum(band_indices{b}), no_6min_periods))
                     
                     axis xy
                     
@@ -152,7 +153,7 @@ for n = 1:no_norms
                         
                     elseif c == 3
                         
-                        xlabel('Time Rel. Inj. (m)')
+                        xlabel('Time Rel. Inj. (h)')
                         
                     end
                     

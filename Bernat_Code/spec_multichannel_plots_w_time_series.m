@@ -2,9 +2,20 @@ function spec_multichannel_plots_w_time_series%(hour_lims,freq_lims,no_hr_ticks,
 
 % SAMPLE CALL: plot_spec_horiz_all_channels([-120 360], [0 200], 8, 6, 'rows')
 
-%freq_label = sprintf('%g-%g',freq_lims(1),freq_lims(2));
+% freq_label = sprintf('%g-%g',freq_lims(1),freq_lims(2));
 
-freqs=500*(1:2^9)/(2^10); freqs=freqs(freqs<=200);
+freqs = 500*(1:2^9)/(2^10); freqs = freqs(freqs <= 200);
+
+bands = [1 12; 20 200]; no_bands = size(bands, 1);
+
+[band_indices, long_band_names] = deal(cell(no_bands, 1));
+
+for b = 1:no_bands
+    
+    band_indices{b} = freqs >= bands(b, 1) & freqs <= bands(b,2);
+    long_band_names{b} = sprintf('%d to %d Hz', bands(b, 1), bands(b, 2));
+
+end
 
 load('channels.mat'), no_channels = length(channel_names);
 
@@ -113,21 +124,26 @@ for n = 1:no_norms
             
             for c = 1:no_channels
                 
-                subplot(no_channels + 1 + (d > 1), 1, c)
-                
-                imagesc(str2num(char(sixmin_labels)), freqs, reshape(All_cplot_data(:, d, :, s, c, n), length(freqs), no_6min_periods))
-                
-                axis xy
-                
-                ylabel({channel_names{c}}) % ;'Freq. (Hz)'})
-                
-                if c == 1
+                for b = 1:no_bands
                     
-                    title({[drugs{d}, ', ', long_stats{s}, ' Power, ', long_norms{n}]})
+                    subplot(no_channels + 1 + (d > 1), 2, (c - 1)*2 + b)
                     
-                elseif c == 3
+                    imagesc(str2num(char(sixmin_labels))/60, freqs(band_indices{b},...
+                        reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), length(freqs), no_6min_periods))
                     
-                    xlabel('Time Rel. Inj. (m)')
+                    axis xy
+                    
+                    ylabel({channel_names{c}}) % ;'Freq. (Hz)'})
+                    
+                    if c == 1
+                        
+                        title({[drugs{d}, ', ', long_band_names{b}];[long_stats{s}, ' Power, ', long_norms{n}]})
+                        
+                    elseif c == 3
+                        
+                        xlabel('Time Rel. Inj. (h)')
+                        
+                    end
                     
                 end
                 
