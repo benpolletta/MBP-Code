@@ -1,4 +1,4 @@
-function write_lists_Bernat_states_only_OLD(subject,channel,periods_hrs,pd_labels)
+function write_lists_Bernat_names_only_by_state_then_pd(subject,channel,periods_hrs,pd_labels)
 
 % Sample call:  write_lists_Bernat('A99',4,[-4 0;0 4;4
 % 8],{'pre','post1to4','post5to8'}).

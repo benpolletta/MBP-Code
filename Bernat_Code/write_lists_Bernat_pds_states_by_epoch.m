@@ -1,4 +1,4 @@
-function write_lists_Bernat_pds_only(subject,channels,list_label,varargin)
+function write_lists_Bernat_pds_states_by_epoch(subject,channels,list_label,varargin)
 
 % Sample call:  write_lists_Bernat('A99',4,[-4 0;0 4;4
 % 8],{'pre','post1to4','post5to8'}).

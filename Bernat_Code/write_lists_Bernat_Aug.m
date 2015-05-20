@@ -1,4 +1,6 @@
-function write_lists_Bernat_pds_only(subject,channels,list_label,varargin)
+
+
+function write_lists_Bernat_pds_states_by_epoch(subject,channels,list_label,varargin)
 
 % WRAPPER FOR CURRENTLY ACTIVE VERSION OF WRITE_LISTS BEING USED.
 
@@ -57,6 +59,12 @@ if pd_labels_given==0
     end
 end
 
+% data_pts_per_epoch=4096;
+% sampling_rate=250;
+% seconds_per_epoch=data_pts_per_epoch/sampling_rate;
+% epochs_per_min=60/seconds_per_epoch;
+% epochs_per_hour=60*60/seconds_per_epoch;
+
 no_drugs=length(drugs);
 no_states=length(states);
 no_channels=length(channels);
@@ -65,7 +73,7 @@ for d=1:no_drugs
     
     record_name=[char(subject),'_',char(drugs{d})];
     
-    [R,NR] = text_read([record_name,'_VS_no_header.txt'],'%*s%d%*d%d');
+    [R,NR]=text_read([record_name,'_VS_no_header.txt'],'%*s%d%*d%d');
     NR(R==1)=0;
     W=ones(size(R));
     W(R==1)=0;
@@ -107,7 +115,7 @@ for d=1:no_drugs
                     
                 end
                 
-%                 fclose(list_fid);
+                fclose(list_fid);
                 
             end
             
