@@ -66,6 +66,7 @@ for e=1:no_epochs
         
     MI=load(filename,'MI_thresh');
     MI=MI.MI_thresh;
+    MI = MI(1:noamps, 1:nophases, :);
     
     for m=1:min(no_measures,size(MI,3))
 

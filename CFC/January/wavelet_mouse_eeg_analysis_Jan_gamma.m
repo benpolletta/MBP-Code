@@ -14,7 +14,7 @@ no_challenges=length(listnames);
 challenge_list_name=challenge_list_name(1:end-5);
 
 bands_lo=4:.25:12;
-bands_hi=20:5:180;
+bands_hi=20:5:200; % 180;
 bincenters=-.95:.1:.95;
 
 noamps=length(bands_lo);
