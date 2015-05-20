@@ -62,8 +62,8 @@ for c=1:no_channels
         tic; wavelet_mouse_eeg_file_shuffle_IE(noshufs,thresholds,challenge_list); toc;
         tic; wavelet_mouse_eeg_threshold_IE(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
         
-% %         tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
-% %         tic; wavelet_mouse_eeg_threshold_canolty_MI(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
+%         tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
+%         tic; wavelet_mouse_eeg_threshold_canolty_MI(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 %         tic; wavelet_mouse_eeg_file_shuffle_PLV(noshufs,thresholds,sampling_freq,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 
 %         [rows,cols]=subplot_size(no_lists);
@@ -83,7 +83,7 @@ for c=1:no_channels
 
     wavelet_mouse_eeg_collect_IE_thresh_Bernat(subject,drug,channels{c},0.99)
     wavelet_mouse_eeg_collect_IE_thresh_by_state_Bernat(subject,drug,channels{c},0.99)
-    wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],0)
-    wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],1)
+%     wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],0)
+%     wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],1)
     
 end

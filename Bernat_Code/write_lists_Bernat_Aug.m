@@ -1,5 +1,3 @@
-
-
 function write_lists_Bernat_pds_states_by_epoch(subject,channels,list_label,varargin)
 
 % WRAPPER FOR CURRENTLY ACTIVE VERSION OF WRITE_LISTS BEING USED.
@@ -115,7 +113,7 @@ for d=1:no_drugs
                     
                 end
                 
-                fclose(list_fid);
+                % fclose(list_fid);
                 
             end
             

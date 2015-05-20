@@ -111,7 +111,7 @@ for d=1:no_drugs
                     
                 end
                 
-                fclose(list_fid);
+                %                 fclose(list_fid);
                 
             end
             

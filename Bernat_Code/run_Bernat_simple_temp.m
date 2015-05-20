@@ -77,7 +77,7 @@ cd (present_dir)
 
 for c=1:no_channels
 
-    wavelet_mouse_eeg_collect_IE_thresh_Bernat(subject,drug,channels{c},0.99)
+%     wavelet_mouse_eeg_collect_IE_thresh_Bernat(subject,drug,channels{c},0.99)
     wavelet_mouse_eeg_collect_IE_thresh_by_state_Bernat(subject,drug,channels{c},0.99)
 %     wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],0)
 %     wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],1)
