@@ -1,4 +1,6 @@
-function write_lists_Bernat_11_13(subject,channels,list_label,varargin)
+function write_lists_Bernat_pds_only(subject,channels,list_label,varargin)
+
+% WRAPPER FOR CURRENTLY ACTIVE VERSION OF WRITE_LISTS BEING USED.
 
 % Sample call:  write_lists_Bernat('A99',4,[-4 0;0 4;4
 % 8],{'pre','post1to4','post5to8'}).
@@ -54,12 +56,6 @@ if pd_labels_given==0
         pd_labels{p}=['epochs',num2str(periods(p,1)),'to',num2str(periods(p,2))];
     end
 end
-
-% data_pts_per_epoch=4096;
-% sampling_rate=250;
-% seconds_per_epoch=data_pts_per_epoch/sampling_rate;
-% epochs_per_min=60/seconds_per_epoch;
-% epochs_per_hour=60*60/seconds_per_epoch;
 
 no_drugs=length(drugs);
 no_states=length(states);

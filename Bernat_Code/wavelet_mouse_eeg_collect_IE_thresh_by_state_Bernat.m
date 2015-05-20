@@ -50,13 +50,13 @@ end
 % format=['%d\t%s\t',make_format(noamps*nophases,'f')];
 format=make_format(noamps*nophases,'f');
 
-for e=1:no_epochs
+for e=414:no_epochs
     
     epoch_period=char(epoch_periods(e));
     
     epoch_state=char(epoch_states(e));
     
-    thresh_name=dir(['THRESH*',channel_name,'_',epoch_period,'_',epoch_state,'_*shufs']);
+    thresh_name=dir(['THRESH*',channel_name,'_',epoch_state,'_',epoch_period,'_*shufs']);
     thresh_name=thresh_name.name;
     
     epoch_name=char(epoch_names(e));
