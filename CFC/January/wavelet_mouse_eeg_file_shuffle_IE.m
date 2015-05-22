@@ -45,8 +45,8 @@ no_challenges=length(listnames);
 % stat_labels={'pt_cutoffs','z_means','z_stds','z_cutoffs','lz_means','lz_stds','lz_cutoffs','skews'};
 % stat_titles={'Empirical p-Value Cutoff','Mean ','Standard Deviation ','Standard Normal Cutoff','Mean Log ','Standard Deviation Log ','Lognormal Cutoff','Skewness'};
 
-bands_lo=1:.25:30;
-bands_hi=20:5:250;
+bands_lo=1:.25:12; % 30;
+bands_hi=20:5:200; % 250;
 bincenters=-.95:.1:.95;
 
 noamps=length(bands_hi);
