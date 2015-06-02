@@ -26,8 +26,8 @@ thresh_labels={'pt','zt','lt','zs','lzs'};
 thresh_titles={'Empirical p-Value Thresholded','Normal Thresholded','Lognormal Thresholded','Normal z-Scored','Lognormal z-Scored'};
 
 % Bands for PAC analysis.
-bands_lo=(1:.25:30)';
-bands_hi=(20:5:250)';
+bands_lo=(1:.25:12)'; % 30)';
+bands_hi=(20:5:200)'; % 250)';
 % bincenters=-.95:.1:.95;
 
 nofits=length(thresh_titles);

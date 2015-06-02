@@ -41,7 +41,7 @@ for c=1:no_channels
     list_suffixes={'hours','4hrs_by_state'};
     no_master_lists=length(list_suffixes);
     
-    for l=1:no_master_lists
+    for l=2:no_master_lists
         
         challenge_list=[channel_dir(1:end-length('_epochs')),'_',list_suffixes{l},'_master.list'];
         lists=textread(challenge_list,'%s');
@@ -55,7 +55,8 @@ for c=1:no_channels
         
         challenge_descriptor=[subject,' ',drug,' Channel ',channels{c},' ',list_suffixes{l}];
         
-        tic; wavelet_mouse_eeg_file_shuffle_IE_temp(noshufs,thresholds,challenge_list); toc;
+        
+        tic; wavelet_mouse_eeg_file_shuffle_IE(noshufs,thresholds,challenge_list); toc;
         tic; wavelet_mouse_eeg_threshold_IE(noshufs,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
         
 %         tic; wavelet_mouse_eeg_file_shuffle_canolty_MI(noshufs,thresholds,challenge_list); toc;
