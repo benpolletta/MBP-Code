@@ -1,4 +1,4 @@
-function MI_multichannel_multidrug_plots_w_time_series
+function MI_multichannel_multidrug_plots_w_time_series(hi_hr, cplot_norm)
 
 phase_freqs = 1:.25:12; amp_freqs = 20:5:200;
 no_pfs = length(phase_freqs); no_afs = length(amp_freqs);
@@ -117,9 +117,19 @@ for n=1:no_norms
     
 end
 
-[~, max_hr_indices] = nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 4);
+if strcmp(hi_hr, 'independent')
 
-max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
+    [~, max_hr_indices] = nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 4);
+    
+    max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
+
+elseif strcmp(hi_hr, 'drug')
+   
+    [~, max_hr_indices] = nanmax(nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 6), [], 4);
+    
+    max_hr_indices = repmat(reshape(max_hr_indices, no_drugs, no_stats, 1, no_norms), [1 1 no_channels 1]);
+    
+end
 
 handle = nan(no_drugs, no_norms, no_stats);
 
@@ -147,9 +157,17 @@ for n = 1:no_norms
     
 end
 
-max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+if strcmp(cplot_norm, '_row')
+    
+    max_by_channel = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot))), no_stats, no_channels, no_norms);
+    
+    min_by_channel = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot))), no_stats, no_channels, no_norms);
+    
+end
 
-min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+% max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+% 
+% min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
 
 for n = 1:no_norms
     
@@ -163,7 +181,17 @@ for n = 1:no_norms
             
             imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, 1, s, c, n))
             
-            caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
+            if strcmp(cplot_norm, '_row')
+                
+                caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
+                
+            else
+                
+                colorbar
+                
+            end
+            
+            % caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
             
             axis xy
             
@@ -183,7 +211,23 @@ for n = 1:no_norms
                 
                 imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, d, s, c, n))
                 
-                caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
+                if strcmp(cplot_norm, '_row')
+                    
+                    caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
+                    
+                    if d == no_drugs + 1
+                        
+                        colorbar
+                        
+                    end
+                    
+                else
+                    
+                    colorbar
+                    
+                end
+                
+                % caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
                 
                 axis xy
                 
@@ -260,7 +304,7 @@ for n = 1:no_norms
             
         end
                 
-        save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_multidrug_', stats{s}])
+        save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi', stats{s}, cplot_norm])
         
     end
     
@@ -270,7 +314,7 @@ for n=1:no_norms
     
     for s=1:no_stats
             
-        open(['ALL_MI',norms{n},'_multichannel_multidrug_', stats{s}, '.fig'])
+        open(['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi', stats{s}, cplot_norm, '.fig'])
         
     end
     

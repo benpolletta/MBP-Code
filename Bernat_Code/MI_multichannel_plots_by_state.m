@@ -1,4 +1,4 @@
-function MI_multichannel_plots%(hour_lims,freq_lims,no_hr_ticks,no_freq_ticks,clims)
+function MI_multichannel_plots_by_state%(hour_lims,freq_lims,no_hr_ticks,no_freq_ticks,clims)
 
 phase_freqs = 1:.25:12; amp_freqs = 20:5:200;
 no_pfs = length(phase_freqs); no_afs = length(amp_freqs);

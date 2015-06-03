@@ -111,4 +111,7 @@ for c3 = 1:no_cats3
         
 end
 
+save([name, '_cplot_data.mat'], 'MI_stats', 'long_cat1_labels', 'cat1_labels',...
+    'long_cat2_labels', 'cat2_labels', 'long_cat3_labels', 'cat3_labels', 'stat_labels')
+
 close('all')

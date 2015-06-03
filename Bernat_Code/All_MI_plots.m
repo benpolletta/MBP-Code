@@ -55,27 +55,28 @@ end
     
 cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
 
-%%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-for s=1:no_subjects
-    
-    subject=char(subj_labels{s});
-    
-    subj_MI=MI(strcmp(subjects,subject),:);
-    
-    subj_drugs=drugs(strcmp(subjects,subject),:);
-    
-%     subj_states=states(strcmp(subjects,subject),:);
-    
-    subj_periods=hr_periods(strcmp(subjects,subject),:);
-    
-    for d=1:no_drugs
-    
-        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',subject,'_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
-    
-    end
-        
-end
+% FIGURES BY SUBJECT MOVED TO All_MI_plots_by_subject.m.
+% %%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% for s=1:no_subjects
+%     
+%     subject=char(subj_labels{s});
+%     
+%     subj_MI=MI(strcmp(subjects,subject),:);
+%     
+%     subj_drugs=drugs(strcmp(subjects,subject),:);
+%     
+% %     subj_states=states(strcmp(subjects,subject),:);
+%     
+%     subj_periods=hr_periods(strcmp(subjects,subject),:);
+%     
+%     for d=1:no_drugs
+%     
+%         cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',subject,'_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
+%     
+%     end
+%         
+% end
 
 %% Figures by state and 4 hour period.
 
@@ -94,22 +95,23 @@ for i=1:4
 end
 no_periods=length(period_labels);
 
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI)
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_by_state'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI)
 
-%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-for s=1:no_subjects
-    
-    subject=char(subj_labels{s});
-    
-    subj_MI=MI(strcmp(subjects,subject),:);
-    
-    subj_drugs=drugs(strcmp(subjects,subject),:);
-    
-    subj_states=states(strcmp(subjects,subject),:);
-    
-    subj_periods=fourhr_periods(strcmp(subjects,subject),:);
-    
-    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_',subject],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI)
-    
-end
+% FIGURES BY SUBJECT MOVED TO All_MI_plots_by_subject.m.
+% %%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% for s=1:no_subjects
+%     
+%     subject=char(subj_labels{s});
+%     
+%     subj_MI=MI(strcmp(subjects,subject),:);
+%     
+%     subj_drugs=drugs(strcmp(subjects,subject),:);
+%     
+%     subj_states=states(strcmp(subjects,subject),:);
+%     
+%     subj_periods=fourhr_periods(strcmp(subjects,subject),:);
+%     
+%     cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_by_state_',subject],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI)
+%     
+% end

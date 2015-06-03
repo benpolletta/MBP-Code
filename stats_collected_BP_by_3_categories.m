@@ -73,4 +73,4 @@ for c3=1:no_cats3
     
 end
     
-save([name, '_ranksum.mat'], 'BP_ranksum', 'band_labels', 'cat1_labels', 'cat2_labels')
+save([name, '_ranksum.mat'], 'BP_ranksum', 'band_labels', 'cat1_labels', 'cat2_labels', 'cat3_labels')
