@@ -47,7 +47,7 @@ for c1=1:no_cats1
             
         else
             
-            MI_stats=nan(matrix_rows,matrix_columns,3);
+            MI_stats=nan(matrix_rows,matrix_columns,no_cats1,no_cats2,3);
             
         end
                 
