@@ -46,39 +46,39 @@ for s=1:subj_num
         hr_data=load([record_dir,'/',channel_dir,'/ALL_',channel_name,'_hours/ALL_',channel_name,'_hours_',measure_suffix,'.txt']);
         fourhr_data=load([record_dir,'/',channel_dir,'/ALL_',channel_name,'_4hrs_by_state/ALL_',channel_name,'_4hrs_by_state_',measure_suffix,'.txt']);
         [no_epochs,~]=size(hr_periods);
-        display(sprintf('%s: length(hr_data) = %d; length(fourhr_data) = %d; no_epochs = %d.',...
+        % display(sprintf('%s: length(hr_data) = %d; length(fourhr_data) = %d; no_epochs = %d.',...
             record_dir, length(hr_data), length(fourhr_data), no_epochs))
         
-%         baseline_indicator = strcmp(fourhr_periods, 'pre4to1') | strcmp(fourhr_periods, 'pre8to5');
-%         
-%         baseline_hr_mean = mean(hr_data(baseline_indicator));
-%         baseline_4hr_mean = mean(fourhr_data(baseline_indicator));
-%         pct_hr_data = (hr_data./(ones(size(hr_data))*diag(baseline_hr_mean)) - ones(size(hr_data)))*100;
-%         pct_4hr_data = (fourhr_data./(ones(size(fourhr_data))*diag(baseline_4hr_mean)) - ones(size(fourhr_data)))*100;
-%         
-%         for e=1:no_epochs
-%             
-%             fprintf(subjects_fid, '%s\n', subject);
-%             
-%             fprintf(drugs_fid, '%s\n', drug);
-%             
-%             fprintf(hr_periods_fid, '%s\n', char(hr_periods{e}));
-%             
-%             fprintf(sixmin_periods_fid, '%d\n', sixmin_periods(e));
-%             
-%             fprintf(fourhr_periods_fid, '%s\n', char(fourhr_periods{e}));
-%             
-%             fprintf(states_fid, '%s\n', char(states{e}));
-%             
-%             fprintf(MI_fid,MI_format,hr_data(e,:));
-%             
-%             fprintf(MI_4hr_fid,MI_format,fourhr_data(e,:));
-%             
-%             fprintf(MI_pct_fid, MI_format, pct_hr_data(e,:));
-%             
-%             fprintf(MI_4hr_pct_fid, MI_format, pct_4hr_data(e,:));
-%             
-%         end
+        baseline_indicator = strcmp(fourhr_periods, 'pre4to1') | strcmp(fourhr_periods, 'pre8to5');
+        
+        baseline_hr_mean = mean(hr_data(baseline_indicator));
+        baseline_4hr_mean = mean(fourhr_data(baseline_indicator));
+        pct_hr_data = (hr_data./(ones(size(hr_data))*diag(baseline_hr_mean)) - ones(size(hr_data)))*100;
+        pct_4hr_data = (fourhr_data./(ones(size(fourhr_data))*diag(baseline_4hr_mean)) - ones(size(fourhr_data)))*100;
+        
+        for e=1:no_epochs
+            
+            fprintf(subjects_fid, '%s\n', subject);
+            
+            fprintf(drugs_fid, '%s\n', drug);
+            
+            fprintf(hr_periods_fid, '%s\n', char(hr_periods{e}));
+            
+            fprintf(sixmin_periods_fid, '%d\n', sixmin_periods(e));
+            
+            fprintf(fourhr_periods_fid, '%s\n', char(fourhr_periods{e}));
+            
+            fprintf(states_fid, '%s\n', char(states{e}));
+            
+            fprintf(MI_fid,MI_format,hr_data(e,:));
+            
+            fprintf(MI_4hr_fid,MI_format,fourhr_data(e,:));
+            
+            fprintf(MI_pct_fid, MI_format, pct_hr_data(e,:));
+            
+            fprintf(MI_4hr_pct_fid, MI_format, pct_4hr_data(e,:));
+            
+        end
         
     end
     
