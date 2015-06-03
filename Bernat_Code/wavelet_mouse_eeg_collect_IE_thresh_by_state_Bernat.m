@@ -50,7 +50,7 @@ end
 % format=['%d\t%s\t',make_format(noamps*nophases,'f')];
 format=make_format(noamps*nophases,'f');
 
-for e=414:no_epochs
+for e=1:no_epochs
     
     epoch_period=char(epoch_periods(e));
     
