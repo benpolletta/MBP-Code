@@ -53,63 +53,63 @@ for d=1:no_drugs
     
 end
     
-% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
-
-% %%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-% for s=1:no_subjects
-%     
-%     subject=char(subj_labels{s});
-%     
-%     subj_MI=MI(strcmp(subjects,subject),:);
-%     
-%     subj_drugs=drugs(strcmp(subjects,subject),:);
-%     
-% %     subj_states=states(strcmp(subjects,subject),:);
-%     
-%     subj_periods=hr_periods(strcmp(subjects,subject),:);
-%     
-%     for d=1:no_drugs
-%     
-%         cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',subject,'_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
-%     
-%     end
-%         
-% end
-
-% %% Figures by state and 4 hour period.
-% 
-% MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
-% 
-% clear period_labels; clear short_period_labels; p=1;
-% for i=1:1
-%     period_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
-%     short_period_labels{p}=['pre',num2str(4*i),'to',num2str(4*(i-1)+1)];
-%     p=p+1;
-% end
-% for i=1:4
-%     period_labels{p}=['Hours ',num2str(4*(i-1)+1),' to ',num2str(4*i),' Postinjection'];
-%     short_period_labels{p}=['post',num2str(4*(i-1)+1),'to',num2str(4*i)];
-%     p=p+1;
-% end
-% no_periods=length(period_labels);
-% 
-% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI)
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
 
 %%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% for s=1:no_subjects
-%     
-%     subject=char(subj_labels{s});
-%     
-%     subj_MI=MI(strcmp(subjects,subject),:);
-%     
-%     subj_drugs=drugs(strcmp(subjects,subject),:);
-%     
+for s=1:no_subjects
+    
+    subject=char(subj_labels{s});
+    
+    subj_MI=MI(strcmp(subjects,subject),:);
+    
+    subj_drugs=drugs(strcmp(subjects,subject),:);
+    
 %     subj_states=states(strcmp(subjects,subject),:);
-%     
-%     subj_periods=fourhr_periods(strcmp(subjects,subject),:);
-%     
-%     cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_',subject],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI)
-%     
-% end
+    
+    subj_periods=hr_periods(strcmp(subjects,subject),:);
+    
+    for d=1:no_drugs
+    
+        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',subject,'_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
+    
+    end
+        
+end
+
+%% Figures by state and 4 hour period.
+
+MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
+
+clear period_labels; clear short_period_labels; p=1;
+for i=1:1
+    period_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
+    short_period_labels{p}=['pre',num2str(4*i),'to',num2str(4*(i-1)+1)];
+    p=p+1;
+end
+for i=1:4
+    period_labels{p}=['Hours ',num2str(4*(i-1)+1),' to ',num2str(4*i),' Postinjection'];
+    short_period_labels{p}=['post',num2str(4*(i-1)+1),'to',num2str(4*i)];
+    p=p+1;
+end
+no_periods=length(period_labels);
+
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr'],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI)
+
+%%%%%%%%%%%%%%%%%%%% FIGURES BY SUBJECT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+for s=1:no_subjects
+    
+    subject=char(subj_labels{s});
+    
+    subj_MI=MI(strcmp(subjects,subject),:);
+    
+    subj_drugs=drugs(strcmp(subjects,subject),:);
+    
+    subj_states=states(strcmp(subjects,subject),:);
+    
+    subj_periods=fourhr_periods(strcmp(subjects,subject),:);
+    
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_',subject],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI)
+    
+end
