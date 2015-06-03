@@ -163,11 +163,13 @@ if strcmp(cplot_norm, '_row')
     
     min_by_channel = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot))), no_stats, no_channels, no_norms);
     
+elseif strcmp(cplot_norm, '_col')
+    
+    max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+    
+    min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+    
 end
-
-% max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
-% 
-% min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
 
 for n = 1:no_norms
     
@@ -185,13 +187,15 @@ for n = 1:no_norms
                 
                 caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
                 
+            elseif strcmp(cplot_norm, '_col')
+                
+                caxis([min_by_drug(1, s, n) max_by_drug(1, s, n)])
+                
             else
                 
                 colorbar
                 
             end
-            
-            % caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
             
             axis xy
             
@@ -221,13 +225,15 @@ for n = 1:no_norms
                         
                     end
                     
+                elseif strcmp(cplot_norm, '_col')
+                    
+                    caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
+                    
                 else
                     
                     colorbar
                     
                 end
-                
-                % caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
                 
                 axis xy
                 

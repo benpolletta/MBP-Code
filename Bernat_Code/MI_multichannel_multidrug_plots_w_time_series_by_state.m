@@ -1,4 +1,4 @@
-function MI_multichannel_multidrug_plots_w_time_series_by_state
+function MI_multichannel_multidrug_plots_w_time_series_by_state(hi_hr, cplot_norm, state)
 
 phase_freqs = 1:.25:12; amp_freqs = 20:5:200;
 no_pfs = length(phase_freqs); no_afs = length(amp_freqs);
@@ -58,17 +58,17 @@ for n=1:no_norms
             
             MI = load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '.txt']);
             
-            preinj_indices = strcmp(fourhr_periods, 'pre4to1') & strcmp(states, state_labels{sl});
+            preinj_indices = strcmp(fourhr_periods, 'pre4to1') & strcmp(states, state);
             
             preinj_data(:, :, 1, c, n) = reshape(nanmedian(MI(preinj_indices, :)), no_afs, no_pfs);
             
             preinj_data(:, :, 2, c, n) = reshape(nanmean(MI(preinj_indices, :)), no_afs, no_pfs);
             
-            save([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_', state_labels{sl}, '_preinjection'], 'preinj_data')
+            save([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_', state, '_preinjection'], 'preinj_data')
             
         else
             
-            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_', state_label{sl}, '_preinjection.mat'])
+            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_', state, '_preinjection.mat'])
             
         end
             
@@ -89,7 +89,7 @@ for n=1:no_norms
         
         load([ch_dir, '/', ch_dir, '_summed_', suffix, '.mat'])
         
-        BP_state_stats = BP_stats(:, strcmp(cat1_labels, state_labels{s}), :, :, :, :);
+        BP_state_stats = BP_stats(:, strcmp(cat1_labels, state), :, :, :, :);
         
         BP_stats_new = permute(BP_state_stats, [3, 1, 4, 5, 2]);
         
@@ -105,7 +105,7 @@ for n=1:no_norms
         
         load([ch_dir, '/', ch_dir, '_summed_', ranksum_suffix, '.mat'])
         
-        BP_state_ranksum = BP_ranksum(:, strcmp(cat3_labels, state_labels{s}), :, :);
+        BP_state_ranksum = BP_ranksum(:, strcmp(cat3_labels, state), :, :);
         
         BP_ranksum_new = permute(BP_state_ranksum, [3, 1, 4, 2]);
         
@@ -123,9 +123,19 @@ for n=1:no_norms
     
 end
 
-[~, max_hr_indices] = nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 4);
+if strcmp(hi_hr, 'independent')
 
-max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
+    [~, max_hr_indices] = nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 4);
+    
+    max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
+
+elseif strcmp(hi_hr, 'drug')
+   
+    [~, max_hr_indices] = nanmax(nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 6), [], 4);
+    
+    max_hr_indices = repmat(reshape(max_hr_indices, no_drugs, no_stats, 1, no_norms), [1 1 no_channels 1]);
+    
+end
 
 handle = nan(no_drugs, no_norms, no_stats);
 
@@ -153,9 +163,19 @@ for n = 1:no_norms
     
 end
 
-max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
-
-min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+if strcmp(cplot_norm, '_row')
+    
+    max_by_channel = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot))), no_stats, no_channels, no_norms);
+    
+    min_by_channel = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot))), no_stats, no_channels, no_norms);
+    
+elseif strcmp(cplot_norm, '_col')
+    
+    max_by_drug = reshape(nanmax(nanmax(nanmax(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+    
+    min_by_drug = reshape(nanmin(nanmin(nanmin(All_cplot_for_plot)), [], 5), no_drugs + 1, no_stats, no_norms);
+    
+end
 
 for n = 1:no_norms
     
@@ -168,8 +188,26 @@ for n = 1:no_norms
             subplot(no_channels + no_bands_plotted, no_drugs + 1, (c - 1)*(no_drugs + 1) + 1)
             
             imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, 1, s, c, n))
-            
-            caxis([min_by_drug(1, s, n) max_by_drug(1, s, n)])
+              
+            if strcmp(cplot_norm, '_row')
+                
+                caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
+                
+                if d == no_drugs + 1
+                    
+                    colorbar
+                    
+                end
+                
+            elseif strcmp(cplot_norm, '_col')
+                
+                caxis([min_by_drug(1, s, n) max_by_drug(1, s, n)])
+                
+            else
+                
+                colorbar
+                
+            end
             
             axis xy
             
@@ -177,7 +215,7 @@ for n = 1:no_norms
             
             if c == 1
                 
-                title({'Preinjection,'; [long_stats{s}, ' MI, ', long_norms{n}]; 'Hours 1 & 2 Preinjection'})
+                title({['Preinjection, ' state]; [long_stats{s}, ' MI, ', long_norms{n}]; 'Hours 1 & 2 Preinjection'})
                 
             end
             
@@ -189,13 +227,31 @@ for n = 1:no_norms
                 
                 imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, d, s, c, n))
                 
-                caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
+                if strcmp(cplot_norm, '_row')
+                    
+                    caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
+                    
+                    if d == no_drugs + 1
+                        
+                        colorbar
+                        
+                    end
+                    
+                elseif strcmp(cplot_norm, '_col')
+                    
+                    caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
+                    
+                else
+                    
+                    colorbar
+                    
+                end
                 
                 axis xy
                 
                 if c == 1
                     
-                    title({drugs{d - 1}; [long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d - 1, s, c, n) + 4 - 1}})
+                    title({[drugs{d - 1}, ', ', state]; [long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d - 1, s, c, n) + 4 - 1}})
                     
                 else
                     
@@ -266,7 +322,7 @@ for n = 1:no_norms
             
         end
                 
-        save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_multidrug_', state_labels{sl}, '_', stats{s}])
+        save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi_', state, stats{s}, cplot_norm])
         
     end
     
@@ -276,7 +332,7 @@ for n=1:no_norms
     
     for s=1:no_stats
             
-        open(['ALL_MI',norms{n},'_multichannel_multidrug_', stats{s}, '.fig'])
+        open(['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi_', state, stats{s}, cplot_norm, '.fig'])
         
     end
     
