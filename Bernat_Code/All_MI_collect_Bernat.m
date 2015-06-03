@@ -44,10 +44,10 @@ for s=1:subj_num
         [fourhr_periods, states] = text_read([record_dir,'/',channel_dir,'/',channel_name,'_4hrs_by_state_epochs.list'], '%*d%s%s%*[^\n]');
             
         hr_data=load([record_dir,'/',channel_dir,'/ALL_',channel_name,'_hours/ALL_',channel_name,'_hours_',measure_suffix,'.txt']);
-        length(hr_data)
         fourhr_data=load([record_dir,'/',channel_dir,'/ALL_',channel_name,'_4hrs_by_state/ALL_',channel_name,'_4hrs_by_state_',measure_suffix,'.txt']);
-        length(fourhr_data)
         [no_epochs,~]=size(hr_periods);
+        display(sprintf('%s: length(hr_data) = %d; length(fourhr_data) = %d; no_epochs = %d.',...
+            record_dir, length(hr_data), length(fourhr_data), no_epochs))
         
 %         baseline_indicator = strcmp(fourhr_periods, 'pre4to1') | strcmp(fourhr_periods, 'pre8to5');
 %         
