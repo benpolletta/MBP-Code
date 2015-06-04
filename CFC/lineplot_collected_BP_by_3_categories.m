@@ -2,7 +2,7 @@ function lineplot_collected_BP_by_3_categories(Title,name,band_labels,cat3_label
 
 % cat1_labels is for rows. cat2_labels is for columns. cat3_labels is for
 % number of subplots. (At least in some figures - although actually it
-% depends; see below.
+% depends; see below.) stat is a string - either 'Median' or 'Mean'.
 
 long_band_labels=band_labels{2};
 long_cat1_labels=cat1_labels{2};
