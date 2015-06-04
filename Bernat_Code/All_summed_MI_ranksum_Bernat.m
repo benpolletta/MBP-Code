@@ -21,6 +21,7 @@ load([name,'/',name,'_',measure,'_summed.mat'])
 %load([name,'/',name,'_',measure,'_summed_pct.mat']) %No longer necessary,
 %since now normalization is done before summing (10/16/14).
 
+% NEEDS TO BE FIXED.
 %% Barplots by 4 hr period.
 
 % p=1;
@@ -63,11 +64,11 @@ stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_hr_by_state'],{b
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI_4hr)
 
-% stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
-%    {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI)
-% 
-% stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
-%     {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI_4hr)
+stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
+   {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI)
+
+stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
+    {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI_4hr)
 
 % Summed MI as a percentage of baseline.
 
@@ -97,9 +98,9 @@ stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_6min_by_state'],
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_6min_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI_4hr)
 
-% stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI)
-% 
-% stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI_4hr)
+stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI)
+
+stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI_4hr)
 
 % Summed MI as a percentage of baseline.
 

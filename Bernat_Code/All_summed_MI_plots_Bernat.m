@@ -24,6 +24,7 @@ no_bands=length(band_labels);
 
 c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1];%[1 .6 0; .6 .4 .8; .59 .29 0; .21 .37 .23];
 
+% NEEDS TO BE FIXED.
 %% Barplots by 4 hr period.
 
 % p=1;
