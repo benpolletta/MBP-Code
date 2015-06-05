@@ -21,7 +21,7 @@ close('all')
 
 figs=nan(3,no_cats1*no_cats2);
 
-MI_stats = nan(matrix_rows, matrix_columns, no_cats1, no_cats2, 3);
+MI_stats = nan(matrix_rows, matrix_columns, no_cats1, no_cats2, no_stats);
 
 for c1=1:no_cats1
     

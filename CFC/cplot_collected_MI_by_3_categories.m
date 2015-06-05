@@ -21,7 +21,7 @@ stat_labels={'median','mean','std'};
 long_stat_labels={'Median','Mean','St. Dev.'};
 no_stats=length(stat_labels);
 
-MI_stats=nan(matrix_rows,matrix_columns,no_stats);
+MI_stats=nan(matrix_rows, matrix_columns, no_cats1, no_cats2, no_cats3, no_stats);
 
 close('all')
 
@@ -53,21 +53,21 @@ for c3 = 1:no_cats3
             
             if ~isempty(MI_cat2) && size(MI_cat2,1)~=1
                 
-                MI_stats(:,:,1)=reshape(nanmedian(MI_cat2),matrix_rows,matrix_columns);
+                MI_stats(:,:,c1,c2,c3,1)=reshape(nanmedian(MI_cat2),matrix_rows,matrix_columns);
                 
-                MI_stats(:,:,2)=reshape(nanmean(MI_cat2),matrix_rows,matrix_columns);
+                MI_stats(:,:,c1,c2,c3,2)=reshape(nanmean(MI_cat2),matrix_rows,matrix_columns);
                 
-                MI_stats(:,:,3)=reshape(nanstd(MI_cat2),matrix_rows,matrix_columns);
+                MI_stats(:,:,c1,c2,c3,3)=reshape(nanstd(MI_cat2),matrix_rows,matrix_columns);
                 
             else
                 
-                MI_stats=nan(matrix_rows,matrix_columns,3);
+                MI_stats(:,:,c1,c2,c3,:)=nan(matrix_rows,matrix_columns,1,1,1,3);
                 
             end
             
             for m=1:no_stats
                 
-                figure(), imagesc(MI_stats(:,:,m))
+                figure(), imagesc(MI_stats(:,:,c1,c2,c3,m))
                 
                 figs(m,(c1-1)*no_cats2+c2)=gcf;
                 
