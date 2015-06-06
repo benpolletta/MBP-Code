@@ -43,7 +43,7 @@ norms={'','thresh_','thresh_pct_'};%,'zs_'};
 no_norms = length(norms);
 long_norms={'', 'z-Scored', '% Change, z-Scored'};
 
-no_pre=2; no_post=6;
+no_pre=2; no_post=8;
 [sixmin_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
 no_6min_periods = length(sixmin_labels);
 
@@ -51,7 +51,7 @@ no_6min_periods = length(sixmin_labels);
 % [hr_labels, ~, long_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
 % no_hr_periods = length(hr_labels);
 
-no_pre=4; no_post=16;
+no_pre=4; no_post=20;
 [BP_hr_labels, ~, long_BP_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
 no_BP_hr_periods = length(BP_hr_labels);
 short_BP_hr_labels = -4:16; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
