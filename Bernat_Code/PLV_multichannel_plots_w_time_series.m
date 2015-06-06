@@ -47,11 +47,11 @@ no_pre=2; no_post=8;
 [sixmin_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
 no_6min_periods = length(sixmin_labels);
 
-% no_pre=4; no_post=16;
-% [hr_labels, ~, long_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
-% no_hr_periods = length(hr_labels);
+no_pre=4; no_post=12;
+[hr_labels, ~, long_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
+no_hr_periods = length(hr_labels);
 
-no_pre=4; no_post=20;
+no_pre=4; no_post=16;
 [BP_hr_labels, ~, long_BP_hr_labels]=make_period_labels(no_pre,no_post,'hrs');
 no_BP_hr_periods = length(BP_hr_labels);
 short_BP_hr_labels = -4:16; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
@@ -66,7 +66,7 @@ clear titles xlabels ylabels
            
 All_cplot_data = nan(length(freqs), no_drugs, no_6min_periods, no_stats, no_chan_pairs, no_norms);
            
-All_lineplot_data = nan(length(freqs), no_drugs, no_BP_hr_periods, no_stats, no_chan_pairs, no_norms);
+All_lineplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_chan_pairs, no_norms);
 
 All_BP_stats = nan(no_BP_hr_periods, no_channels, no_sub_bands, no_stats, no_drugs, no_norms);
 
