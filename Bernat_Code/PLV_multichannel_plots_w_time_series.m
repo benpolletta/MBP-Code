@@ -81,7 +81,7 @@ for n=1:no_norms
         load(['ALL_',cp_labels{c},'_PLV/ALL_',cp_labels{c},'_PLV_',norms{n},'6mins_spec_stats_for_cplot.mat'])
         
         display('size(All_cplot_data) = ')
-        size(All_cplot_data(:,:,:,:,c,n)
+        size(All_cplot_data(:,:,:,:,c,n))
         display('size(spec_stats) = ')
         size(spec_stats)
         
