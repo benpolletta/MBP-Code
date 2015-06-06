@@ -193,12 +193,6 @@ for n = 1:no_norms
                 
                 caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
                 
-                if d == no_drugs + 1
-                    
-                    colorbar
-                    
-                end
-                
             elseif strcmp(cplot_norm, '_col')
                 
                 caxis([min_by_drug(1, s, n) max_by_drug(1, s, n)])
