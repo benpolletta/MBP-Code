@@ -77,9 +77,9 @@ for n=1:no_norms
         for d = 1:no_drugs
             
             load([ch_dir,'/',ch_dir,'_p0.99_IEzs_MI','/',...
-                ch_dir,'_p0.99_IEzs_4hr_by_state',norms{n},'_',drugs{d},'_cplot_data.mat'])
+                ch_dir,'_p0.99_IEzs_hr_by_state',norms{n},'_',drugs{d},'_cplot_data.mat'])
             
-            All_cplot_data(:, :, d, :, :, c, n) = MI_stats(:, :, 1, :, :);
+            All_cplot_data(:, :, d, :, :, c, n) = permute(MI_stats(:, :, strcmp(cat1_labels, state), :, 1, :), [1 2 5 4 6 3]);
             
         end
         

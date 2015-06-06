@@ -50,8 +50,8 @@ for d=1:no_drugs
     
     cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI)
     cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_pct_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,hr_periods,MI_pct)
-    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state',drug_labels{d}],no_states,no_periods,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
-    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_pct_by_state',drug_labels{d}],no_states,no_periods,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_pct)
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_by_state_',drug_labels{d}],no_states,no_periods,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hr_pct_by_state_',drug_labels{d}],no_states,no_periods,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_pct)
     
 end
     
