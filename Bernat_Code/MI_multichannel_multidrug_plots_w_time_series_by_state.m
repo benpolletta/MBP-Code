@@ -107,7 +107,7 @@ for n=1:no_norms
         
         BP_state_ranksum = BP_ranksum(:, strcmp(cat3_labels, state), :, :);
         
-        BP_ranksum_new = permute(BP_state_ranksum, [3, 1, 4, 2]);
+        BP_ranksum_new = permute(BP_state_ranksum, [4, 1, 3, 2]);
         
         BPr_dims = size(BP_ranksum_new);
         
