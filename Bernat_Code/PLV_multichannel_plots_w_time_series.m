@@ -39,9 +39,9 @@ load('drugs.mat')
 stats={'median','mean','std'}; no_stats = length(stats);
 long_stats={'Median','Mean','St. Dev.'};
 
-norms={'pct_'};%,'zs_'}; 
+norms={'','thresh_','thresh_pct_'};%,'zs_'}; 
 no_norms = length(norms);
-long_norms={'% Change','z-Scored'};
+long_norms={'', 'z-Scored', '% Change, z-Scored'};
 
 no_pre=4; no_post=12;
 [sixmin_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
