@@ -6,11 +6,11 @@ function spec_multichannel_plots_w_time_series%(hour_lims,freq_lims,no_hr_ticks,
 
 freqs = 500*(1:2^9)/(2^10); freqs = freqs(freqs <= 200);
 
-bands = [1 12; 20 200]; no_BP_bands = size(bands, 1);
+bands = [1 12; 20 200]; no_bands = size(bands, 1);
 
-[band_indices, long_band_names] = deal(cell(no_BP_bands, 1));
+[band_indices, long_band_names] = deal(cell(no_bands, 1));
 
-for b = 1:no_BP_bands
+for b = 1:no_bands
     
     band_indices{b} = freqs >= bands(b, 1) & freqs <= bands(b,2);
     long_band_names{b} = sprintf('%d to %d Hz', bands(b, 1), bands(b, 2));
