@@ -175,15 +175,15 @@ for n = 1:no_norms
             
             if d > 1
                 
-                band_indices = [1 2 5:no_BP_bands]; no_bands_plotted = length(band_indices);
+                BP_band_indices = [1 2 5:no_BP_bands]; no_bands_plotted = length(BP_band_indices);
                 
                 for b = 1:no_bands_plotted
                     
                     clear plot_stats plot_test
                     
-                    plot_stats = [All_BP_stats(:, :, band_indices(b), 1, 1, n) All_BP_stats(:, :, band_indices(b), 1, d, n)];
+                    plot_stats = [All_BP_stats(:, :, BP_band_indices(b), 1, 1, n) All_BP_stats(:, :, BP_band_indices(b), 1, d, n)];
                         
-                    plot_test(:, :) = [nan(size(All_BP_test(:, :, band_indices(b), d - 1, n))) All_BP_test(:, :, band_indices(b), d - 1, n)];
+                    plot_test(:, :) = [nan(size(All_BP_test(:, :, BP_band_indices(b), d - 1, n))) All_BP_test(:, :, BP_band_indices(b), d - 1, n)];
                     
                     plot_test(plot_test == 0) = nan;
                         
@@ -216,7 +216,7 @@ for n = 1:no_norms
                     
                     ylim([med_min - .2*med_range, med_min + 1.05*med_range])
                     
-                    title(band_labels{band_indices(b)})
+                    title(band_labels{BP_band_indices(b)})
                     
                     xlabel('Time Rel. Inj. (h)')
                     
