@@ -93,7 +93,7 @@ for n=1:no_norms
         
         %% Getting time series data.
         
-        suffix = ['_summed_PLV_', norms{n}, 'hr_BP_stats'];
+        suffix = ['_summed_PLV_', norms{n}, 'hrs_BP_stats'];
         
         ranksum_suffix = ['_summed_PLV_', norms{n}, 'hr_ranksum'];
             
