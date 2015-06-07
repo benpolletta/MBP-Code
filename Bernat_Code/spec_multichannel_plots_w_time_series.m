@@ -129,7 +129,7 @@ for n = 1:no_norms
                     subplot(no_channels + 1 + (d > 1), 2, (c - 1)*2 + b)
                     
                     imagesc(str2num(char(sixmin_labels))/60, freqs(band_indices{b}),...
-                        reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), length(freqs(band_indices{b})), no_6min_periods))
+                        reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), sum(band_indices{b}), no_6min_periods))
                     
                     axis xy
                     
