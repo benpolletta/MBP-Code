@@ -6,11 +6,11 @@ function spec_multichannel_plots_w_time_series%(hour_lims,freq_lims,no_hr_ticks,
 
 freqs = 500*(1:2^9)/(2^10); freqs = freqs(freqs <= 200);
 
-bands = [1 12; 20 200]; no_bands = size(bands, 1);
+bands = [1 12; 20 200]; no_BP_bands = size(bands, 1);
 
-[band_indices, long_band_names] = deal(cell(no_bands, 1));
+[band_indices, long_band_names] = deal(cell(no_BP_bands, 1));
 
-for b = 1:no_bands
+for b = 1:no_BP_bands
     
     band_indices{b} = freqs >= bands(b, 1) & freqs <= bands(b,2);
     long_band_names{b} = sprintf('%d to %d Hz', bands(b, 1), bands(b, 2));
@@ -44,7 +44,7 @@ short_BP_hr_labels = -4:16; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
 
 tick_spacing = floor(no_BP_hr_periods/5);
 
-no_bands = 8;
+no_BP_bands = 8;
 
 c_order = [0 0 1; 0 .5 0; 1 0 0];
     
@@ -56,9 +56,9 @@ All_cplot_data = nan(length(freqs), no_drugs, no_6min_periods, no_stats, no_chan
            
 All_lineplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_channels, no_norms);
 
-All_BP_stats = nan(no_BP_hr_periods, no_channels, no_bands, no_stats, no_drugs, no_norms);
+All_BP_stats = nan(no_BP_hr_periods, no_channels, no_BP_bands, no_stats, no_drugs, no_norms);
 
-[All_BP_ranksum, All_BP_test] = deal(nan(no_BP_hr_periods, no_channels, no_bands, no_drugs - 1, no_norms));
+[All_BP_ranksum, All_BP_test] = deal(nan(no_BP_hr_periods, no_channels, no_BP_bands, no_drugs - 1, no_norms));
     
 for n=1:no_norms
     
@@ -128,6 +128,8 @@ for n = 1:no_norms
                     
                     subplot(no_channels + 1 + (d > 1), 2, (c - 1)*2 + b)
                     
+                    size(All_cplot_data(band_indices{b}
+                    
                     imagesc(str2num(char(sixmin_labels))/60, freqs(band_indices{b}),...
                         reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), sum(band_indices{b}), no_6min_periods))
                     
@@ -175,7 +177,7 @@ for n = 1:no_norms
             
             if d > 1
                 
-                band_indices = [1 2 5:no_bands]; no_bands_plotted = length(band_indices);
+                band_indices = [1 2 5:no_BP_bands]; no_bands_plotted = length(band_indices);
                 
                 for b = 1:no_bands_plotted
                     
