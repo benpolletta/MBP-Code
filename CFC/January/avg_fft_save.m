@@ -42,8 +42,8 @@ for j=1:cond_num
         data=data';
         data=detrend(data);
 
-        data_hat=fft(data);
-%         data_hat=pmtm(data,[],signal_length);
+        % data_hat=fft(data);
+        data_hat=pmtm(data,[],signal_length);
         
         all_fft(i,:)=data_hat(1:no_freqs);
         

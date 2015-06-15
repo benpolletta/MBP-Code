@@ -80,12 +80,14 @@ for n=1:no_norms
         
         load(['ALL_',cp_labels{c},'_PLV/ALL_',cp_labels{c},'_PLV_',norms{n},'6mins_spec_stats_for_cplot.mat'])
         
-        display('size(All_cplot_data) = ')
-        size(All_cplot_data(:,:,:,:,c,n))
-        display('size(spec_stats) = ')
-        size(spec_stats)
+        % display('size(All_cplot_data) = ')
+        % size(All_cplot_data(:,:,:,:,c,n))
+        % display('size(spec_stats) = ')
+        % size(spec_stats)
         
-        All_cplot_data(:, :, :, :, c, n) = spec_stats;
+        data_length = min(size(spec_stats, 3), no_6min_periods);
+        
+        All_cplot_data(:, :, 1:data_length, :, c, n) = spec_stats(:, :, 1:data_length, :);
         
         load(['ALL_',cp_labels{c},'_PLV/ALL_',cp_labels{c},'_PLV_',norms{n},'hrs_spec_stats_for_cplot.mat'])
         

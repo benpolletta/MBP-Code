@@ -37,7 +37,7 @@ stat_labels={'median','mean','std'};
 % long_stat_labels={'Median','Mean','St. Dev.'};
 no_stats=length(stat_labels);
 
-spec_stats=zeros(no_freqs,no_cats1,no_cats2,no_stats);
+spec_stats=zeros(no_freqs,no_cats1,no_cats2,no_cats3,no_stats);
 
 close('all')
 
@@ -67,15 +67,15 @@ for c3=1:no_cats3
             
             if ~isempty(spec_cat2) && size(spec_cat2,1)>=5
                 
-                spec_stats(:,c1,c2,1)=nanmedian(spec_cat2)';
+                spec_stats(:,c1,c2,c3,1)=nanmedian(spec_cat2)';
                 
-                spec_stats(:,c1,c2,2)=nanmean(spec_cat2)';
+                spec_stats(:,c1,c2,c3,2)=nanmean(spec_cat2)';
                 
-                spec_stats(:,c1,c2,3)=nanstd(spec_cat2)'/sqrt(size(spec_cat2,2));
+                spec_stats(:,c1,c2,c3,3)=nanstd(spec_cat2)'/sqrt(size(spec_cat2,2));
                 
             else
                 
-                spec_stats(:,c1,c2,1:3)=nan;
+                spec_stats(:,c1,c2,c3,1:3)=nan;
                 
             end
             
@@ -248,6 +248,8 @@ for c3=1:no_cats3
     end
     
 end
+
+save([name, '_cplot_data.mat'], 'spec_stats', 'freqs', 'cat1_labels', 'cat2_labels', 'cat3_labels', 'stat_labels')
 
 for c1=1:no_cats1
     
