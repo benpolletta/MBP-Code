@@ -1,4 +1,4 @@
-function spec_multichannel_plots_w_time_series_by_state
+function spec_multichannel_plots_w_time_series_by_state(state)
 
 % SAMPLE CALL: plot_spec_horiz_all_channels([-120 360], [0 200], 8, 6, 'rows')
 
@@ -70,7 +70,7 @@ for n=1:no_norms
         
         % titles{c}=[long_stats{s},' ',channels{c},' Power, ',long_norms{n},' ',drugs{d}];
         
-        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'6mins_spec_stats_for_cplot.mat'])
+        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_by_state_cplot_data.mat'])
         
         All_cplot_data(:, :, :, :, c, n) = spec_stats;
         

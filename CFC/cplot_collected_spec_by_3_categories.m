@@ -109,7 +109,7 @@ for c3=1:no_cats3
             
             subplot(no_bands,no_cats3,(b-1)*no_cats3+c3)
             
-            imagesc(reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
+            imagesc(reshape(spec_stats(band_indices{b},c1,:,c3,2),band_width,no_cats2))
             
             axis xy
             
@@ -150,7 +150,7 @@ for c3=1:no_cats3
             
             subplot(no_bands,no_cats1,(b-1)*no_cats1+c1)
             
-            imagesc(reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
+            imagesc(reshape(spec_stats(band_indices{b},c1,:,c3,2),band_width,no_cats2))
             
             axis xy
             
@@ -195,13 +195,13 @@ for c3=1:no_cats3
             
             subplot(no_cats3,no_bands,(c3-1)*no_bands+b)
             
-            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2))
+            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,c3,2),band_width,no_cats2))
             
             hold on
             
-            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)+reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
+            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,c3,2),band_width,no_cats2)+reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
             
-            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,2),band_width,no_cats2)-reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
+            semilogy(band_freqs,reshape(spec_stats(band_indices{b},c1,:,c3,2),band_width,no_cats2)-reshape(spec_stats(band_indices{b},c1,:,3),band_width,no_cats2),':')
             
             set(gca,'XTick',band_ticks,'XTickLabel',band_labels)
             
