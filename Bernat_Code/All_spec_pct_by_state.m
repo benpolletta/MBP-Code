@@ -16,6 +16,7 @@ subjects = text_read([dir,'/',dir,'_subjects.txt'], '%s');
 fourhrs = text_read([dir,'/',dir,'_4hrs.txt'], '%s');
 states = text_read([dir,'/',dir,'_states.txt'], '%s');
 spec = load([dir,'/',dir,'_spec.txt'],'w');
+BP = load([dir,'/',dir,'_BP.txt'],'w');
 
 spec_pct = nan(size(spec));
 

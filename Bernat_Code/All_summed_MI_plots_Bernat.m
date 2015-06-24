@@ -18,7 +18,7 @@ fourhrs = text_read([name,'/',name,'_',measure,'_4hr_periods.txt'],'%s');
 sixmins = text_read([name,'/',name,'_',measure,'_6min_periods.txt'],'%s');
 states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
 load([name,'/',name,'_',measure,'_summed.mat'])
-%load([name,'/',name,'_',measure,'_summed_pct.mat'])
+load([name,'/',name,'_',measure,'_MI_pct_by_state.mat'], 'summed_MI_pct_by_state')
 
 no_bands=length(band_labels);
 
@@ -59,11 +59,15 @@ end
 
 % "Raw" summed MI.
 
+% State-dependent.
+
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by Hour'],[name,'/',name,'_summed_hrMI_hr_by_state'],{band_labels, band_labels},...
     {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI,stat)
 
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by State Every 4 Hrs'],[name,'/',name,'_summed_4hrMI_hr_by_state'],{band_labels, band_labels},...
     {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_4hr,stat)
+
+% State-independent.
 
 lineplot_collected_BP_by_categories([channel_label, ' MI, z-Scored by Hour'],[name,'/',name,'_summed_hrMI_hr'],{band_labels, band_labels},...
     {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},drugs,hrs,summed_MI,stat,c_order)
@@ -73,12 +77,16 @@ lineplot_collected_BP_by_categories([channel_label, ' MI, z-Scored by Hour'],[na
 
 % Summed MI as a percentage of baseline.
 
+% State-dependent.
+
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by Hour, Pct. Change from Baseline'],[name,'/',name,'_summed_hrMI_pct_hr_by_state'],...
-    {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_pct,stat)
+    {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_pct_by_state,stat)
 
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by State Every 4 Hrs, Pct. Change from Baseline'],...
     [name,'/',name,'_summed_4hrMI_pct_hr_by_state'],{band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},...
     {short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_4hr_pct,stat)
+
+% State-independent.
 
 lineplot_collected_BP_by_categories([channel_label, ' MI, z-Scored by Hour, Pct. Change from Baseline'],[name,'/',name,'_summed_hrMI_pct_hr'],...
     {band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, short_hr_labels},drugs,hrs,summed_MI_pct,stat,c_order)
@@ -94,11 +102,15 @@ no_pre=2; no_post=8;
 
 % "Raw" summed MI.
 
+% State-dependent.
+
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by Hour'],[name,'/',name,'_summed_hrMI_6min_by_state'],{band_labels, band_labels},...
     {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI,stat)
 
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by Hour'],[name,'/',name,'_summed_4hrMI_6min_by_state'],{band_labels, band_labels},...
     {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_4hr,stat)
+
+% State-independent.
 
 lineplot_collected_BP_by_categories([channel_label, ' MI, z-Scored by Hour'],[name,'/',name,'_summed_hrMI_6min'],{band_labels, band_labels},...
     {drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI,stat,c_order)
@@ -108,11 +120,15 @@ lineplot_collected_BP_by_categories([channel_label, ' MI, z-Scored by Hour'],[na
 
 % Summed MI as a percentage of baseline.
 
+% State-dependent.
+
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by Hour, Pct. Change from Baseline'],[name,'/',name,'_summed_hrMI_pct_6min_by_state'],...
-    {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_pct,stat)
+    {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_pct_by_state,stat)
 
 lineplot_collected_BP_by_3_categories([channel_label, ' MI, z-Scored by Hour, Pct. Change from Baseline'],[name,'/',name,'_summed_4hrMI_pct_6min_by_state'],...
     {band_labels, band_labels},{drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_4hr_pct,stat)
+
+% State-independent.
 
 lineplot_collected_BP_by_categories([channel_label, ' MI, z-Scored by Hour, Pct. Change from Baseline'],[name,'/',name,'_summed_hrMI_pct_6min'],...
     {band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI_pct,stat,c_order)
