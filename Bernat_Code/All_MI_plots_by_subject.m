@@ -52,15 +52,21 @@ for s=1:no_subjects
     
     subj_MI=MI(strcmp(subjects,subject),:);
     
-    subj_drugs=drugs(strcmp(subjects,subject),:);
+    subj_MI_pct=MI_pct(strcmp(subjects,subject),:);
+    
+    subj_drugs=drugs(strcmp(subjects,subject));
     
 %     subj_states=states(strcmp(subjects,subject),:);
     
-    subj_periods=hr_periods(strcmp(subjects,subject),:);
+    subj_periods=hr_periods(strcmp(subjects,subject));
     
     for d=1:no_drugs
     
-        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',subject,'_',drug_labels{d}],4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
+        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_',subject,'_',drug_labels{d}],...
+            4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
+    
+        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hr_pct_',subject,'_',drug_labels{d}],...
+            4,4,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI_pct)
     
     end
         
@@ -89,12 +95,20 @@ for s=1:no_subjects
     
     subj_MI=MI(strcmp(subjects,subject),:);
     
+    subj_MI_pct=MI_pct(strcmp(subjects,subject),:);
+    
     subj_drugs=drugs(strcmp(subjects,subject),:);
     
     subj_states=states(strcmp(subjects,subject),:);
     
     subj_periods=fourhr_periods(strcmp(subjects,subject),:);
     
-    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_by_state_',subject],no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI)
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_by_state_',subject],...
+        no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},...
+        {short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI)
+    
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hr_pct_by_state_',subject],...
+        no_states,no_periods,phases,amps,{drug_labels, drug_labels},{state_labels, long_state_labels},...
+        {short_period_labels, period_labels},subj_drugs,subj_states,subj_periods,subj_MI_pct)
     
 end
