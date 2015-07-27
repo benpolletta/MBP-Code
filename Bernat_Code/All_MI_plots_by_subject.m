@@ -1,4 +1,4 @@
-function All_MI_plots(channel_label,measure)
+function All_MI_plots_by_subject(channel_label,measure)
 
 amps=20:5:200; phases=1:.25:12;
 matrix_rows=length(amps); matrix_columns=length(phases);
