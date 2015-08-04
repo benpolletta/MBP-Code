@@ -119,13 +119,13 @@ end
 
 if strcmp(hi_hr, 'independent')
 
-    [~, max_hr_indices] = nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 4);
+    [~, max_hr_indices] = nanmax(nanmax(nanmax(All_cplot_data(:, :, :, 5:end, :, :, :))), [], 4);
     
     max_hr_indices = reshape(max_hr_indices, no_drugs, no_stats, no_channels, no_norms);
 
 elseif strcmp(hi_hr, 'drug')
    
-    [~, max_hr_indices] = nanmax(nanmax(nanmax(nanmax(abs(All_cplot_data(:, :, :, 4:end, :, :, :)))), [], 6), [], 4);
+    [~, max_hr_indices] = nanmax(nanmax(nanmax(nanmax(All_cplot_data(:, :, :, 5:end, :, :, :))), [], 6), [], 4);
     
     max_hr_indices = repmat(reshape(max_hr_indices, no_drugs, no_stats, 1, no_norms), [1 1 no_channels 1]);
     
@@ -310,7 +310,7 @@ for n = 1:no_norms
             
         end
                 
-        save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi', stats{s}, cplot_norm])
+        save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi_', stats{s}, cplot_norm])
         
     end
     
@@ -320,7 +320,7 @@ for n=1:no_norms
     
     for s=1:no_stats
             
-        open(['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi', stats{s}, cplot_norm, '.fig'])
+        open(['ALL_MI',norms{n},'_multichannel_multidrug_', hi_hr, '_hi_', stats{s}, cplot_norm, '.fig'])
         
     end
     
