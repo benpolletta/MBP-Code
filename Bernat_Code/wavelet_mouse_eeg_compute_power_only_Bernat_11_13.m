@@ -95,9 +95,10 @@ for d=1:no_drugs
     hrs_list=[channel_name,'_hours_epochs.list'];
     sixmins_list=[channel_name,'_6mins_epochs.list'];
 
-    [fourhrs,states,epoch_names]=textread([record_dir,'/',channel_dir,'/',epoch_list],'%*d%s%s%s%*[^\n]');
-    hrs=textread([record_dir,'/',channel_dir,'/',hrs_list],'%*d%s%*[^\n]');
-    sixmins=textread([record_dir,'/',channel_dir,'/',sixmins_list],'%*d%s%*[^\n]');
+    [record_dir,'/',channel_dir,'/',epoch_list]
+    [fourhrs,states,epoch_names]=text_read([record_dir,'/',channel_dir,'/',epoch_list],'%*d%s%s%s%*[^\n]');
+    hrs=text_read([record_dir,'/',channel_dir,'/',hrs_list],'%*d%s%*[^\n]');
+    sixmins=text_read([record_dir,'/',channel_dir,'/',sixmins_list],'%*d%s%*[^\n]');
 %     no_epochs=length(epoch_names);
 
     start_epochs=ceil(inj_epochs(d)+period_hrs(:,1)*epochs_per_hour+1);
