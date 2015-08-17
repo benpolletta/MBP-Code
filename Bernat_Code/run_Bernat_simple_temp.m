@@ -36,7 +36,7 @@ for c = 1:no_channels
     
     channel_dir=channel_labels{c};
     channel_dir=channel_dir(1:end-5);
-    cd (channel_dir)
+%     cd (channel_dir)
     
 %     list_suffixes={'hours','4hrs_by_state'};
 %     no_master_lists=length(list_suffixes);
@@ -72,7 +72,7 @@ for c = 1:no_channels
 
     tic; wavelet_mouse_eeg_compute_power_only_Bernat_11_13(subject, channels{c}); toc;
     
-    cd (drug_dir)
+%     cd (drug_dir)
     
 end
 
