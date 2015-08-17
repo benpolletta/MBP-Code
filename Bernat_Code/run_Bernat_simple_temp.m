@@ -5,11 +5,11 @@ sampling_freq=1000;
 present_dir=pwd;
 
 subject_dir=[subject,'_',drug];
-% cd (subject_dir)
+cd (subject_dir)
 
 challenge_list=[subject_dir,'_channels.list'];
 
-channel_lists=textread(challenge_list,'%s');
+channel_lists=text_read(challenge_list,'%s');
 no_channels=length(channel_lists);
 for c=1:no_channels
     channel_label=char(channel_lists(c));
@@ -18,24 +18,26 @@ for c=1:no_channels
     channels{c}=channel;
 end
 
-subplot_dims=[1,no_channels];
+cd (present_dir)
 
-challenge_descriptor=[subject,' ',drug];
-
+% subplot_dims=[1,no_channels];
+% 
+% challenge_descriptor=[subject,' ',drug];
+%
 % tic; wavelet_mouse_eeg_HAP(sampling_freq,challenge_list); toc;
 % tic; wavelet_mouse_eeg_analysis_Jan_epsilon(sampling_freq,challenge_list,channel_labels,{''},subplot_dims); toc;
 % tic; wavelet_mouse_eeg_canolty_MI_temp(challenge_list,challenge_descriptor,channel_labels,subplot_dims); toc;
 % tic; wavelet_mouse_eeg_PLV(sampling_freq,challenge_list,challenge_descriptor,channel_labels,subplot_dims); toc;
-
-noshufs=1000;
-thresholds=[.05 .01 .001];
+% 
+% noshufs=1000;
+% thresholds=[.05 .01 .001];
 
 for c = 1:no_channels
     
-    drug_dir=pwd;
-    
-    channel_dir=channel_labels{c};
-    channel_dir=channel_dir(1:end-5);
+%     drug_dir=pwd;
+%     
+%     channel_dir=channel_labels{c};
+%     channel_dir=channel_dir(1:end-5);
 %     cd (channel_dir)
     
 %     list_suffixes={'hours','4hrs_by_state'};
