@@ -5,7 +5,7 @@ sampling_freq=1000;
 present_dir=pwd;
 
 subject_dir=[subject,'_',drug];
-cd (subject_dir)
+% cd (subject_dir)
 
 challenge_list=[subject_dir,'_channels.list'];
 
@@ -70,13 +70,13 @@ for c = 1:no_channels
 %         
 %     end
 
-    tic; wavelet_mouse_eeg_compute_power_only_Bernat_11_13(subject, channels{c}); toc;
+    tic; wavelet_mouse_eeg_compute_power_only_Bernat_11_13(subject, drug); toc;
     
 %     cd (drug_dir)
     
 end
 
-cd (present_dir)
+% cd (present_dir)
 
 % for c=1:no_channels
 % 
