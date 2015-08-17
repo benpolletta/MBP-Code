@@ -72,7 +72,7 @@ for c = 1:no_channels
 %         
 %     end
 
-    tic; wavelet_mouse_eeg_compute_power_only_Bernat_11_13(subject, drug); toc;
+    tic; wavelet_mouse_eeg_compute_power_only_Bernat_11_13(subject, channels{c}); toc;
     
 %     cd (drug_dir)
     
