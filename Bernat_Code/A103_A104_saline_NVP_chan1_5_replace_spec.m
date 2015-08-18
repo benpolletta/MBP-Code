@@ -39,9 +39,15 @@ for d = 1:drug_num
         
         spec_mat = load([all_dir,'/ALL_',channel_name,'_spec.mat']);
         spec_data = spec_mat.spec_all;
-        
+       
         data_indices = strcmp(subjects, subject) & strcmp(drugs, drug);
-        sum(data_indices), size(spec_data)
+        size(spec), sum(data_indices), size(spec_data)
+        
+        spec_data = permute(spec_data, [3 2 1]);
+        sd_dims = size(spec_data);
+        spec_data = reshape(spec_data, 2, sd_dims(2)/2, sd_dims(3));
+        spec_data = permute(mean(spec_data), [3 2 1]);
+        size(spec_data)
         
         spec(data_indices, :) = spec_data;
         
