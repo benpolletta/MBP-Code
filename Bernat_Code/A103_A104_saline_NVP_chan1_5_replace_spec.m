@@ -63,7 +63,7 @@ for d = 1:drug_num
         spec_zs(data_indices, :) = spec_data_zs;
         
         baseline_indices = strcmp(fourhrs, 'pre4to1');
-        baseline_spec = ones(epochs, no_freqs)*diag(nanmean(spec_data(baseline_indices & data_indices, :)));
+        baseline_spec = ones(epochs, no_freqs)*diag(nanmean(spec_data(baseline_indices, :)));
         spec_data_pct = 100*spec_data./baseline_spec - 100*ones(epochs, no_freqs);
         spec_pct(data_indices, :) = spec_data_pct;
         
