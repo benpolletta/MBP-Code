@@ -1,4 +1,8 @@
-function A103_A104_saline_NVP_chan1_chan4_replace_spec(channel_label,channels)
+function A103_A104_saline_NVP_chan1_5_replace_spec
+
+channel_labels = {'Frontal', 'CA1'};
+
+channels = [1 5];
 
 subjects={'A103','A104'};
 subj_num=length(subjects);
@@ -17,7 +21,7 @@ spec = load([dir,'/',dir,'_spec.txt']);
 spec_pct = load([dir,'/',dir,'_spec_pct.txt']);
 spec_zs = load([dir,'/',dir,'_spec_zs.txt']);
 
-save([dir,'/',dir,'_spec_OLD',datestr(now,'mm-dd-yy_HH-MM-SS'),'.mat'], 'spec', 'spec_pct', 'spec_zs')
+save([dir,'/',dir,'_spec_OLD_',datestr(now,'mm-dd-yy_HH-MM-SS'),'.mat'], 'spec', 'spec_pct', 'spec_zs')
 
 for d = 1:drug_num
     
@@ -26,6 +30,8 @@ for d = 1:drug_num
     for s = 1:subj_num
         
         subject = char(subjects{s});
+        
+        channel_label = channel_labels{s};
         
         channel = channels(s);
         
