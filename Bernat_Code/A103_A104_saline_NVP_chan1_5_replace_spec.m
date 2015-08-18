@@ -41,6 +41,7 @@ for d = 1:drug_num
         spec_data = spec_mat.spec_all;
         
         data_indices = strcmp(subjects, subject) & strcmp(drugs, drug);
+        sum(data_indices), size(spec_data)
         
         spec(data_indices, :) = spec_data;
         
