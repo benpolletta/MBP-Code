@@ -8,8 +8,8 @@ drug_num=length(drugs);
 
 dir=['ALL_',channel_label];
 
-drugs = load([dir,'/',dir,'_drugs.txt']);
-subjects = load([dir,'/',dir,'_subjects.txt']);
+drugs = text_read([dir,'/',dir,'_drugs.txt'], '%s');
+subjects = text_read([dir,'/',dir,'_subjects.txt'], '%s');
 % hrs_fid=fopen([dir,'/',dir,'_hrs.txt']);
 % fourhrs_fid=fopen([dir,'/',dir,'_4hrs.txt']);
 % states_fid=fopen([dir,'/',dir,'_states.txt']);
