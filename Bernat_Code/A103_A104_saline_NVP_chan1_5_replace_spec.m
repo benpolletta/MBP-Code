@@ -10,19 +10,6 @@ subj_num=length(subjects);
 drugs={'saline','NVP'};
 drug_num=length(drugs);
 
-dir=['ALL_',channel_label];
-
-drugs = text_read([dir,'/',dir,'_drugs.txt'], '%s');
-subjects = text_read([dir,'/',dir,'_subjects.txt'], '%s');
-% hrs_fid=fopen([dir,'/',dir,'_hrs.txt']);
-% fourhrs_fid=fopen([dir,'/',dir,'_4hrs.txt']);
-% states_fid=fopen([dir,'/',dir,'_states.txt']);
-spec = load([dir,'/',dir,'_spec.txt']);
-spec_pct = load([dir,'/',dir,'_spec_pct.txt']);
-spec_zs = load([dir,'/',dir,'_spec_zs.txt']);
-
-save([dir,'/',dir,'_spec_OLD_',datestr(now,'mm-dd-yy_HH-MM-SS'),'.mat'], 'spec', 'spec_pct', 'spec_zs')
-
 for d = 1:drug_num
     
     drug = char(drugs{d});
@@ -32,6 +19,19 @@ for d = 1:drug_num
         subject = char(subjects{s});
         
         channel_label = channel_labels{s};
+        
+        dir=['ALL_',channel_label];
+        
+        drugs = text_read([dir,'/',dir,'_drugs.txt'], '%s');
+        subjects = text_read([dir,'/',dir,'_subjects.txt'], '%s');
+        % hrs_fid=fopen([dir,'/',dir,'_hrs.txt']);
+        % fourhrs_fid=fopen([dir,'/',dir,'_4hrs.txt']);
+        % states_fid=fopen([dir,'/',dir,'_states.txt']);
+        spec = load([dir,'/',dir,'_spec.txt']);
+        spec_pct = load([dir,'/',dir,'_spec_pct.txt']);
+        spec_zs = load([dir,'/',dir,'_spec_zs.txt']);
+        
+        save([dir,'/',dir,'_spec_OLD_',datestr(now,'mm-dd-yy_HH-MM-SS'),'.mat'], 'spec', 'spec_pct', 'spec_zs')
         
         channel = channels(s);
         
