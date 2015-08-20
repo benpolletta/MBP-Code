@@ -33,7 +33,7 @@ for i=1:no_bands
     long_band_freq_labels{i}=[long_band_labels{i},' (',num2str(band_limits(i,1)),' to ',num2str(band_limits(i,2)),' Hz)'];
 end
 
-%% Plots by 4 hours and state.
+%% Stats by 4 hours and state.
 
 % p=1;
 % for i=1:1
@@ -53,7 +53,7 @@ end
 % 
 % cplot_collected_BP_by_3_categories([channel_label, ', Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_zs)
 
-%% Plots by hour.
+%% Stats by hour.
 
 hr_labels = cell(24, 1); short_hr_labels = cell(24, 1);
 
@@ -78,13 +78,13 @@ stats_collected_BP_by_3_categories([name,'/',name,'_BP_pct_hrs_by_state'],{band_
 stats_collected_BP_by_3_categories([name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},...
     {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,BP_zs)
 
-% stats_collected_BP_by_categories([name,'/',name,'_BP_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP)
-% 
-% stats_collected_BP_by_categories([name,'/',name,'_BP_pct_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_pct)
-% 
-% stats_collected_BP_by_categories([name,'/',name,'_BP_zs_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_zs)
+stats_collected_BP_by_categories([name,'/',name,'_BP_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP)
 
-%% Plots by 6 min.
+stats_collected_BP_by_categories([name,'/',name,'_BP_pct_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_pct)
+
+stats_collected_BP_by_categories([name,'/',name,'_BP_zs_hrs'],{band_labels, band_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},drugs,hrs,BP_zs)
+
+%% Stats by 6 min.
 
 no_pre=2; no_post=8;
 
@@ -99,11 +99,11 @@ stats_collected_BP_by_3_categories([name,'/',name,'_BP_pct_6min_by_state'],{band
 stats_collected_BP_by_3_categories([name,'/',name,'_BP_zs_6min_by_state'],{band_labels, band_labels},...
     {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,BP_zs)
 
-% stats_collected_BP_by_categories([name,'/',name,'_BP_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP)
-% 
-% stats_collected_BP_by_categories([name,'/',name,'_BP_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_pct)
-% 
-% stats_collected_BP_by_categories([name,'/',name,'_BP_zs_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_zs)
+stats_collected_BP_by_categories([name,'/',name,'_BP_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP)
+
+stats_collected_BP_by_categories([name,'/',name,'_BP_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_pct)
+
+stats_collected_BP_by_categories([name,'/',name,'_BP_zs_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,BP_zs)
 
 end
 
