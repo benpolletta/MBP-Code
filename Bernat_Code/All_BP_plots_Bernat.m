@@ -37,23 +37,23 @@ c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1];%[1 .6 0; .6 .4 .8; .59 .29 0; .21 .
 
 %% Plots by 4 hours and state.
 
-% p=1;
-% for i=1:1
-%     fourhr_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
-%     short_fourhr_labels{p}=['pre',num2str(4*i),'to',num2str(4*(i-1)+1)];
-%     p=p+1;
-% end
-% for i=1:4
-%     fourhr_labels{p}=['Hours ',num2str(4*(i-1)+1),' to ',num2str(4*i),' Postinjection'];
-%     short_fourhr_labels{p}=['post',num2str(4*(i-1)+1),'to',num2str(4*i)];
-%     p=p+1;
-% end
-% 
-% cplot_collected_BP_by_3_categories([channel_label, ', Spectral Power',[name,'/',name,'_BP_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP)
-% 
-% cplot_collected_BP_by_3_categories([channel_label, ', Power, Percent Change from Baseline',[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_pct)
-% 
-% cplot_collected_BP_by_3_categories([channel_label, ', Power, z-Scored',[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_zs)
+p=1;
+for i=1:1
+    fourhr_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
+    short_fourhr_labels{p}=['pre',num2str(4*i),'to',num2str(4*(i-1)+1)];
+    p=p+1;
+end
+for i=1:4
+    fourhr_labels{p}=['Hours ',num2str(4*(i-1)+1),' to ',num2str(4*i),' Postinjection'];
+    short_fourhr_labels{p}=['post',num2str(4*(i-1)+1),'to',num2str(4*i)];
+    p=p+1;
+end
+
+cplot_collected_BP_by_3_categories([channel_label, ', Spectral Power'],[name,'/',name,'_BP_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP)
+
+cplot_collected_BP_by_3_categories([channel_label, ', Power, Percent Change from Baseline'],[name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_pct)
+
+cplot_collected_BP_by_3_categories([channel_label, ', Power, z-Scored'],[name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,BP_zs)
 
 %% Plots by hour.
 

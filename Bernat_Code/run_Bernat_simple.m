@@ -67,7 +67,7 @@ for c=1:no_channels
 %         tic; wavelet_mouse_eeg_file_shuffle_PLV(noshufs,thresholds,sampling_freq,challenge_list,challenge_descriptor,challenge_labels,subplot_dims); toc;
 
 %         [rows,cols]=subplot_size(no_lists);
-        avg_fft_save(challenge_list,1000,4096*4) % ,challenge_labels,[rows,cols]);
+%         avg_fft_save(challenge_list,1000,4096*4) % ,challenge_labels,[rows,cols]);
 
         close('all')
         
@@ -81,6 +81,7 @@ cd (present_dir)
 
 for c=1:no_channels
 
+    wavelet_mouse_eeg_compute_power_only_Bernat_11_13(subject, channels{c})
     wavelet_mouse_eeg_collect_IE_thresh_Bernat(subject,drug,channels{c},0.99)
     wavelet_mouse_eeg_collect_IE_thresh_by_state_Bernat(subject,drug,channels{c},0.99)
 %     wavelet_mouse_eeg_collect_AVP_Bernat(subject,drug,channels{c},[2.25 2.75 5.75 6.75],0)
