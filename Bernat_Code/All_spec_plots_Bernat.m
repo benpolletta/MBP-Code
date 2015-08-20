@@ -28,7 +28,7 @@ fourhrs=textread([name,'/',name,'_4hrs.txt'],'%s');
 sixmins=textread([name,'/',name,'_6mins.txt'],'%s');
 states=textread([name,'/',name,'_states.txt'],'%s');
 spec=load([name,'/',name,'_spec.txt']); %spec = sqrt(spec);
-% spec_pct=load([name,'/',name,'_spec_pct.txt']);
+spec_pct=load([name,'/',name,'_spec_pct.txt']);
 spec_pct_by_state=load([name,'/',name,'_spec_pct_by_state.mat']);
 spec_pct_by_state=spec_pct_by_state.spec_pct;
 spec_zs=load([name,'/',name,'_spec_zs.txt']);
