@@ -4,19 +4,19 @@ channel_labels = {'Frontal', 'CA1'};
 
 channels = [1 5];
 
-subjects = {'A103','A104'};
-subj_num = length(subjects);
+subject_labels = {'A103','A104'};
+subj_num = length(subject_labels);
 
-drugs = {'saline','NVP'};
-drug_num = length(drugs);
+drug_labels = {'saline','NVP'};
+drug_num = length(drug_labels);
 
 for d = 1:drug_num
     
-    drug = char(drugs{d});
+    drug = char(drug_labels{d});
 
     for s = 1:subj_num
         
-        subject = char(subjects{s});
+        subject = char(subject_labels{s});
         
         channel_label = channel_labels{s};
         
