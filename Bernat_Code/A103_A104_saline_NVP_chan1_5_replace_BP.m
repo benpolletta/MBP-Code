@@ -4,11 +4,11 @@ channel_labels = {'Frontal', 'CA1'};
 
 channels = [1 5];
 
-subjects={'A103','A104'};
-subj_num=length(subjects);
+subjects = {'A103','A104'};
+subj_num = length(subjects);
 
-drugs={'saline','NVP'};
-drug_num=length(drugs);
+drugs = {'saline','NVP'};
+drug_num = length(drugs);
 
 for d = 1:drug_num
     
@@ -31,15 +31,15 @@ for d = 1:drug_num
         BP_pct = load([dir,'/',dir,'_BP_pct.txt']);
         BP_zs = load([dir,'/',dir,'_BP_zs.txt']);
         
-        save([dir,'/',dir,'_BP_OLD_',datestr(now,'mm-dd-yy_HH-MM-SS'),'.mat'], 'BP', 'BP_pct', 'BP_zs')
+        save([dir, '/', dir, '_BP_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.mat'], 'BP', 'BP_pct', 'BP_zs')
         
         channel = channels(s);
         
-        record_dir = [subject,'_',drug];
+        record_dir = [subject, '_', drug];
         
-        channel_name = [record_dir,'_chan',num2str(channel)];
+        channel_name = [record_dir, '_chan', num2str(channel)];
         
-        all_dir=['ALL_',subject,'_chan',num2str(channel)];
+        all_dir = ['ALL_', subject, '_chan', num2str(channel)];
         
         fourhrs = text_read([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%*s%*s%s%*[^\n]');
         
