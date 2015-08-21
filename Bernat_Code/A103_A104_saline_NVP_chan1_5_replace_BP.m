@@ -49,12 +49,6 @@ for d = 1:drug_num
         data_indices = strcmp(subjects, subject) & strcmp(drugs, drug);
         size(BP), sum(data_indices), size(BP_data)
         
-        BP_data = permute(BP_data, [3 2 1]);
-        sd_dims = size(BP_data);
-        BP_data = reshape(BP_data(:, 1:(end - 1), :), 2, (sd_dims(2) - 1)/2, sd_dims(3));
-        BP_data = permute(mean(BP_data), [3 2 1]);
-        size(BP_data)
-        
         BP(data_indices, :) = BP_data;
         
         [epochs, no_bands] = size(BP_data);
