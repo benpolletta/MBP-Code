@@ -72,6 +72,8 @@ for n=1:no_norms
         
         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_by_state_cplot_data.mat'])
         
+        size(All_cplot_data(:, :, :, :, c, n)), size(spec_stats)
+        
         All_cplot_data(:, :, :, :, c, n) = spec_stats;
         
         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_spec_stats_for_cplot.mat'])
