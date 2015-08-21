@@ -43,6 +43,7 @@ for d = 1:drug_num
         
         fourhrs = text_read([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%*s%*s%s%*[^\n]');
         
+        [all_dir, '/ALL_', channel_name, '_BP.mat']
         BP_mat = load([all_dir,'/ALL_',channel_name,'_BP.mat']);
         BP_data = BP_mat.BP_all;
        
