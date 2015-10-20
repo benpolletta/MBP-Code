@@ -56,7 +56,7 @@ clear titles xlabels ylabels
 
 %for i=1:3, xlabels{i}='Time Since Injection (h)'; ylabels{i}=; end
            
-All_cplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_channels, no_norms);
+All_cplot_data = nan(length(freqs), no_drugs, no_6min_periods, no_stats, no_channels, no_norms);
            
 All_lineplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_channels, no_norms);
 
@@ -74,13 +74,11 @@ for n=1:no_norms
         
         % titles{c}=[long_stats{s},' ',channels{c},' Power, ',long_norms{n},' ',drugs{d}];
         
-        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_by_state_cplot_data.mat'])
+        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'6mins_by_state_cplot_data.mat'])
         
         All_cplot_data(:, :, :, :, c, n) = permute(spec_stats(:, state_index, :, :, :), [1 4 3 5 2]);
         
         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_spec_stats_for_cplot.mat'])
-        
-        size(All_lineplot_data(:, :, :, :, c, n)), size(spec_stats)
         
         All_lineplot_data(:, :, :, :, c, n) = spec_stats;
         
