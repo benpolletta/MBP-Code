@@ -4,6 +4,10 @@ function spec_multichannel_plots_w_time_series_by_state(state)
 
 % freq_label = sprintf('%g-%g',freq_lims(1),freq_lims(2));
 
+state_labels = {'W', 'NR', 'R'};
+
+state_index = strcmp(state_labels, state);
+
 freqs = 500*(1:2^9)/(2^10); freqs = freqs(freqs <= 200);
 
 bands = [1 12; 20 200]; no_bands = size(bands, 1);
@@ -52,7 +56,7 @@ clear titles xlabels ylabels
 
 %for i=1:3, xlabels{i}='Time Since Injection (h)'; ylabels{i}=; end
            
-All_cplot_data = nan(length(freqs), no_drugs, no_6min_periods, no_stats, no_channels, no_norms);
+All_cplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_channels, no_norms);
            
 All_lineplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_channels, no_norms);
 
@@ -72,11 +76,11 @@ for n=1:no_norms
         
         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_by_state_cplot_data.mat'])
         
-        size(All_cplot_data(:, :, :, :, c, n)), size(spec_stats)
-        
-        All_cplot_data(:, :, :, :, c, n) = spec_stats;
+        All_cplot_data(:, :, :, :, c, n) = permute(spec_stats(:, state_index, :, :, :), [1 4 3 5 2]);
         
         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_spec_stats_for_cplot.mat'])
+        
+        size(All_lineplot_data(:, :, :, :, c, n)), size(spec_stats)
         
         All_lineplot_data(:, :, :, :, c, n) = spec_stats;
         
