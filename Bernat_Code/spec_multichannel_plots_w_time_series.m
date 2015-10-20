@@ -224,7 +224,7 @@ for n = 1:no_norms
                 
             end
                 
-            save_as_pdf(gcf,['ALL_',drugs{d},'_spec_',norms{n},'_multichannel_', stats{s}])
+            save_as_pdf(gcf,['ALL_',drugs{d},'_spec_',norms{n},'multichannel_', stats{s}])
             
         end
         
@@ -240,7 +240,7 @@ for n=1:no_norms
         
         for d=1:no_drugs
             
-            open(['ALL_',drugs{d},'_spec_',norms{n},'_multichannel_', stats{s}, '.fig'])
+            open(['ALL_',drugs{d},'_spec_',norms{n},'multichannel_', stats{s}, '.fig'])
         end
         
     end

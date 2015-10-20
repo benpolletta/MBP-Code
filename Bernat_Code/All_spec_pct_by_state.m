@@ -19,6 +19,7 @@ spec = load([dir,'/',dir,'_spec.txt'],'w');
 BP = load([dir,'/',dir,'_BP.txt'],'w');
 
 spec_pct = nan(size(spec));
+BP_pct = nan(size(BP));
 
 for st = 1:no_states
     
@@ -48,10 +49,18 @@ for st = 1:no_states
             
             spec_pct(subj_indices, :) = subj_spec_pct;
             
+            subj_BP_pct = BP(subj_indices, :);
+            
+            baseline_BP = ones(size(subj_BP_pct))*diag(nanmean(BP(subj_baseline_indices,:)));
+            
+            subj_BP_pct = 100*subj_BP_pct./baseline_spec-100*ones(size(subj_BP_pct));
+            
+            BP_pct(subj_indices, :) = subj_BP_pct;
+            
         end
         
     end
     
 end
 
-save([dir,'/',dir,'_spec_pct_by_state.mat'], 'spec_pct')
+save([dir,'/',dir,'_spec_pct_by_state.mat'], 'spec_pct', 'BP_pct')
