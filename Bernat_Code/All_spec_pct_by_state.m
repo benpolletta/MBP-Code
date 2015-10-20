@@ -45,7 +45,7 @@ for st = 1:no_states
             
             baseline_spec = ones(size(subj_spec_pct))*diag(nanmean(spec(subj_baseline_indices,:)));
             
-            subj_spec_pct = 100*subj_spec_pct./baseline_spec-100*ones(size(subj_spec_pct));
+            subj_spec_pct = 100*subj_spec_pct./baseline_spec - 100*ones(size(subj_spec_pct));
             
             spec_pct(subj_indices, :) = subj_spec_pct;
             
@@ -53,7 +53,7 @@ for st = 1:no_states
             
             baseline_BP = ones(size(subj_BP_pct))*diag(nanmean(BP(subj_baseline_indices,:)));
             
-            subj_BP_pct = 100*subj_BP_pct./baseline_spec-100*ones(size(subj_BP_pct));
+            subj_BP_pct = 100*subj_BP_pct./baseline_BP - 100*ones(size(subj_BP_pct));
             
             BP_pct(subj_indices, :) = subj_BP_pct;
             
