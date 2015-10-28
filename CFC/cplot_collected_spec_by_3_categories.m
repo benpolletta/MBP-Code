@@ -65,7 +65,7 @@ for c3=1:no_cats3
             
             spec_cat2=spec_cat1(strcmp(cat2_in_cat1,cat2),:);
             
-            if ~isempty(spec_cat2) && size(spec_cat2,1)>=5
+            if ~isempty(spec_cat2) && size(spec_cat2,1)>=5 && any(sum(~isnan(spec_cat2)) >= size(spec_cat2, 1)/2)
                 
                 spec_stats(:,c1,c2,c3,1)=nanmedian(spec_cat2)';
                 

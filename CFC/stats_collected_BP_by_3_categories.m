@@ -53,7 +53,8 @@ for c3=1:no_cats3
             
             BP_cat1_cat2 = BP_cat1(strcmp(cat2_in_cat1, cat2), :);
             
-            if ~isempty(BP_cat1_cat2) && size(BP_cat1_cat2,1)>=5 && ~isempty(BP_1_cat2) && size(BP_1_cat2,1)>=5
+            if ~isempty(BP_cat1_cat2) && size(BP_cat1_cat2,1)>=5 && any(sum(~isnan(BP_cat1_cat2)) >= size(BP_cat1_cat2, 1)/2) ...
+                    && ~isempty(BP_1_cat2) && size(BP_1_cat2,1)>=5 && any(sum(~isnan(BP_1_cat2)) >= size(BP_1_cat2, 1)/2)
                 
                 for b = 1:no_bands
                     

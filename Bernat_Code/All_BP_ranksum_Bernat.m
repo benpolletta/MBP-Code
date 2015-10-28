@@ -17,9 +17,11 @@ hrs=text_read([name,'/',name,'_hrs.txt'],'%s');
 % fourhrs=text_read([name,'/',name,'_4hrs.txt'],'%s');
 sixmins = text_read([name,'/',name,'_6mins.txt'], '%s');
 states=text_read([name,'/',name,'_states.txt'],'%s');
-BP=load([name,'/',name,'_BP.txt']);
-BP_pct=load([name,'/',name,'_BP_pct.txt']);
-BP_zs=load([name,'/',name,'_BP_zs.txt']);
+BP = load([name,'/',name,'_BP.txt']);
+BP_pct = load([name,'/',name,'_BP_pct.txt']);
+BP_pct_by_state = load([name,'/',name,'_spec_pct_by_state.mat'], 'BP_pct');
+BP_pct_by_state = BP_pct_by_state.BP_pct;
+BP_zs = load([name,'/',name,'_BP_zs.txt']);
 
 band_limits=[.1 4; 4 8; 10 13; 13 20; 20 50; 50 90; 90 120; 125 175];
 band_labels={'delta','theta','alpha','low-beta','beta-low-gamma','mid-gamma','high-gamma','HFOs'};
@@ -73,7 +75,7 @@ stats_collected_BP_by_3_categories([name,'/',name,'_BP_hrs_by_state'],{band_freq
     {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,BP)
 
 stats_collected_BP_by_3_categories([name,'/',name,'_BP_pct_hrs_by_state'],{band_freq_labels, long_band_freq_labels},...
-    {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,BP_pct)
+    {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,BP_pct_by_state)
    
 stats_collected_BP_by_3_categories([name,'/',name,'_BP_zs_hrs_by_state'],{band_freq_labels, long_band_freq_labels},...
     {state_labels, state_labels},{drug_labels, drug_labels},{short_hr_labels, hr_labels},states,drugs,hrs,BP_zs)
@@ -94,7 +96,7 @@ stats_collected_BP_by_3_categories([name,'/',name,'_BP_6min_by_state'],{band_lab
     {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,BP)
 
 stats_collected_BP_by_3_categories([name,'/',name,'_BP_pct_6min_by_state'],{band_labels, band_labels},...
-    {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,BP_pct)
+    {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,BP_pct_by_state)
 
 stats_collected_BP_by_3_categories([name,'/',name,'_BP_zs_6min_by_state'],{band_labels, band_labels},...
     {state_labels, state_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,BP_zs)

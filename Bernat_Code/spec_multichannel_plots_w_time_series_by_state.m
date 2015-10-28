@@ -84,13 +84,13 @@ for n=1:no_norms
         
         %% Getting time series data.
         
-        suffix = ['_BP_', norms{n}, 'hrs_BP_stats'];
+        suffix = ['_BP_', norms{n}, 'hrs_by_state'];
         
-        ranksum_suffix = ['_BP_', norms{n}, 'hrs_ranksum'];
+        ranksum_suffix = ['_BP_', norms{n}, 'hrs_by_state_ranksum'];
             
         load([ch_dir, '/', ch_dir, suffix, '.mat'])
         
-        BP_stats_new = permute(BP_stats, [2, 1, 3, 4]);
+        BP_stats_new = permute(BP_stats(:, state_index, :, :, :), [3 1 4 5 2]);
         
         BPs_dims = size(BP_stats_new);
         
@@ -100,7 +100,7 @@ for n=1:no_norms
         
         load([ch_dir, '/', ch_dir, ranksum_suffix, '.mat'])
         
-        BP_ranksum_new = permute(BP_ranksum, [2, 1, 3]);
+        BP_ranksum_new = permute(BP_ranksum(:, state_index, :, :), [4 1 3 2]);
         
         BPr_dims = size(BP_ranksum_new);
         

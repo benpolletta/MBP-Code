@@ -49,7 +49,7 @@ for c3=1:no_cats3
             
             BP_cat2=BP_cat1(strcmp(cat2_in_cat1,cat2),:);
             
-            if ~isempty(BP_cat2) && size(BP_cat2,1)>=5
+            if ~isempty(BP_cat2) && size(BP_cat2,1)>=5 && any(sum(~isnan(BP_cat2)) >= size(BP_cat2, 1)/2)
             
                 nan_median = nanmedian(BP_cat2);
                 

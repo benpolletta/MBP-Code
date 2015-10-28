@@ -19,7 +19,8 @@ sixmins = text_read([name,'/',name,'_6mins.txt'], '%s');
 states=text_read([name,'/',name,'_states.txt'],'%s');
 BP = load([name,'/',name,'_BP.txt']);
 BP_pct = load([name,'/',name,'_BP_pct.txt']);
-BP_pct_by_state = load([name,'/','_spec_pct_by_state.mat'], 'BP_pct');
+BP_pct_by_state = load([name,'/',name,'_spec_pct_by_state.mat'], 'BP_pct');
+BP_pct_by_state = BP_pct_by_state.BP_pct;
 BP_zs = load([name,'/',name,'_BP_zs.txt']);
 
 band_limits=[.1 4; 4 8; 10 13; 13 20; 20 50; 50 90; 90 120; 125 175];

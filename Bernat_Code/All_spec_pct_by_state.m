@@ -1,12 +1,15 @@
 function All_spec_pct_by_state(channel_label)
 
-subject_labels = {'A99','A102','A103','A104','A105','A106'};
+subject_labels = load('subjects');
+subject_labels = subject_labels.subjects;
 subj_num = length(subject_labels);
 
-drug_labels = {'saline','MK801','NVP','Ro25'};
+drug_labels = load('drugs');
+drug_labels = drug_labels.drugs;
 drug_num = length(drug_labels);
 
-state_labels = {'R','W','NR'};
+state_labels = load('states');
+state_labels = state_labels.states;
 no_states = length(state_labels);
 
 dir = ['ALL_',channel_label];
