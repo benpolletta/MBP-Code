@@ -18,12 +18,12 @@ state_labels = {'W', 'NR', 'R'};
 drug_labels = {'saline', 'MK801', 'NVP', 'Ro25'};
 % no_drugs=length(drug_labels);
 
-dir = sprintf('ALL_%s_by_%s_PLV', channel_label1, channel_label2);
+PLV_dir = sprintf('ALL_%s_by_%s_PLV', channel_label1, channel_label2);
 
-drugs = text_read([dir,'/',dir(1:end-4),'_drugs.txt'],'%s');
+drugs = text_read([PLV_dir,'/',PLV_dir(1:end-4),'_drugs.txt'],'%s');
 % subjects = text_read([dir,'/',dir(1:end-4),'_subjects.txt'],'%s');
-periods = text_read([dir,'/',dir(1:end-4), '_', period_flag, '.txt'], '%s');
-states = text_read([dir,'/',dir(1:end-4),'_states.txt'],'%s');
+periods = text_read([PLV_dir,'/',PLV_dir(1:end-4), '_', period_flag, '.txt'], '%s');
+states = text_read([PLV_dir,'/',PLV_dir(1:end-4),'_states.txt'],'%s');
 
 if strcmp(period_flag, 'hrs')
     
@@ -47,18 +47,32 @@ for n = 1:no_norms
     
     title = ['Phase-Locking Value (PLV', norms{n}, ')'];
     
-    PLV_name = [dir, '/', dir(1:(end - 4)), '_PLV', norms{n}, '.txt'];
-    
-    PLV_data = load(PLV_name);
-    
     if strcmp(state_flag, 'state')
         
-        cplot_collected_spec_by_3_categories(title,[dir,'/',dir(1:end-4),'_PLV',norms{n},'_',period_flag,'_by_state'],freqs,bands,band_names,stops,pd_corder,...
+        if strcmp(norms{n}, '_thresh_pct')
+            
+            PLV_name = [PLV_dir, '/', PLV_dir(1:(end - 4)), '_PLV', norms{n}, '_by_state.mat'];
+            
+            PLV_data = load(PLV_name); PLV_data = PLV_data.PLV_pct;
+            
+        else
+            
+            PLV_name = [PLV_dir, '/', PLV_dir(1:(end - 4)), '_PLV', norms{n}, '.txt'];
+            
+            PLV_data = load(PLV_name);
+            
+        end
+        
+        cplot_collected_spec_by_3_categories(title,[PLV_dir,'/',PLV_dir(1:end-4),'_PLV',norms{n},'_',period_flag,'_by_state'],freqs,bands,band_names,stops,pd_corder,...
             {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, long_pd_labels},drugs,states,periods,PLV_data)
         
     else
+    
+        PLV_name = [PLV_dir, '/', PLV_dir(1:(end - 4)), '_PLV', norms{n}, '.txt'];
+    
+        PLV_data = load(PLV_name);
 
-        cplot_collected_spec_by_categories(title,[dir,'/',dir(1:end-4),'_PLV',norms{n},'_',period_flag],freqs,bands,band_names,stops,pd_corder,...
+        cplot_collected_spec_by_categories(title,[PLV_dir,'/',PLV_dir(1:end-4),'_PLV',norms{n},'_',period_flag],freqs,bands,band_names,stops,pd_corder,...
             {drug_labels, drug_labels},{pd_labels, long_pd_labels},drugs,periods,PLV_data)
         
     end

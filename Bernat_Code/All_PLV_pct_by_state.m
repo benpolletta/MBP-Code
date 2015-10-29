@@ -16,7 +16,8 @@ subjects = text_read([dir,'_PLV/',dir,'_subjects.txt'], '%s');
 fourhrs = text_read([dir,'_PLV/',dir,'_4hrs.txt'], '%s');
 states = text_read([dir,'_PLV/',dir,'_states.txt'], '%s');
 PLV = load([dir,'_PLV/',dir,'_PLV_thresh.txt'],'w');
-summed_PLV = load([dir,'_PLV/',dir,'_PLV_thresh.txt'],'w');
+summed_PLV = load([dir,'_PLV/',dir,'_PLV_summed.mat'],'summed_PLV_thresh');
+summed_PLV = summed_PLV.summed_PLV_thresh;
 
 PLV_pct = nan(size(PLV));
 
@@ -44,13 +45,23 @@ for st = 1:no_states
             
             % Normalizing PLV.
             
-            subj_spec_pct = PLV(subj_indices, :);
+            subj_PLV_pct = PLV(subj_indices, :);
             
-            baseline_spec = ones(size(subj_spec_pct))*diag(nanmean(PLV(subj_baseline_indices,:)));
+            baseline_PLV = ones(size(subj_PLV_pct))*diag(nanmean(PLV(subj_baseline_indices,:)));
             
-            subj_spec_pct = 100*subj_spec_pct./baseline_spec-100*ones(size(subj_spec_pct));
+            subj_PLV_pct = 100*subj_PLV_pct./baseline_PLV - 100*ones(size(subj_PLV_pct));
             
-            PLV_pct(subj_indices, :) = subj_spec_pct;
+            PLV_pct(subj_indices, :) = subj_PLV_pct;
+            
+            % Normalizing summed PLV.
+            
+            subj_summed_PLV_pct = summed_PLV(subj_indices, :);
+            
+            baseline_summed_PLV = ones(size(subj_summed_PLV_pct))*diag(nanmean(summed_PLV(subj_baseline_indices,:)));
+            
+            subj_summed_PLV_pct = 100*subj_summed_PLV_pct./baseline_summed_PLV - 100*ones(size(subj_summed_PLV_pct));
+            
+            summed_PLV_pct(subj_indices, :) = subj_summed_PLV_pct;
             
         end
         
@@ -58,4 +69,4 @@ for st = 1:no_states
     
 end
 
-save([dir,'_PLV/',dir,'_PLV_thresh_pct_by_state.mat'], 'PLV_pct')
+save([dir,'_PLV/',dir,'_PLV_thresh_pct_by_state.mat'], 'PLV_pct', 'summed_PLV_pct')

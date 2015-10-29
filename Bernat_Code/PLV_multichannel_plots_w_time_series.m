@@ -85,19 +85,21 @@ for n=1:no_norms
         % display('size(spec_stats) = ')
         % size(spec_stats)
         
-        data_length = min(size(spec_stats, 3), no_6min_periods);
+        sixmin_length = min(size(spec_stats, 3), no_6min_periods);
         
-        All_cplot_data(:, :, 1:data_length, :, c, n) = spec_stats(:, :, 1:data_length, :);
+        All_cplot_data(:, :, 1:sixmin_length, :, c, n) = spec_stats(:, :, 1:sixmin_length, :);
         
         load(['ALL_',cp_labels{c},'_PLV/ALL_',cp_labels{c},'_PLV_',norms{n},'hrs_spec_stats_for_cplot.mat'])
         
-        All_lineplot_data(:, :, :, :, c, n) = spec_stats;
+        hr_length = min(size(spec_stats, 3), no_hr_periods);
+        
+        All_lineplot_data(:, :, 1:hr_length, :, c, n) = spec_stats(:, :, 1:hr_length, :);
         
         %% Getting time series data.
         
         suffix = ['_summed_PLV_', norms{n}, 'hrs_BP_stats'];
         
-        ranksum_suffix = ['_summed_PLV_', norms{n}, 'hr_ranksum'];
+        ranksum_suffix = ['_summed_PLV_', norms{n}, 'hrs_ranksum'];
             
         load(['ALL_', cp_labels{c}, '_PLV/ALL_', cp_labels{c}, suffix, '.mat'])
         
@@ -253,7 +255,7 @@ for n = 1:no_norms
                 
             end
                 
-            save_as_pdf(gcf,['ALL_',drugs{d},'_PLV_',norms{n},'_multichannel_', stats{s}])
+            save_as_pdf(gcf,['ALL_',drugs{d},'_PLV_',norms{n},'multichannel_', stats{s}])
             
         end
         
@@ -269,7 +271,7 @@ for n=1:no_norms
         
         for d=1:no_drugs
             
-            open(['ALL_',drugs{d},'_PLV_',norms{n},'_multichannel_', stats{s}, '.fig'])
+            open(['ALL_',drugs{d},'_PLV_',norms{n},'multichannel_', stats{s}, '.fig'])
         end
         
     end

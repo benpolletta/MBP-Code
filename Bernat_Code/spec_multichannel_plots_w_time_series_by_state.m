@@ -78,9 +78,11 @@ for n=1:no_norms
         
         All_cplot_data(:, :, :, :, c, n) = permute(spec_stats(:, state_index, :, :, :), [1 4 3 5 2]);
         
-        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_spec_stats_for_cplot.mat'])
+        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_by_state_cplot_data.mat'])
         
-        All_lineplot_data(:, :, :, :, c, n) = spec_stats;
+        no_hrs = min(no_BP_hr_periods, size(spec_stats, 1));
+        
+        All_lineplot_data(:, :, 1:no_hrs, :, c, n) = permute(spec_stats(:, state_index, 1:no_hrs, :, :), [1 4 3 5 2]);
         
         %% Getting time series data.
         

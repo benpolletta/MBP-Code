@@ -11,7 +11,6 @@ drugs = text_read([name, '/', name(1:end-4), '_drugs.txt'], '%s');
 %subjects = text_read([name, '/', name(1:end-4), '_subjects.txt'], '%s');
 periods = text_read([name, '/', name(1:end-4), '_', period_flag, '.txt'], '%s');
 states = text_read([name, '/', name(1:end-4), '_states.txt'], '%s');
-load([name, '/', name, '_summed.mat'])
 
 if strcmp(period_flag, 'hrs')
     
@@ -33,14 +32,32 @@ no_norms = length(norms);
 
 for n = 1:no_norms
     
-    eval(['PLV_data = summed_PLV', norms{n}, ';'])
-    
     if strcmp(state_flag, 'state')
+        
+        if strcmp(norms{n}, '_thresh_pct')
+            
+            load([name, '/', name, '_summed.mat'], 'band_labels')
+            
+            PLV_name = [name, '/', name(1:(end - 4)), '_PLV', norms{n}, '_by_state.mat'];
+            
+            PLV_data = load(PLV_name); PLV_data = PLV_data.summed_PLV_pct;
+            
+        else
+            
+            load([name, '/', name, '_summed.mat'])
+            
+            eval(['PLV_data = summed_PLV', norms{n}, ';'])
+            
+        end
         
         lineplot_collected_BP_by_3_categories([title_name, ' PLV',norms{n}],[name,'/',name(1 : end - 4),'_summed_PLV',norms{n},'_',period_flag,'_by_state'],{band_labels, band_labels},...
             {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, long_pd_labels},drugs,states,periods,PLV_data,stat)
         
     else
+        
+        load([name, '/', name, '_summed.mat'])
+    
+        eval(['PLV_data = summed_PLV', norms{n}, ';'])
         
         c_order = [.5 .5 .5; 1 .75 0; 1 0 1; 0 1 1]; %[1 .6 0; .6 .4 .8; .59 .29 0; .21 .37 .23];
         
