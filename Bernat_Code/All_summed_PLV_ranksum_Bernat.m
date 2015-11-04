@@ -33,7 +33,16 @@ no_norms = length(norms);
 
 for n = 1:no_norms
     
-    if strcmp(state_flag, 'state')
+    if strcmp(state_flag, 'state_vs_W')
+            
+        load([name, '/', name, '_summed.mat'])
+        
+        eval(['PLV_data = summed_PLV', norms{n}, ';'])
+        
+        stats_collected_BP_by_3_categories([name,'/',name(1 : end - 4),'_summed_PLV',norms{n},'_',period_flag,'_',state_flag],{band_labels, band_labels},...
+            {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, long_pd_labels},drugs,states,periods,PLV_data)
+    
+    elseif strcmp(state_flag, 'state')
         
         if strcmp(norms{n}, '_thresh_pct')
             

@@ -65,7 +65,7 @@ for s = 3:4 % 1:min(length(chan1_channels),length(chan2_channels))
             fprintf(fid,'%s\n',[channel_dir2,'.list']);
             fclose(fid);
             
-            wavelet_mouse_eeg_HAP(sampling_freq,channels_listname);
+            wavelet_mouse_eeg_HAP(sampling_freq, channels_listname);
             
         %end
         

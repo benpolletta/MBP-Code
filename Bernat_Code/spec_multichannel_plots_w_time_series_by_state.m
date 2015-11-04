@@ -57,8 +57,6 @@ clear titles xlabels ylabels
 %for i=1:3, xlabels{i}='Time Since Injection (h)'; ylabels{i}=; end
            
 All_cplot_data = nan(length(freqs), no_drugs, no_6min_periods, no_stats, no_channels, no_norms);
-           
-All_lineplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_channels, no_norms);
 
 All_BP_stats = nan(no_BP_hr_periods, no_channels, no_BP_bands, no_stats, no_drugs, no_norms);
 
@@ -77,12 +75,6 @@ for n=1:no_norms
         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'6mins_by_state_cplot_data.mat'])
         
         All_cplot_data(:, :, :, :, c, n) = permute(spec_stats(:, state_index, :, :, :), [1 4 3 5 2]);
-        
-        load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_spec_',norms{n},'hrs_by_state_cplot_data.mat'])
-        
-        no_hrs = min(no_BP_hr_periods, size(spec_stats, 1));
-        
-        All_lineplot_data(:, :, 1:no_hrs, :, c, n) = permute(spec_stats(:, state_index, 1:no_hrs, :, :), [1 4 3 5 2]);
         
         %% Getting time series data.
         
@@ -132,7 +124,7 @@ for n = 1:no_norms
                 
                 for b = 1:no_bands
                     
-                    subplot(no_channels + 1 + (d > 1), 2, (c - 1)*2 + b)
+                    subplot(no_channels + (d > 1), 2, (c - 1)*2 + b)
                     
                     imagesc(str2num(char(sixmin_labels))/60, freqs(band_indices{b}),...
                         reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), sum(band_indices{b}), no_6min_periods))
@@ -150,28 +142,6 @@ for n = 1:no_norms
                         xlabel('Time Rel. Inj. (h)')
                         
                     end
-                    
-                end
-                
-            end
-            
-            %% Plotting profiles of spectra.
-            
-            for h = 5:9
-                
-                subplot(no_channels + 1 + (d > 1), 5, no_channels*5 + h - 4)
-            
-                plot(freqs', reshape(All_lineplot_data(:, d, h, s, :, n), length(freqs), no_channels))
-                
-                title(long_hr_labels{h})
-                
-                xlabel('Freq. (Hz)')
-                
-                if h == 5
-                    
-                    legend(channel_names, 'Location', 'SouthEast', 'FontSize', 6)
-                    
-                    ylabel({[long_stats{s}, ' Power']; long_norms{n}})
                     
                 end
                 
@@ -203,7 +173,7 @@ for n = 1:no_norms
                     
                     test_multiplier = ones(size(plot_test))*diag(med_min - [nan nan nan 0.05 .1 .15]*med_range);
                     
-                    subplot(no_channels + 1 + (d > 1), no_bands_plotted, (no_channels + 1)*no_bands_plotted + b)
+                    subplot(no_channels + (d > 1), no_bands_plotted, no_channels*no_bands_plotted + b)
                     
                     set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'--','-','*','*'}, 'ColorOrder', c_order)
                     
@@ -230,7 +200,7 @@ for n = 1:no_norms
                 
             end
                 
-            save_as_pdf(gcf,['ALL_', state, '_', drugs{d},'_spec_',norms{n},'multichannel_', stats{s}])
+            save_as_pdf(gcf,['ALL_', state, '_', drugs{d},'_spec_',norms{n},'multi_', stats{s}])
             
         end
         
@@ -246,7 +216,7 @@ for n=1:no_norms
         
         for d=1:no_drugs
             
-            open(['ALL_', state, '_', drugs{d},'_spec_',norms{n},'multichannel_', stats{s}, '.fig'])
+            open(['ALL_', state, '_', drugs{d},'_spec_',norms{n},'multi_', stats{s}, '.fig'])
         end
         
     end

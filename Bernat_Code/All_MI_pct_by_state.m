@@ -15,11 +15,12 @@ drugs = text_read([dir,'/',dir,'_p0.99_IEzs_drugs.txt'], '%s');
 subjects = text_read([dir,'/',dir,'_p0.99_IEzs_subjects.txt'], '%s');
 fourhrs = text_read([dir,'/',dir,'_p0.99_IEzs_4hr_periods.txt'], '%s');
 states = text_read([dir,'/',dir,'_p0.99_IEzs_states.txt'], '%s');
-MI = load([dir,'/',dir,'_p0.99_IEzs_hr_MI.txt'],'w');
-load([dir,'/',dir,'_p0.99_IEzs_summed.mat'], 'summed_MI');
+MI = load([dir,'/',dir,'_p0.99_IEzs_hr_MI.txt']);
+fourhrMI = load([dir,'/',dir,'_p0.99_IEzs_4hr_MI.txt']);
+load([dir,'/',dir,'_p0.99_IEzs_summed.mat'], 'summed_MI', 'summed_MI_4hr');
 
-MI_pct = nan(size(MI));
-summed_MI_pct_by_state = nan(size(summed_MI));
+[MI_pct, fourhrMI_pct] = deal(nan(size(MI)));
+[summed_MI_pct_by_state, summed_MI_4hr_pct_by_state] = deal(nan(size(summed_MI)));
 
 for st = 1:no_states
     
@@ -53,6 +54,16 @@ for st = 1:no_states
             
             MI_pct(subj_indices, :) = subj_MI_pct;
             
+            % Normalizing 4 hour z-scored MI.
+            
+            subj_fourhrMI_pct = fourhrMI(subj_indices, :);
+            
+            baseline_fourhrMI = ones(size(subj_fourhrMI_pct))*diag(nanmean(fourhrMI(subj_baseline_indices, :)));
+            
+            subj_fourhrMI_pct = 100*subj_fourhrMI_pct./baseline_fourhrMI - 100*ones(size(subj_fourhrMI_pct));
+            
+            fourhrMI_pct(subj_indices, :) = subj_fourhrMI_pct;
+            
             % Normalizing summed MI.
             
             subj_summed_MI_pct = summed_MI(subj_indices, :);
@@ -63,10 +74,20 @@ for st = 1:no_states
             
             summed_MI_pct_by_state(subj_indices, :) = subj_summed_MI_pct;
             
+            % Normalizing summed 4 hour z-scored MI.
+            
+            subj_summed_MI_4hr_pct = summed_MI_4hr(subj_indices, :);
+            
+            baseline_summed_MI_4hr = ones(size(subj_summed_MI_4hr_pct))*diag(nanmean(summed_MI_4hr(subj_baseline_indices, :)));
+            
+            subj_summed_MI_4hr_pct = 100*subj_summed_MI_4hr_pct./baseline_summed_MI_4hr - 100*ones(size(subj_summed_MI_4hr_pct));
+            
+            summed_MI_4hr_pct_by_state(subj_indices, :) = subj_summed_MI_4hr_pct;
+            
         end
         
     end
     
 end
 
-save([dir,'/',dir,'_p0.99_IEzs_MI_pct_by_state.mat'], 'MI_pct', 'summed_MI_pct_by_state')
+save([dir,'/',dir,'_p0.99_IEzs_MI_pct_by_state.mat'], 'MI_pct', 'fourhrMI_pct', 'summed_MI_pct_by_state', 'summed_MI_4hr_pct_by_state')

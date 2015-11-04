@@ -50,13 +50,13 @@ for n=1:no_norms
 
         %% Getting preinjection data.
         
-        if isempty(dir([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection.mat']))
+        if isempty(dir([ch_dir, '/', ch_dir, '_p0.99_IEzs_4hr_MI', norms{n}, '_preinjection.mat']))
             
             fourhr_periods = text_read([ch_dir, '/', ch_dir, '_p0.99_IEzs_4hr_periods.txt'], '%s');
             
             states = text_read([ch_dir, '/', ch_dir, '_p0.99_IEzs_states.txt'], '%s');
             
-            MI = load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '.txt']);
+            MI = load([ch_dir, '/', ch_dir, '_p0.99_IEzs_4hr_MI', norms{n}, '.txt']);
             
             preinj_indices = strcmp(fourhr_periods, 'pre4to1') & strcmp(states, state);
             
@@ -64,11 +64,11 @@ for n=1:no_norms
             
             preinj_data(:, :, 2, c, n) = reshape(nanmean(MI(preinj_indices, :)), no_afs, no_pfs);
             
-            save([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_', state, '_preinjection'], 'preinj_data')
+            save([ch_dir, '/', ch_dir, '_p0.99_IEzs_4hr_MI', norms{n}, '_', state, '_preinjection'], 'preinj_data')
             
         else
             
-            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_', state, '_preinjection.mat'])
+            load([ch_dir, '/', ch_dir, '_p0.99_IEzs_4hr_MI', norms{n}, '_', state, '_preinjection.mat'])
             
         end
             
@@ -77,7 +77,7 @@ for n=1:no_norms
         for d = 1:no_drugs
             
             load([ch_dir,'/',ch_dir,'_p0.99_IEzs_MI','/',...
-                ch_dir,'_p0.99_IEzs_hr', norms{n},'_by_state_',drugs{d},'_cplot_data.mat'])
+                ch_dir,'_p0.99_IEzs_4hr', norms{n},'_by_state_',drugs{d},'_cplot_data.mat'])
             
             All_cplot_data(:, :, d, :, :, c, n) = permute(MI_stats(:, :, strcmp(cat1_labels, state), :, 1, :), [1 2 5 4 6 3]);
             
@@ -85,7 +85,7 @@ for n=1:no_norms
         
         %% Getting time series data.
         
-        suffix = ['hrMI', norms{n}, '_hr_by_state'];
+        suffix = ['4hrMI', norms{n}, '_hr_by_state'];
         
         load([ch_dir, '/', ch_dir, '_summed_', suffix, '.mat'])
         
@@ -101,7 +101,7 @@ for n=1:no_norms
         
         %% Getting stats p-values.
         
-        ranksum_suffix = ['hrMI', norms{n}, '_hr_by_state_ranksum'];
+        ranksum_suffix = ['4hrMI', norms{n}, '_hr_by_state_ranksum'];
         
         load([ch_dir, '/', ch_dir, '_summed_', ranksum_suffix, '.mat'])
         

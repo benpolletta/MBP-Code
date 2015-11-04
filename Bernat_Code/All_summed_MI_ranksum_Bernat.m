@@ -1,4 +1,6 @@
-function All_summed_MI_ranksum_Bernat(channel_label, measure)
+function All_summed_MI_ranksum_Bernat(channel_label)
+
+measure = 'p0.99_IEzs';
 
 % subjects={'A99','A102','A103','A104','A105','A106'};
 % subj_num=length(subjects);
@@ -18,6 +20,7 @@ fourhrs = text_read([name,'/',name,'_',measure,'_4hr_periods.txt'],'%s');
 sixmins = text_read([name,'/',name,'_',measure,'_6min_periods.txt'],'%s');
 states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
 load([name,'/',name,'_',measure,'_summed.mat'])
+load([name, '/', name, '_', measure, '_MI_pct_by_state.mat'], 'summed_MI_pct_by_state', 'summed_MI_4hr_pct_by_state')
 %load([name,'/',name,'_',measure,'_summed_pct.mat']) %No longer necessary,
 %since now normalization is done before summing (10/16/14).
 
@@ -56,7 +59,7 @@ for i=1:20
     p=p+1;
 end
 
-% "Raw" summed MI.
+%% "Raw" summed MI.
 
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI)
@@ -70,16 +73,33 @@ stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_hr'],{band_labels,
 stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
     {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI_4hr)
 
-% Summed MI as a percentage of baseline.
+%% Summed MI as a percentage of baseline.
+
+% MI z-scored against surrogate data generated across state by hour.
 
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_pct_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
-    {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI_pct)
+    {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI_pct_by_state) % Across drugs, within state.
 
-stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
-    {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI_4hr_pct)
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_pct_hr_state_vs_wake'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_pct) % Across states, within drug.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_pct_by_state_hr_state_vs_wake'],{band_labels, band_labels},... % Across states, within drug.
+    {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_pct_by_state) % Percent computed within state.
 
 stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_pct_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
     {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI_pct)
+
+% MI z-scored against surrogate data generated within state by 4 hour
+% period.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
+    {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI_4hr_pct_by_state) % Across drugs, within state.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_hr_state_vs_wake'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_4hr_pct) % Across states, within drug.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_by_state_hr_state_vs_wake'],{band_labels, band_labels},... % Across states, within drug.
+    {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI_4hr_pct_by_state) % Percent computed within state.
 
 stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_pct_hr'],{band_labels, band_labels},{drug_labels, drug_labels},...
     {short_hr_labels, short_hr_labels},drugs,hrs,summed_MI_4hr_pct)
@@ -90,28 +110,47 @@ no_pre=2; no_post=8;
 
 [pd_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
 
-% "Raw" summed MI.
+%% "Raw" summed MI.
 
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_6min_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI)
 
+stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},...
+    {pd_labels, pd_labels},drugs,sixmins,summed_MI)
+
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_6min_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI_4hr)
 
-stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI)
+stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},...
+    {pd_labels, pd_labels},drugs,sixmins,summed_MI_4hr)
 
-stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_6min'],{band_labels, band_labels},{drug_labels, drug_labels},{pd_labels, pd_labels},drugs,sixmins,summed_MI_4hr)
+%% Summed MI as a percentage of baseline.
 
-% Summed MI as a percentage of baseline.
+% MI z-scored against surrogate data generated across state by hour.
 
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_pct_6min_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
-    {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI_pct)
+    {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI_pct_by_state) % Across drugs, within state.
 
-stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_6min_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
-    {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI_4hr_pct)
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_pct_6min_state_vs_wake'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_pct) % Across states, within drug.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_pct_by_state_6min_state_vs_wake'],{band_labels, band_labels},... % Across states, within drug.
+    {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_pct_by_state) % Pct. computed within state.
 
 stats_collected_BP_by_categories([name,'/',name,'_summed_hrMI_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},...
-    {pd_labels, pd_labels},drugs,sixmins,summed_MI_pct)
+    {pd_labels, pd_labels},drugs,sixmins,summed_MI_pct_by_state)
+
+% MI z-scored against surrogate data generated within state by 4 hour
+% period.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_6min_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
+    {drug_labels, drug_labels},{pd_labels, pd_labels},states,drugs,sixmins,summed_MI_4hr_pct_by_state) % Across drugs, within state.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_6min_state_vs_wake'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_4hr_pct) % Across states, within drug.
+
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_pct_by_state_6min_state_vs_wake'],{band_labels, band_labels},... % Across states, within drug.
+    {drug_labels, drug_labels},{state_labels, state_labels},{pd_labels, pd_labels},drugs,states,sixmins,summed_MI_4hr_pct_by_state) % Pct. computed within state.
 
 stats_collected_BP_by_categories([name,'/',name,'_summed_4hrMI_pct_6min'],{band_labels, band_labels},{drug_labels, drug_labels},...
     {pd_labels, pd_labels},drugs,sixmins,summed_MI_4hr_pct)

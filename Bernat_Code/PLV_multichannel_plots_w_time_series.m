@@ -39,9 +39,9 @@ load('drugs.mat')
 stats={'median','mean','std'}; no_stats = length(stats);
 long_stats={'Median','Mean','St. Dev.'};
 
-norms={'','thresh_','thresh_pct_'};%,'zs_'}; 
+norms={'thresh_pct_'};%{'','thresh_','thresh_pct_'};%,'zs_'}; 
 no_norms = length(norms);
-long_norms={'', 'z-Scored', '% Change, z-Scored'};
+long_norms={'%\Delta, z-Scored'};%{'', 'z-Scored', '% Change, z-Scored'};
 
 no_pre=2; no_post=8;
 [sixmin_labels, ~]=make_period_labels(no_pre,no_post,'6mins');
@@ -58,19 +58,19 @@ short_BP_hr_labels = -4:16; short_BP_hr_labels(short_BP_hr_labels == 0) = [];
 
 tick_spacing = floor(no_BP_hr_periods/5);
 
-no_sub_bands = 6;
+bands_plotted = [1 2 4 6];
+
+no_sub_bands = length(bands_plotted); total_sub_bands = 6;
 
 c_order = [0 0 1; 0 .5 0; 1 0 0];
     
 clear titles xlabels ylabels
            
 All_cplot_data = nan(length(freqs), no_drugs, no_6min_periods, no_stats, no_chan_pairs, no_norms);
-           
-All_lineplot_data = nan(length(freqs), no_drugs, no_hr_periods, no_stats, no_chan_pairs, no_norms);
 
-All_BP_stats = nan(no_BP_hr_periods, no_channels, no_sub_bands, no_stats, no_drugs, no_norms);
+All_BP_stats = nan(no_BP_hr_periods, no_channels, total_sub_bands, no_stats, no_drugs, no_norms);
 
-[All_BP_ranksum, All_BP_test] = deal(nan(no_BP_hr_periods, no_channels, no_sub_bands, no_drugs - 1, no_norms));
+[All_BP_ranksum, All_BP_test] = deal(nan(no_BP_hr_periods, no_channels, total_sub_bands, no_drugs - 1, no_norms));
     
 for n=1:no_norms
     
@@ -80,26 +80,13 @@ for n=1:no_norms
         
         load(['ALL_',cp_labels{c},'_PLV/ALL_',cp_labels{c},'_PLV_',norms{n},'6mins_spec_stats_for_cplot.mat'])
         
-        % display('size(All_cplot_data) = ')
-        % size(All_cplot_data(:,:,:,:,c,n))
-        % display('size(spec_stats) = ')
-        % size(spec_stats)
-        
         sixmin_length = min(size(spec_stats, 3), no_6min_periods);
         
         All_cplot_data(:, :, 1:sixmin_length, :, c, n) = spec_stats(:, :, 1:sixmin_length, :);
         
-        load(['ALL_',cp_labels{c},'_PLV/ALL_',cp_labels{c},'_PLV_',norms{n},'hrs_spec_stats_for_cplot.mat'])
-        
-        hr_length = min(size(spec_stats, 3), no_hr_periods);
-        
-        All_lineplot_data(:, :, 1:hr_length, :, c, n) = spec_stats(:, :, 1:hr_length, :);
-        
         %% Getting time series data.
         
         suffix = ['_summed_PLV_', norms{n}, 'hrs_BP_stats'];
-        
-        ranksum_suffix = ['_summed_PLV_', norms{n}, 'hrs_ranksum'];
             
         load(['ALL_', cp_labels{c}, '_PLV/ALL_', cp_labels{c}, suffix, '.mat'])
         
@@ -110,6 +97,8 @@ for n=1:no_norms
         BP_stats_new = reshape(BP_stats_new, BPs_dims(1), 1, BPs_dims(2), BPs_dims(3), BPs_dims(4));
         
         All_BP_stats(:, c, :, :, :, n) = BP_stats_new(1:no_BP_hr_periods, :, :, [1 4 5], :);
+        
+        ranksum_suffix = ['_summed_PLV_', norms{n}, 'hrs_ranksum'];
         
         load(['ALL_', cp_labels{c}, '_PLV/ALL_', cp_labels{c}, ranksum_suffix, '.mat'])
         
@@ -143,7 +132,7 @@ for n = 1:no_norms
                 
                 for b = 1:no_bands
                     
-                    subplot(no_chan_pairs + 2 + (d > 1), 2, (c - 1)*2 + b)
+                    subplot(no_chan_pairs + (d > 1), 2, (c - 1)*2 + b)
                     
                     imagesc(str2num(char(sixmin_labels))/60, freqs(band_indices{b}),...
                         reshape(All_cplot_data(band_indices{b}, d, :, s, c, n), sum(band_indices{b}), no_6min_periods))
@@ -170,53 +159,29 @@ for n = 1:no_norms
                 
             end
             
-            %% Plotting profiles of PLV.
-            
-            for h = 5:9
-                
-                for b = 1:no_bands
-                    
-                    subplot(no_chan_pairs + 2 + (d > 1), 5, (no_chan_pairs + b -1)*5 + h - 4)
-                    
-                    plot(freqs(band_indices{b})', reshape(All_lineplot_data(band_indices{b}, d, h, s, :, n), sum(band_indices{b}), no_chan_pairs))
-                    
-                    if b == 1
-                        
-                        title(long_hr_labels{h})
-                    
-                    elseif b == 2
-                    
-                        xlabel('Freq. (Hz)')
-                    
-                    end
-                        
-                    axis tight
-                    
-                    if h == 5 && b == 1
-                        
-                        legend(short_chanpair_labels, 'Location', 'NorthWest', 'FontSize', 6)
-                        
-                        ylabel({[long_stats{s}, ' Power']; long_norms{n}})
-                        
-                    end
-                    
-                end
-                
-            end
-            
             %% Plotting time series w/ stats.
             
             if d > 1
                 
                 for b = 1:no_sub_bands
                     
+                    band = bands_plotted(b);
+                    
                     clear plot_stats plot_test
                     
-                    plot_stats = [All_BP_stats(:, :, b, 1, 1, n) All_BP_stats(:, :, b, 1, d, n)];
+                    plot_stats = [All_BP_stats(:, :, band, 1, 1, n) All_BP_stats(:, :, band, 1, d, n)];
                         
-                    plot_test(:, :) = [nan(size(All_BP_test(:, :, b, d - 1, n))) All_BP_test(:, :, b, d - 1, n)];
+                    plot_test(:, :) = [nan(size(All_BP_test(:, :, band, d - 1, n))) All_BP_test(:, :, band, d - 1, n)];
                     
                     plot_test(plot_test == 0) = nan;
+                    
+                    if strcmp(drugs{d}, 'NVP')
+                       
+                        plot_stats_temp = plot_stats; % plot_test_temp = plot_test;
+                        
+                        plot_stats(1, :) = nan; % plot_test(1, :) = nan;
+                        
+                    end
                         
                     % plot_stats = plot_stats(:, [1 4 2 5 3 6]); % Interleaving saline & drug data series, for purposes of custom linestyle cycling.
                     % 
@@ -228,7 +193,7 @@ for n = 1:no_norms
                     
                     test_multiplier = ones(size(plot_test))*diag(med_min - [nan nan nan 0.05 .1 .15]*med_range);
                     
-                    subplot(no_channels + 2 + (d > 1), no_sub_bands, (no_channels + 2)*no_sub_bands + b)
+                    subplot(no_channels + (d > 1), no_sub_bands, no_channels*no_sub_bands + b)
                     
                     set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'--','-','*','*'}, 'ColorOrder', c_order)
                     
@@ -247,7 +212,13 @@ for n = 1:no_norms
                     
                     ylim([med_min - .2*med_range, med_min + 1.05*med_range])
                     
-                    title(band_labels{b})
+                    if strcmp(drugs{d}, 'NVP')
+                        
+                        hold on, plot((1:no_BP_hr_periods)', plot_stats_temp)
+                        
+                    end
+                    
+                    title(band_labels{band})
                     
                     xlabel('Time Rel. Inj. (h)')
                     
@@ -255,7 +226,7 @@ for n = 1:no_norms
                 
             end
                 
-            save_as_pdf(gcf,['ALL_',drugs{d},'_PLV_',norms{n},'multichannel_', stats{s}])
+            save_as_pdf(gcf,['ALL_',drugs{d},'_PLV_',norms{n},'multi_', stats{s}])
             
         end
         
@@ -271,7 +242,7 @@ for n=1:no_norms
         
         for d=1:no_drugs
             
-            open(['ALL_',drugs{d},'_PLV_',norms{n},'multichannel_', stats{s}, '.fig'])
+            open(['ALL_',drugs{d},'_PLV_',norms{n},'multi_', stats{s}, '.fig'])
         end
         
     end
