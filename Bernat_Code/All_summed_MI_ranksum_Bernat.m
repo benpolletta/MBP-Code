@@ -64,6 +64,9 @@ end
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI)
 
+stats_collected_BP_by_3_categories([name,'/',name,'_summed_hrMI_hr_state_vs_wake'],{band_labels, band_labels},...
+    {drug_labels, drug_labels},{state_labels, state_labels},{short_hr_labels, short_hr_labels},drugs,states,hrs,summed_MI)
+
 stats_collected_BP_by_3_categories([name,'/',name,'_summed_4hrMI_hr_by_state'],{band_labels, band_labels},{state_labels, state_labels},...
     {drug_labels, drug_labels},{short_hr_labels, short_hr_labels},states,drugs,hrs,summed_MI_4hr)
 

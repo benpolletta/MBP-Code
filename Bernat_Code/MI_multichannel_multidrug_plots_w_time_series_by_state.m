@@ -77,7 +77,7 @@ for n=1:no_norms
         for d = 1:no_drugs
             
             load([ch_dir,'/',ch_dir,'_p0.99_IEzs_MI','/',...
-                ch_dir,'_p0.99_IEzs_4hr', norms{n},'_by_state_',drugs{d},'_cplot_data.mat'])
+                ch_dir,'_p0.99_IEzs_4hrMI_hr', norms{n},'_by_state_',drugs{d},'_cplot_data.mat'])
             
             All_cplot_data(:, :, d, :, :, c, n) = permute(MI_stats(:, :, strcmp(cat1_labels, state), :, 1, :), [1 2 5 4 6 3]);
             
@@ -265,7 +265,7 @@ for n = 1:no_norms
                 
                 clear plot_stats plot_test
                 
-                plot_stats = [All_BP_stats(:, :, bands_plotted(b), 1, 1) All_BP_stats(:, :, bands_plotted(b), 1, d)];
+                plot_stats = [All_BP_stats(:, :, bands_plotted(b), s, 1) All_BP_stats(:, :, bands_plotted(b), s, d)];
                 
                 plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), drug_p_val_index(d)))) All_BP_test(:, :, bands_plotted(b), drug_p_val_index(d))];
                 

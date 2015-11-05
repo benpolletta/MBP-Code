@@ -259,7 +259,7 @@ for n = 1:no_norms
                 
                 clear plot_stats plot_test
                 
-                plot_stats = [All_BP_stats(:, :, bands_plotted(b), 1, 1) All_BP_stats(:, :, bands_plotted(b), 1, d)];
+                plot_stats = [All_BP_stats(:, :, bands_plotted(b), s, 1) All_BP_stats(:, :, bands_plotted(b), s, d)];
                 
                 plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), drug_p_val_index(d)))) All_BP_test(:, :, bands_plotted(b), drug_p_val_index(d))];
                 

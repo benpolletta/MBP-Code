@@ -90,7 +90,7 @@ cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_hr_pct_b
     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_pct_by_state)
 
 cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_hr_pct_by_state'],no_states,no_periods,phases,amps,...
-    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr_pct_state)
+    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr_pct_by_state)
 
 %% Figures by state and 4 hour period.
 
