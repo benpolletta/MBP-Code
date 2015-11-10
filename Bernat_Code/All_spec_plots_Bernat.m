@@ -54,11 +54,17 @@ end
 
 % State-dependent only.
 
-cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_4hrs_by_state'],freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec)
+cplot_collected_spec_by_3_categories('Spectral Power',[name,'/',name,'_spec_4hrs_by_state'],...
+    freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},...
+    {short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec)
 
-cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_4hrs_by_state'],freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_pct_by_state)
+cplot_collected_spec_by_3_categories('Power, Percent Change from Baseline',[name,'/',name,'_spec_pct_4hrs_by_state'],...
+    freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},...
+    {short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_pct_by_state)
 
-cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_4hrs_by_state'],freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},{short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_zs)
+cplot_collected_spec_by_3_categories('Power, z-Scored',[name,'/',name,'_spec_zs_4hrs_by_state'],...
+    freqs,bands,band_names,stops,fourhr_corder,{drug_labels, drug_labels},{state_labels, state_labels},...
+    {short_fourhr_labels, fourhr_labels},drugs,states,fourhrs,spec_zs)
 
 % Plots by Hour.
 
