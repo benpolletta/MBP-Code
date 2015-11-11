@@ -1,4 +1,4 @@
-function multimeasure_multichannel_multistate_plots(drug)
+function multimeasure_multichannel_multistate_plots_vs_saline(drug)
 
 figure
 
@@ -12,26 +12,26 @@ no_pfs = length(phase_freqs); no_afs = length(amp_freqs);
 load('channels.mat'), load('states.mat'), load('drugs.mat'), load('subjects.mat')
 
 PLV_c_order = [0 1 1; 1 .5 0; 1 0 1];
-    
-clear titles xlabels ylabels
 
 ticks = [1 8 30 60 140];
 
 %% Plotting spectra.
     
-[spec_mean, spec_se, ~, ~] = get_state_channel_stats(channel_names, drug, length(freqs_plotted), '', 'spec_zs');
+[~, ~, spec_median, spec_med_cis] = get_state_channel_period_stats(channel_names, drug, 'post1to4', length(freqs_plotted), '', 'spec_pct_by_state');
+
+[~, ~, sal_spec_median, sal_spec_med_cis] = get_state_channel_period_stats(channel_names, 'saline', 'post1to4', length(freqs_plotted), '', 'spec_pct_by_state');
     
 for st = 1:3
     
     subplot(5, no_states, st) % no_bands + 6, no_states, st)
     
-    for reps = 1:2
+    boundedline(freqs_plotted', spec_median(:, :, st), spec_med_cis(:, :, :, st)); % spec_mean(:, :, st), spec_se(:, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1));
     
-        h = boundedline(freqs_plotted', spec_mean(:, :, st), spec_se(:, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1));
+    hold on,
     
-    end
+    h = boundedline(freqs_plotted', sal_spec_median(:, :, st), sal_spec_med_cis(:, :, :, st));
     
-    hold on, plot(freqs_plotted', zeros(size(freqs_plotted')), 'k--')
+    plot(freqs_plotted', zeros(size(freqs_plotted')), 'k--')
     
     set(gca, 'XScale', 'log', 'XTick', ticks, 'XTickLabel', ticks) % , 'YScale', 'log')
     
@@ -47,7 +47,7 @@ end
 
 %% Plotting comodulograms.
     
-[~, ~, MI_med, ~] = get_state_channel_stats(channel_names, drug, no_afs*no_pfs, '_p0.99_IEzs', 'hr_MI_pct');
+[~, ~, MI_med, ~] = get_state_channel_period_stats(channel_names, drug, 'post1to4', no_afs*no_pfs, '_p0.99_IEzs', 'MI_pct_by_state');
     
 MI_low = all_dimensions(@nanmin, MI_med);
 
@@ -91,7 +91,9 @@ for p = 1:3,
     
 end
     
-[PLV_mean, PLV_se, ~, ~] = get_state_channel_stats(chan_pair_names, drug, no_afs + no_pfs, '', 'PLV_zs');
+[~, ~, PLV_median, PLV_med_cis, ~, ~] = get_state_channel_period_stats(chan_pair_names, drug, 'post1to4', no_afs + no_pfs, '', 'PLV_thresh_pct_by_state');
+
+[~, ~, sal_PLV_median, sal_PLV_med_cis] = get_state_channel_period_stats(chan_pair_names, 'saline', 'post1to4', no_afs + no_pfs, '', 'PLV_thresh_pct_by_state');
 
 band_freqs = {phase_freqs, amp_freqs};
 
@@ -106,8 +108,13 @@ for st = 1:3
         
         subplot(5, no_states, 4*no_states + st) % no_bands + 6, no_states, st)
         
-        h = boundedline(band_freqs{b}', PLV_mean(band_indices{b}, :, st), PLV_se(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
-            'cmap', PLV_c_order);
+        boundedline(band_freqs{b}', PLV_median(band_indices{b}, :, st), PLV_med_cis(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
+            'cmap', PLV_c_order)
+    
+        hold on,
+        
+        h = boundedline(band_freqs{b}', sal_PLV_median(band_indices{b}, :, st), sal_PLV_med_cis(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
+            '--', 'cmap', PLV_c_order);
         
         hold on, plot(band_freqs{b}', zeros(size(band_freqs{b}')), 'k--')
         
@@ -125,19 +132,19 @@ for st = 1:3
     
 end
 
-% saveas(gcf, [drug, '_multichannel_multistate'])
+% saveas(gcf, [drug, '_vs_saline_multichannel_multistate'])
 
-saveas(gcf, [drug, '_multichannel_multistate.fig'])
+saveas(gcf, [drug, '_vs_saline_multichannel_multistate.fig'])
 
 end
 
-function [state_mean, state_se, state_med, state_med_cis] = get_state_channel_stats(channel_names, drug, measure_size, measure_prefix, measure_name)
+function [state_mean, state_se, state_med, state_med_cis] = get_state_channel_period_stats(channel_names, drug, period, measure_size, measure_prefix, measure_name)
 
 no_channels = length(channel_names);
 
 load('states.mat'), load('drugs.mat'), load('subjects.mat')
 
-if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '.mat']))
+if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '_', period, '.mat']))
     
     state_med = nan(measure_size, 3, 3);
     
@@ -151,39 +158,41 @@ if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '.mat']))
         
         ch_dir = ['ALL_', channel_names{c}];
         
-        channel_spec = load([ch_dir, '/', ch_dir, measure_prefix, '_', measure_name, '.txt']);
+        if ~isempty(dir([ch_dir, '/', ch_dir, measure_prefix, '_', measure_name, '.txt']))
+        
+            channel_spec = load([ch_dir, '/', ch_dir, measure_prefix, '_', measure_name, '.txt']);
+        
+        elseif ~isempty(dir([ch_dir, '/', ch_dir, measure_prefix, '_', measure_name, '.mat']))
+            
+            load([ch_dir, '/', ch_dir, measure_prefix, '_', measure_name, '.mat'])
+            
+            if exist('spec_pct', 'var')
+            
+                channel_spec = spec_pct;
+            
+            elseif exist('fourhrMI_pct', 'var')
+                
+                channel_spec = fourhrMI_pct;
+                
+            elseif exist('PLV_pct', 'var')
+                
+                channel_spec = PLV_pct;
+                
+            end
+            
+        end
         
         spec_states = text_read([ch_dir, '/', ch_dir, measure_prefix, '_states.txt'], '%s');
         
         spec_drugs = text_read([ch_dir, '/', ch_dir, measure_prefix, '_drugs.txt'], '%s');
         
-        spec_subjects = text_read([ch_dir, '/', ch_dir, measure_prefix, '_subjects.txt'], '%s');
+        spec_periods = text_read([ch_dir, '/', ch_dir, measure_prefix, '_4hrs.txt'], '%s');
         
         for st = 1:3
             
-            state_indices = strcmp(spec_states, states{st}) & strcmp(spec_drugs, drug);
+            state_indices = strcmp(spec_states, states{st}) & strcmp(spec_drugs, drug) & strcmp(spec_periods, period);
             
-            state_spec = channel_spec(state_indices, 1:measure_size);
-            
-            state_subjects = spec_subjects(state_indices);
-            
-            state_spec_selected = nan(subj_num*220, measure_size);
-            
-            for su = 1:subj_num
-               
-                subj_indices = strcmp(state_subjects, subjects{su});
-                
-                % subj_indices_center = subj_indices'*(1:length(subj_indices))'/sum(subj_indices);
-                % 
-                % subj_indices_chosen_start = floor(subj_indices_center - 110)
-                
-                subj_state_spec = state_spec(subj_indices, :);
-                
-                subj_indices_chosen_start = floor(size(subj_state_spec, 1)/2 - 110);
-                
-                state_spec_selected(((su - 1)*220 + 1):su*220, :) = subj_state_spec(subj_indices_chosen_start + (1:220), :);
-                
-            end
+            state_spec_selected = channel_spec(state_indices, 1:measure_size);
             
             state_mean(:, c, st) = nanmean(state_spec_selected);
             
@@ -191,11 +200,11 @@ if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '.mat']))
             
             state_med(:, c, st) = nanmedian(state_spec_selected)';
             
-            non_nan_indices = ~isnan(state_spec_selected(1, :));
+            non_nan_indices = ~isnan(state_spec_selected(1, :)) | ~isnan(state_spec_selected(end, :)); 
             
-            state_spec_selected(isnan(state_spec_selected(:, 1)), :) = [];
+            state_spec_selected(isnan(state_spec_selected(:, 1)), :) = []; 
             
-            state_spec_selected(:, isnan(state_spec_selected(1, :))) = [];
+            state_spec_selected(:, ~non_nan_indices) = [];
             
             matlabpool
             
@@ -205,7 +214,7 @@ if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '.mat']))
             
             matlabpool close
             
-            state_med_cis(non_nan_indices, 1, c, st) = state_med_ci(1, :)';
+            state_med_cis(non_nan_indices, 1, c, st) = state_med_ci(1, :)'; %%%% Size problem here. (11/10/15)
             
             state_med_cis(non_nan_indices, 2, c, st) = state_med_ci(2, :)';
             
@@ -215,11 +224,11 @@ if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '.mat']))
     
     state_se = repmat(state_se, [1 2 1 1]);
     
-    save([measure_name, '_multichannel_multistate_stats_', drug, '.mat'], 'state_mean', 'state_se', 'state_med', 'state_med_cis')
+    save([measure_name, '_multichannel_multistate_stats_', drug, '_', period, '.mat'], 'state_mean', 'state_se', 'state_med', 'state_med_cis')
     
 else
     
-    load([measure_name, '_multichannel_multistate_stats_', drug, '.mat'])
+    load([measure_name, '_multichannel_multistate_stats_', drug, '_', period, '.mat'])
     
 end
 
