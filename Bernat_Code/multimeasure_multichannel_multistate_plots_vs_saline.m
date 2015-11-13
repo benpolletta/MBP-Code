@@ -17,25 +17,29 @@ ticks = [1 8 30 60 140];
 
 %% Plotting spectra.
     
-[~, ~, spec_median, spec_med_cis] = get_state_channel_period_stats(channel_names, drug, 'post1to4', length(freqs_plotted), '', 'spec_pct_by_state');
+[~, ~, spec_median, spec_ranksum] = drug_vs_saline_period_stats_by_state(channel_names, drug, 'post1to4', length(freqs_plotted), '', 'spec_pct_by_state'); % [spec_mean, spec_se, ~, ~] 
+  
+spec_test = spec_ranksum < .01/(3*4*2*all_dimensions(@sum, ~isnan(spec_ranksum)));
 
-[~, ~, sal_spec_median, sal_spec_med_cis] = get_state_channel_period_stats(channel_names, 'saline', 'post1to4', length(freqs_plotted), '', 'spec_pct_by_state');
-    
 for st = 1:3
     
     subplot(5, no_states, st) % no_bands + 6, no_states, st)
     
-    boundedline(freqs_plotted', spec_median(:, :, st), spec_med_cis(:, :, :, st)); % spec_mean(:, :, st), spec_se(:, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1));
+    h = plot(freqs_plotted, -diff(spec_median(:, :, st, :), [], 4)); % boundedline(freqs_plotted(3:end)', spec_mean(3:end, :, st), spec_se(3:end, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1)); % spec_median(:, :, st), spec_med_cis(:, :, :, st)); %
+    
+    add_stars(gca, freqs_plotted, spec_test(:, :, st), [0 0 0], [])
     
     hold on,
     
-    h = boundedline(freqs_plotted', sal_spec_median(:, :, st), sal_spec_med_cis(:, :, :, st));
+    % h = plot(freqs_plotted, sal_spec_median(:, :, st), '--'); % boundedline(freqs_plotted(3:end)', sal_spec_mean(3:end, :, st), sal_spec_se(3:end, :, st)*norminv(1 - .05/bonferroni_count, 0, 1), ':'); % sal_spec_median(:, :, st), sal_spec_med_cis(:, :, :, st), '--');
     
     plot(freqs_plotted', zeros(size(freqs_plotted')), 'k--')
     
     set(gca, 'XScale', 'log', 'XTick', ticks, 'XTickLabel', ticks) % , 'YScale', 'log')
     
     axis tight
+    
+    % boundedline(freqs_plotted', spec_mean(:, :, st), spec_se(:, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1));
     
     title(long_states{st})
     
@@ -63,7 +67,7 @@ for st = 1:3
         
         imagesc(phase_freqs, amp_freqs, plotted_MI)
         
-        colorbar % caxis([MI_low MI_high])
+        caxis([MI_low MI_high])
         
         axis xy
         
@@ -91,13 +95,13 @@ for p = 1:3,
     
 end
     
-[~, ~, PLV_median, PLV_med_cis, ~, ~] = get_state_channel_period_stats(chan_pair_names, drug, 'post1to4', no_afs + no_pfs, '', 'PLV_thresh_pct_by_state');
+[~, ~, PLV_median, PLV_ranksum] = drug_vs_saline_period_stats_by_state(chan_pair_names, drug, 'post1to4', no_afs + no_pfs, '', 'PLV_thresh_pct_by_state'); % [~, ~, sal_PLV_median, sal_PLV_med_cis] = get_state_channel_period_stats(chan_pair_names, 'saline', 'post1to4', no_afs + no_pfs, '', 'PLV_thresh_pct_by_state');
 
-[~, ~, sal_PLV_median, sal_PLV_med_cis] = get_state_channel_period_stats(chan_pair_names, 'saline', 'post1to4', no_afs + no_pfs, '', 'PLV_thresh_pct_by_state');
+PLV_test = PLV_ranksum < .01/(3*4*2*all_dimensions(@sum, ~isnan(PLV_ranksum)));
 
-band_freqs = {phase_freqs, amp_freqs};
+band_freqs = {phase_freqs', amp_freqs'};
 
-PLV_freqs = [phase_freqs, amp_freqs];
+PLV_freqs = [phase_freqs, amp_freqs]';
 
 band_indices = {PLV_freqs <= max(phase_freqs) & PLV_freqs >= min(phase_freqs), ...
     PLV_freqs <= max(amp_freqs) & PLV_freqs >= min(amp_freqs)};
@@ -107,28 +111,34 @@ for st = 1:3
     for b = 1:length(band_freqs)
         
         subplot(5, no_states, 4*no_states + st) % no_bands + 6, no_states, st)
+                    
+        set(gca, 'NextPlot', 'add', 'ColorOrder', PLV_c_order)
         
-        boundedline(band_freqs{b}', PLV_median(band_indices{b}, :, st), PLV_med_cis(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
-            'cmap', PLV_c_order)
+        h = plot(band_freqs{b}, -diff(PLV_median(band_indices{b}, :, st, :), [], 4));
+        
+        % boundedline(band_freqs{b}', PLV_median(band_indices{b}, :, st) - sal_PLV_median(band_indices{b}, :, st), PLV_med_cis(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
+        %    'cmap', PLV_c_order)
     
-        hold on,
-        
-        h = boundedline(band_freqs{b}', sal_PLV_median(band_indices{b}, :, st), sal_PLV_med_cis(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
-            '--', 'cmap', PLV_c_order);
-        
-        hold on, plot(band_freqs{b}', zeros(size(band_freqs{b}')), 'k--')
-        
-        set(gca, 'XScale', 'log', 'XTick', ticks, 'XTickLabel', ticks) % , 'YScale', 'log')
-        
-        axis tight
-        
-        title(long_states{st})
-        
-        if st == 1, legend(h, display_chan_pair_names), ylabel('z-Scored PLV'), end
-        
-        xlabel('Freq. (Hz)')
+        % hold on,
+        % 
+        % h = boundedline(band_freqs{b}', zeros(size(PLV_median(band_indices{b}, :, st))), sal_PLV_med_cis(band_indices{b}, :, :, st)*norminv(1 - .05/bonferroni_count, 0, 1),...
+        %     'cmap', PLV_c_order);
         
     end
+        
+    add_stars(gca, PLV_freqs, PLV_test(:, :, st), [0 0 0], PLV_c_order)
+    
+    hold on, plot(PLV_freqs, zeros(size(PLV_freqs)), 'k--')
+    
+    set(gca, 'XScale', 'log', 'XTick', ticks, 'XTickLabel', ticks) % , 'YScale', 'log')
+    
+    axis tight
+    
+    title(long_states{st})
+    
+    if st == 1, legend(h, display_chan_pair_names), ylabel('z-Scored PLV'), end
+    
+    xlabel('Freq. (Hz)')
     
 end
 
@@ -170,9 +180,9 @@ if isempty(dir([measure_name, '_multichannel_multistate_stats_', drug, '_', peri
             
                 channel_spec = spec_pct;
             
-            elseif exist('fourhrMI_pct', 'var')
+            elseif exist('MI_pct', 'var') % exist('fourhrMI_pct', 'var')
                 
-                channel_spec = fourhrMI_pct;
+                channel_spec = MI_pct; % fourhrMI_pct;
                 
             elseif exist('PLV_pct', 'var')
                 

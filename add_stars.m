@@ -3,7 +3,13 @@ function add_stars(handle, t, logical, side_vec, c_order)
 % Adds stars to a boundedline type plot. Logical is whether or not to add
 % a star. Side vec is 0 for below & 1 for above. c_order is color of stars.
 
+if isempty(c_order), c_order = [0 0 1; 0 .75 0; 1 0 0]; end
+
+logical = +logical;
+
 if any(logical ~= 0)
+    
+    logical(logical == 0) = nan;
     
     [~, c] = size(logical);
     
@@ -31,7 +37,7 @@ if any(logical ~= 0)
     
     plot(t, logical.*logical_multiplier, '*')
     
-    ylim([min(multiplier_vec) max(multiplier_vec)])
+    ylim([min([yl, multiplier_vec]) max([yl, multiplier_vec])])
     
 else
     
