@@ -108,6 +108,8 @@ for n=1:no_norms
     
 end
 
+save(['spec_multichannel_plots_w_time_series_', state, '.mat'], 'All_BP_test', 'All_BP_stats', 'All_cplot_data')
+
 handle = nan(no_drugs, no_norms, no_stats);
 
 for n = 1:no_norms

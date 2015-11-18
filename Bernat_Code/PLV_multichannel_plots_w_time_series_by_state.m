@@ -116,6 +116,8 @@ end
     
 All_BP_stats(:, :, :, [2 3], :, :) = [];
 
+save(['PLV_multichannel_plots_w_time_series_', state, '.mat'], 'All_BP_test', 'All_BP_stats', 'All_cplot_data')
+
 handle = nan(no_drugs, no_norms, no_stats);
 
 for n = 1:no_norms

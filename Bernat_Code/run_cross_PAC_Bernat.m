@@ -1,5 +1,13 @@
 function run_cross_PAC_Bernat(no_shufs, chan1_channels, chan2_channels)
 
+% no_shufs = number of shuffles used to compute surrogate data.
+% chan1_channels = vector of channel numbers for each individual,
+%  corresponding to the first channel to be used to compute cross PAC (i.e.,
+%  the phase-giving channel.
+% chan2_channels = vector of channel numbers for each individual,
+%  corresponding to the second channel used to compute cross PAC (i.e., the
+%  amplitude-giving channel.
+
 % pair_dir = sprintf('All_%s_A_by_%s_P_PAC', chan1_name, chan2_name);
 % mkdir (pair_dir)
 

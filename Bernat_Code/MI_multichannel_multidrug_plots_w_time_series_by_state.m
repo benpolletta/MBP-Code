@@ -123,6 +123,8 @@ for n=1:no_norms
     
 end
 
+save(['MI_multichannel_multidrug_plots_w_time_series', state, '.mat'], 'All_BP_test', 'All_cplot_data', 'All_BP_stats', 'preinj_data')
+
 if strcmp(hi_hr, 'independent')
 
     [~, max_hr_indices] = nanmax(nanmax(nanmax(All_cplot_data(:, :, :, 4:end, :, :, :))), [], 4);

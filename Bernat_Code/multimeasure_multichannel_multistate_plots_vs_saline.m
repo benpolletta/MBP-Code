@@ -51,7 +51,7 @@ end
 
 %% Plotting comodulograms.
     
-[~, ~, MI_med, ~] = get_state_channel_period_stats(channel_names, drug, 'post1to4', no_afs*no_pfs, '_p0.99_IEzs', 'MI_pct_by_state');
+[~, ~, MI_med, ~] = get_state_channel_period_stats(channel_names, drug, 'post1to4', no_afs*no_pfs, '_p0.99_IEzs', 'hr_MI_pct'); % 'MI_pct_by_state');
     
 MI_low = all_dimensions(@nanmin, MI_med);
 
@@ -133,8 +133,6 @@ for st = 1:3
     set(gca, 'XScale', 'log', 'XTick', ticks, 'XTickLabel', ticks) % , 'YScale', 'log')
     
     axis tight
-    
-    title(long_states{st})
     
     if st == 1, legend(h, display_chan_pair_names), ylabel('z-Scored PLV'), end
     

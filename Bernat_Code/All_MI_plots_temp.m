@@ -31,7 +31,9 @@ norms = {'', '_pct'}; no_norms = length(norms);
 %% Figures by hour.
 
 MI = load([name,'/',name,'_',measure,'_hr_MI.txt'],'%s');
+MI_4hr = load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
 MI_pct = load([name,'/',name,'_',measure,'_hr_MI_pct.txt'],'%s');
+MI_4hr_pct = load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
 MI_pct_by_state = load([name,'/',name,'_p0.99_IEzs_MI_pct_by_state.mat'], 'MI_pct');
 MI_pct_by_state = MI_pct_by_state.MI_pct;
 MI_4hr_pct_by_state = load([name,'/',name,'_p0.99_IEzs_MI_pct_by_state.mat'], 'fourhrMI_pct');
@@ -89,12 +91,13 @@ no_periods = length(period_labels);
 % cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_hr_pct_by_state'],no_states,no_periods,phases,amps,...
 %     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_pct_by_state)
 
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_hr_by_state'],no_states,no_periods,phases,amps,...
+    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr)
+
 cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_hr_pct_by_state'],no_states,no_periods,phases,amps,...
     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr_pct_by_state)
 
 %% Figures by state and 4 hour period.
-
-MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
 
 clear period_labels; clear short_period_labels; p=1;
 for i=1:1
