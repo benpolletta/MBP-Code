@@ -1,0 +1,79 @@
+function plot_multivar_PAC_Bernat
+
+load('subjects.mat'), load('drugs.mat'), load('channels.mat')
+
+load('ALL_Frontal/ALL_Frontal_A99_summed_hrMI_6min_BP_stats.mat', 'long_band_labels')
+
+freq_labels = {{'delta', '65', '95', 'HFO'}, {'theta', '65', '95', 'HFO'}};
+
+no_freqs = length(freq_labels{1});
+
+tick_labels = cell(no_freqs*no_channels, 1);
+
+for b = 1:2
+    
+    for c = 1:no_channels
+        
+        for f = 1:no_freqs
+            
+            tick_labels{(c - 1)*no_freqs + f, b} =...
+                [display_channel_names{c}, ', ', freq_labels{b}{f}];
+            
+        end
+        
+    end
+    
+end
+
+mv_PAC = load('multivar_PAC_PAC.txt');
+mv_PAC_subjects = text_read('multivar_PAC_subjects.txt', '%s');
+mv_PAC_drugs = text_read('multivar_PAC_drugs.txt', '%s');
+mv_PAC_bands = text_read('multivar_PAC_bands.txt', '%s');
+
+median_mv_PAC = nan(no_drugs - 1, (no_freqs*no_channels).^2, 2);
+
+for d = 1:(no_drugs - 1)
+    
+    for b = 1:2
+        
+        mv_PAC_indices = strcmp(mv_PAC_drugs, drugs{d})...
+            & strcmp(mv_PAC_bands, long_band_labels{b + 4});
+        
+        median_mv_PAC(d, :, b) = nanmedian(mv_PAC(mv_PAC_indices, :));
+        
+    end
+    
+end
+
+upper_clim = all_dimensions(@nanmax, median_mv_PAC);
+lower_clim = all_dimensions(@nanmin, median_mv_PAC);
+
+for d = 1:(no_drugs - 1)
+    
+    for b = 1:2
+        
+        subplot(2, no_drugs - 1, (b - 1)*(no_drugs - 1) + d)
+        
+        mv_PAC_indices = strcmp(mv_PAC_drugs, drugs{d})...
+            & strcmp(mv_PAC_bands, long_band_labels{b + 4});
+        
+        median_mv_PAC = nanmedian(mv_PAC(mv_PAC_indices, :));
+        
+        imagesc(reshape(median_mv_PAC, no_freqs*no_channels, no_freqs*no_channels))
+        
+        axis xy
+        
+        set(gca, 'XTick', 1:(no_freqs*no_channels), 'XTickLabel', [],...
+            'YTick', 1:(no_freqs*no_channels), 'YTickLabel', tick_labels(:, b))
+        
+        caxis([lower_clim upper_clim])
+        
+        title(drugs{d + 1})
+        
+        ylabel(long_band_labels{b + 4})
+        
+    end
+    
+end
+
+end
