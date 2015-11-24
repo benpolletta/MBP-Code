@@ -1,6 +1,8 @@
-function run_multivar_PAC_subject_drug(subject, hour, drug, low_freq, plot_opt)
+function run_multivar_PAC_subject_drug(subject, hour, drug, low_freq, hi_freqs, plot_opt)
 
-hi_freqs = [35 95 140]; no_freqs = length(hi_freqs) + 1;
+if isempty(hi_freqs), hi_freqs = [65 95 140]; end
+
+no_freqs = length(hi_freqs) + 1;
 
 sampling_freq = 1000;
 
@@ -14,7 +16,7 @@ subj_index = strcmp(subjects, subject);
 
 for c = 1:no_channels, subj_channel_indices(c) = location_channels{c}(subj_index); end
 
-hour_dir = [subject, '_', drug, '_', hour, '_epochs'];
+hour_dir = [subject, '_', drug, '_post', num2str(hour), '_epochs'];
 
 cd (hour_dir)
 
@@ -26,7 +28,7 @@ hour_kappa = nan(no_epochs, (no_freqs*no_channels)^2);
 
 %% Computing multivariate PAC.
 
-if isempty(dir([subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multivar_PAC.mat']))
+if isempty(dir([subject, '_', drug, '_post', num2str(hour), '_', num2str(low_freq), 'Hz_multivar_PAC.mat']))
     
     parfor e = 1:no_epochs
         
@@ -38,11 +40,11 @@ if isempty(dir([subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multi
         
     end
     
-    save([subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multivar_PAC.mat'], 'hour_kappa', 'low_freq', 'hi_freqs')
+    save([subject, '_', drug, '_post', num2str(hour), '_', num2str(low_freq), 'Hz_multivar_PAC.mat'], 'hour_kappa', 'low_freq', 'hi_freqs')
     
 else
 
-    load([subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multivar_PAC.mat'])
+    load([subject, '_', drug, '_post', num2str(hour), '_', num2str(low_freq), 'Hz_multivar_PAC.mat'])
     
 end
 
@@ -68,7 +70,7 @@ if ~exist('hour_kappa_shuffled', 'var')
         
     end
     
-    save([subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multivar_PAC.mat'], '-append', 'hour_kappa_shuffled', 'shuf_indices')
+    save([subject, '_', drug, '_post', num2str(hour), '_', num2str(low_freq), 'Hz_multivar_PAC.mat'], '-append', 'hour_kappa_shuffled', 'shuf_indices')
     
 end
 
@@ -82,7 +84,7 @@ if ~exist('hour_kappa_zscored', 'var')
     
     hour_kappa_zscored = (abs(hour_kappa) - hour_kappa_shuf_mean)./hour_kappa_shuf_std;
     
-    save([subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multivar_PAC.mat'], '-append', 'hour_kappa_zscored')
+    save([subject, '_', drug, '_post', num2str(hour), '_', num2str(low_freq), 'Hz_multivar_PAC.mat'], '-append', 'hour_kappa_zscored')
     
 end
 
@@ -112,7 +114,7 @@ if plot_opt
     
     colorbar
    
-    save_as_pdf(gcf, [subject, '_', drug, '_', hour, '_', num2str(low_freq), 'Hz_multivar_PAC'])
+    save_as_pdf(gcf, [subject, '_', drug, '_post', num2str(hour), '_', num2str(low_freq), 'Hz_multivar_PAC'])
     
 end
 

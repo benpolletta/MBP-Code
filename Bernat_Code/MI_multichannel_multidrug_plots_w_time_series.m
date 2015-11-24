@@ -75,7 +75,7 @@ for n=1:no_norms
         for d = 1:no_drugs
             
             load([ch_dir,'/',ch_dir,'_p0.99_IEzs_MI','/',...
-                ch_dir,'_p0.99_IEzs_hr',norms{n},'_',drugs{d},'_cplot_data.mat'])
+                ch_dir,'_p0.99_IEzs_hrMI_hr',norms{n},'_',drugs{d},'_cplot_data.mat'])
             
             All_cplot_data(:, :, d, :, :, c, n) = MI_stats(:, :, 1, :, :);
             
@@ -302,7 +302,7 @@ for n = 1:no_norms
                 
                 if d == 2
                     
-                    ylabel(band_labels{b})
+                    ylabel(band_labels{bands_plotted(b)})
                     
                 end
                 
