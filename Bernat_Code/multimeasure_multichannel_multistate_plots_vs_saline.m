@@ -52,14 +52,14 @@ end
 %% Plotting comodulograms.
     
 [~, ~, MI_med, ~] = get_state_channel_period_stats(channel_names, drug, 'post1to4', no_afs*no_pfs, '_p0.99_IEzs', 'hr_MI_pct'); % 'MI_pct_by_state');
-    
-MI_low = all_dimensions(@nanmin, MI_med);
 
-MI_high = all_dimensions(@nanmax, MI_med);
-
-for st = 1:3
+for c = 1:3
     
-    for c = 1:3
+    MI_low = all_dimensions(@nanmin, MI_med(:, c, :));
+    
+    MI_high = all_dimensions(@nanmax, MI_med(:, c, :));
+    
+    for st = 1:3
         
         subplot(5, no_states, c*no_states + st) % no_bands + 6, no_states, st)
         

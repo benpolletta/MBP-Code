@@ -39,32 +39,31 @@ for d = 1:(no_drugs - 1)
         mv_PAC_indices = strcmp(mv_PAC_drugs, drugs{d})...
             & strcmp(mv_PAC_bands, long_band_labels{b + 4});
         
-        median_mv_PAC(d, :, b) = nanmedian(mv_PAC(mv_PAC_indices, :));
+        median_mv_PAC(d, :, b) = nanmean(mv_PAC(mv_PAC_indices, :));
         
     end
     
 end
 
-upper_clim = all_dimensions(@nanmax, median_mv_PAC);
-lower_clim = all_dimensions(@nanmin, median_mv_PAC);
+figure
 
-for d = 1:(no_drugs - 1)
+for b = 1:2
     
-    for b = 1:2
+    upper_clim = all_dimensions(@nanmax, median_mv_PAC(:, :, b));
+    lower_clim = all_dimensions(@nanmin, median_mv_PAC(:, :, b));
+    
+    for d = 1:(no_drugs - 1)
         
         subplot(2, no_drugs - 1, (b - 1)*(no_drugs - 1) + d)
         
-        mv_PAC_indices = strcmp(mv_PAC_drugs, drugs{d})...
-            & strcmp(mv_PAC_bands, long_band_labels{b + 4});
-        
-        median_mv_PAC = nanmedian(mv_PAC(mv_PAC_indices, :));
-        
-        imagesc(reshape(median_mv_PAC, no_freqs*no_channels, no_freqs*no_channels))
+        imagesc(reshape(median_mv_PAC(d, :, b), no_freqs*no_channels, no_freqs*no_channels))
         
         axis xy
         
-        set(gca, 'XTick', 1:(no_freqs*no_channels), 'XTickLabel', [],...
+        set(gca, 'XTick', 1:(no_freqs*no_channels), 'XTickLabel', tick_labels(:, b),...
             'YTick', 1:(no_freqs*no_channels), 'YTickLabel', tick_labels(:, b))
+        
+        xticklabel_rotate([], 90)
         
         caxis([lower_clim upper_clim])
         
@@ -72,8 +71,12 @@ for d = 1:(no_drugs - 1)
         
         ylabel(long_band_labels{b + 4})
         
+        if d == (no_drugs - 1), colorbar, end
+        
     end
     
 end
+
+save_as_pdf(gcf, 'multivar_PAC')
 
 end
