@@ -6,7 +6,7 @@ phase_interval = {[1 4], [6 11]}; amp_interval = {[40 80], [80 120], [120 180]};
     
 no_bands = length(phase_interval)*length(amp_interval);
 
-peak_hours = nan(subj_num, no_drugs - 1, no_bands);
+peak_hours = nan(subj_num, no_drugs, no_bands);
 
 for s = 1:subj_num
     
@@ -26,11 +26,11 @@ for s = 1:subj_num
     
     % figure, for b = 1:no_bands, subplot(3, 2, b), plot(All_BP_stats(:,:,b)), axis tight, end
     
-    for d = 2:4
+    for d = 1:4
         
         for b = 1:no_bands
             
-            [~, peak_hours(s, d - 1, b)] = nanmax(All_BP_stats(5:12, d, b));
+            [~, peak_hours(s, d, b)] = nanmax(All_BP_stats(5:12, d, b));
             
         end
         
@@ -58,11 +58,11 @@ for b = 1:no_bands
     
 end
 
-All_cplot_data = nan(no_afs, no_pfs, no_drugs - 1, no_subjects, no_channels, no_bands);
+All_cplot_data = nan(no_afs, no_pfs, no_drugs, no_subjects, no_channels, no_bands);
 
 for c = 1:no_channels
     
-    for d = 2:no_drugs
+    for d = 1:no_drugs
         
         for s = 1:subj_num
         
@@ -71,7 +71,7 @@ for c = 1:no_channels
             
             for b = 1:no_bands
                 
-                All_cplot_data(:, :, d - 1, s, c, b) = MI_stats(:, :, :, peak_hours(s, d - 1, b));
+                All_cplot_data(:, :, d, s, c, b) = MI_stats(:, :, :, peak_hours(s, d, b));
                 
             end
         
@@ -81,7 +81,7 @@ for c = 1:no_channels
     
 end
     
-[max_phase, max_amp] = deal(nan(subj_num, no_drugs - 1, no_bands));
+[max_phase, max_amp] = deal(nan(subj_num, no_drugs, no_bands));
         
 for b = 1:no_bands
     
@@ -91,9 +91,9 @@ for b = 1:no_bands
     
     max_phase_data = nanmax(nanmax(All_cplot_data(amp_range{b}, :, :, :, b), [], 5));
     
-    max_phase_data = reshape(max_phase_data, no_pfs, no_drugs - 1, subj_num);
+    max_phase_data = reshape(max_phase_data, no_pfs, no_drugs, subj_num);
     
-    for d = 1:(no_drugs - 1)
+    for d = 1:no_drugs
         
         for s = 1:subj_num
             
