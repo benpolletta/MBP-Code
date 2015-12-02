@@ -39,29 +39,68 @@ for d = 1:no_drugs
         mv_PAC_indices = strcmp(mv_PAC_drugs, drugs{d})...
             & strcmp(mv_PAC_bands, long_band_labels{b + 4});
         
-        median_mv_PAC(d, :, b) = nanmean(mv_PAC(mv_PAC_indices, :));
+        median_mv_PAC(d, :, b) = nanmedian(mv_PAC(mv_PAC_indices, :));
         
     end
     
 end
 
+median_mv_PAC = reshape(median_mv_PAC, [(no_drugs - 1), no_freqs*no_channels, no_freqs*no_channels, 2]);
+
+% figure
+% 
+% for b = 1:2
+%     
+%     upper_clim = all_dimensions(@nanmax, median_mv_PAC(:, :, b));
+%     lower_clim = all_dimensions(@nanmin, median_mv_PAC(:, :, b));
+%     
+%     for d = 1:(no_drugs - 1)
+%         
+%         subplot(2, no_drugs - 1, (b - 1)*(no_drugs - 1) + d)
+%         
+%         imagesc(reshape(median_mv_PAC(d, :, b), no_freqs*no_channels, no_freqs*no_channels))
+%         
+%         axis xy
+%         
+%         set(gca, 'XTick', 1:(no_freqs*no_channels), 'XTickLabel', tick_labels(:, b),...
+%             'YTick', 1:(no_freqs*no_channels), 'YTickLabel', tick_labels(:, b))
+%         
+%         xticklabel_rotate([], 90)
+%         
+%         caxis([lower_clim upper_clim])
+%         
+%         title(drugs{d + 1})
+%         
+%         ylabel(long_band_labels{b + 4})
+%         
+%         if d == (no_drugs - 1), colorbar, end
+%         
+%     end
+%     
+% end
+% 
+% save_as_pdf(gcf, 'multivar_PAC')
+
 figure
+
+hf_indices = [2:4, 6:8, 10:12]; no_hf_indices = length(hf_indices);
+lf_indices = [1 5 9]; no_lf_indices = length(lf_indices);
 
 for b = 1:2
     
-    upper_clim = all_dimensions(@nanmax, median_mv_PAC(:, :, b));
-    lower_clim = all_dimensions(@nanmin, median_mv_PAC(:, :, b));
+    upper_clim = all_dimensions(@nanmax, median_mv_PAC(:, hf_indices, lf_indices, b));
+    lower_clim = all_dimensions(@nanmin, median_mv_PAC(:, hf_indices, lf_indices, b));
     
     for d = 1:no_drugs
         
         subplot(2, no_drugs, (b - 1)*no_drugs + d)
         
-        imagesc(reshape(median_mv_PAC(d, :, b), no_freqs*no_channels, no_freqs*no_channels))
+        imagesc(reshape(median_mv_PAC(d, hf_indices, lf_indices, b), no_hf_indices, no_lf_indices))
         
         axis xy
         
-        set(gca, 'XTick', 1:(no_freqs*no_channels), 'XTickLabel', tick_labels(:, b),...
-            'YTick', 1:(no_freqs*no_channels), 'YTickLabel', tick_labels(:, b))
+        set(gca, 'XTick', 1:no_lf_indices, 'XTickLabel', tick_labels(lf_indices, b),...
+            'YTick', 1:no_hf_indices, 'YTickLabel', tick_labels(hf_indices, b))
         
         xticklabel_rotate([], 90)
         
@@ -69,7 +108,7 @@ for b = 1:2
         
         title(drugs{d})
         
-        ylabel(long_band_labels{b + 4})
+        if d == 1, ylabel(long_band_labels{b + 4}), end
         
         if d == no_drugs, colorbar, end
         
@@ -77,6 +116,6 @@ for b = 1:2
     
 end
 
-save_as_pdf(gcf, 'multivar_PAC')
+save_as_pdf(gcf, 'multivar_PAC_cross')
 
 end
