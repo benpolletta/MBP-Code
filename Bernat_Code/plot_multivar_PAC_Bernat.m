@@ -67,7 +67,7 @@ for b = 1:2
         
         caxis([lower_clim upper_clim])
         
-        title(drugs{d + 1})
+        title(drugs{d})
         
         ylabel(long_band_labels{b + 4})
         

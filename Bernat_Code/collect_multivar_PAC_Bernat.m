@@ -9,6 +9,8 @@ subjects_fid = fopen('multivar_PAC_subjects.txt', 'w');
 drugs_fid = fopen('multivar_PAC_drugs.txt', 'w');
 band_fid = fopen('multivar_PAC_bands.txt', 'w');
 
+[peak_hours, max_phase_freq, max_amp_freq] = hour_peak_summed_MI_by_subject;
+
 for s = 1:subj_num
     
     for d = 1:no_drugs
