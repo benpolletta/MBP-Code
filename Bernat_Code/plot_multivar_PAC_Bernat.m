@@ -45,7 +45,7 @@ for d = 1:no_drugs
     
 end
 
-median_mv_PAC = reshape(median_mv_PAC, [(no_drugs - 1), no_freqs*no_channels, no_freqs*no_channels, 2]);
+median_mv_PAC = reshape(median_mv_PAC, [no_drugs, no_freqs*no_channels, no_freqs*no_channels, 2]);
 
 % figure
 % 
