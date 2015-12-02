@@ -30,9 +30,9 @@ mv_PAC_subjects = text_read('multivar_PAC_subjects.txt', '%s');
 mv_PAC_drugs = text_read('multivar_PAC_drugs.txt', '%s');
 mv_PAC_bands = text_read('multivar_PAC_bands.txt', '%s');
 
-median_mv_PAC = nan(no_drugs - 1, (no_freqs*no_channels).^2, 2);
+median_mv_PAC = nan(no_drugs, (no_freqs*no_channels).^2, 2);
 
-for d = 1:(no_drugs - 1)
+for d = 1:no_drugs
     
     for b = 1:2
         
@@ -52,9 +52,9 @@ for b = 1:2
     upper_clim = all_dimensions(@nanmax, median_mv_PAC(:, :, b));
     lower_clim = all_dimensions(@nanmin, median_mv_PAC(:, :, b));
     
-    for d = 1:(no_drugs - 1)
+    for d = 1:no_drugs
         
-        subplot(2, no_drugs - 1, (b - 1)*(no_drugs - 1) + d)
+        subplot(2, no_drugs, (b - 1)*no_drugs + d)
         
         imagesc(reshape(median_mv_PAC(d, :, b), no_freqs*no_channels, no_freqs*no_channels))
         
@@ -71,7 +71,7 @@ for b = 1:2
         
         ylabel(long_band_labels{b + 4})
         
-        if d == (no_drugs - 1), colorbar, end
+        if d == no_drugs, colorbar, end
         
     end
     

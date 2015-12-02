@@ -11,15 +11,15 @@ band_fid = fopen('multivar_PAC_bands.txt', 'w');
 
 for s = 1:subj_num
     
-    for d = 2:no_drugs
+    for d = 1:no_drugs
         
         for b = 5:6
             
             foldername = sprintf('%s_%s_post%d_epochs/', subjects{s}, drugs{d},...
-                peak_hours(s, d - 1, b));
+                peak_hours(s, d, b));
             
-            filename = [subjects{s}, '_', drugs{d}, '_post', num2str(peak_hours(s, d - 1, b)),...
-                '_', num2str(max_phase_freq(s, d - 1, b)), 'Hz_multivar_PAC.mat'];
+            filename = [subjects{s}, '_', drugs{d}, '_post', num2str(peak_hours(s, d, b)),...
+                '_', num2str(max_phase_freq(s, d, b)), 'Hz_multivar_PAC.mat'];
             
             load([foldername, filename])
             
@@ -31,7 +31,7 @@ for s = 1:subj_num
                 
                 fprintf(subjects_fid,'%s\n', subjects{s});
                 
-                fprintf(drugs_fid, '%s\n', drugs{d - 1});
+                fprintf(drugs_fid, '%s\n', drugs{d});
                 
                 fprintf(band_fid, '%s\n', long_band_labels{b});
                 
