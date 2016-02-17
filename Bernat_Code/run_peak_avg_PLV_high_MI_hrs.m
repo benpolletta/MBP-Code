@@ -1,6 +1,6 @@
 function run_peak_avg_PLV_high_MI_hrs(channel_labels, start_index)
 
-high_MI_hrs = [4 2 4 7];
+high_MI_hrs = [3 1 3 6]; % [4 2 4 7];
 
 peak_freq_cycles = 3; sampling_freq = 1000;
 

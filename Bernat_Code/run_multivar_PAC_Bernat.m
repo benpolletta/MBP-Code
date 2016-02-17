@@ -19,7 +19,7 @@ for s = 1:subj_num
             if index > 0 %3*4 + 1
                 
                 run_multivar_PAC_subject_drug(subjects{s}, peak_hours(s, d, b), drugs{d},...
-                    max_phase_freq(s, d, b), [high_freqs max_amp_freq(s, d, b)], 1)
+                    max_phase_freq(s, d, b), max_amp_freq(s, d, b), 1) %[high_freqs max_amp_freq(s, d, b)], 1)
                 
             end
             

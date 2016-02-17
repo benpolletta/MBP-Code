@@ -2,7 +2,9 @@ function run_peak_avg_wt_high_MI_hrs(start_index)
 
 high_MI_hrs(:, :, 1) = [5 2 4 8; 4 3 1 7; 4 2 3 7];
 
-high_MI_hrs(:, :, 2) = repmat([4 2 4 7], 3, 1);
+% high_MI_hrs(:, :, 2) = repmat([4 2 4 7], 3, 1);
+
+high_MI_hrs(:, :, 2) = repmat([3 1 3 6], 3, 1);
 
 peak_freq_cycles = 3; sampling_freq = 1000;
 

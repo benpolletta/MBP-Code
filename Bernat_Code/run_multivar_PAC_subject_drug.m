@@ -6,7 +6,7 @@ no_freqs = length(hi_freqs) + 1;
 
 sampling_freq = 1000;
 
-present_dir = '/projectnb/crc-nak/brpp/Bernat_NMDAR_Antagonists';
+present_dir = '/projectnb/crc-nak/brpp/Bernat_NMDAR_antagonists';
 
 cd (present_dir)
 
