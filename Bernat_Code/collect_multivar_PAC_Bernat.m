@@ -5,6 +5,7 @@ load('subjects.mat'), load('drugs.mat'), load('channels.mat')
 load('ALL_Frontal/ALL_Frontal_A99_summed_hrMI_6min_BP_stats.mat', 'long_band_labels')
 
 mv_PAC_fid = fopen('multivar_PAC_PAC.txt', 'w');
+mv_PAC_thresh_fid = fopen('multivar_PAC_PAC_thresh.txt', 'w');
 subjects_fid = fopen('multivar_PAC_subjects.txt', 'w');
 drugs_fid = fopen('multivar_PAC_drugs.txt', 'w');
 band_fid = fopen('multivar_PAC_bands.txt', 'w');
@@ -27,7 +28,9 @@ for s = 1:subj_num
             
             mv_PAC_format = make_format(size(hour_kappa_zscored, 2), 'f');
             
-            fprintf(mv_PAC_fid, mv_PAC_format, hour_kappa_zscored');
+            fprintf(mv_PAC_fid, mv_PAC_format, hour_kappa');
+            
+            fprintf(mv_PAC_thresh_fid, mv_PAC_format, hour_kappa_zscored');
             
             for e = 1:220
                 

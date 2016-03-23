@@ -1,4 +1,4 @@
-function state = rng(s)
+function state = rng_mvgc(s)
 
 if     nargin == 0 % save
     

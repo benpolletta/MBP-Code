@@ -5,10 +5,18 @@ Array_size = size(Array);
 ad = Array;
 
 for d = 1:(length(Array_size) - 2)
-   
-    ad = feval(function_handle, ad);
     
-    ad = reshape(ad, Array_size((d + 1):end));
+    if Array_size(d) == 1
+        
+        ad = reshape(ad, Array_size((d + 1):end));
+        
+    else
+        
+        ad = feval(function_handle, ad);
+        
+        ad = reshape(ad, Array_size((d + 1):end));
+        
+    end
     
 end
 

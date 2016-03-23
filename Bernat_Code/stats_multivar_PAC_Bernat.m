@@ -4,7 +4,7 @@ load('subjects.mat'), load('drugs.mat'), load('channels.mat')
 
 load('ALL_Frontal/ALL_Frontal_A99_summed_hrMI_6min_BP_stats.mat', 'long_band_labels')
 
-freq_labels = {{'delta', '65', '95', 'HFO'}, {'theta', '65', '95', 'HFO'}};
+freq_labels = {{'delta', 'HFO'}, {'theta', 'HFO'}}; %{{'delta', '65', '95', 'HFO'}, {'theta', '65', '95', 'HFO'}};
 
 no_freqs = length(freq_labels{1});
 
@@ -98,8 +98,10 @@ save_as_pdf(gcf, 'multivar_PAC_ranksum')
 
 figure
 
-hf_indices = [2:4, 6:8, 10:12]; no_hf_indices = length(hf_indices);
-lf_indices = [1 5 9]; no_lf_indices = length(lf_indices);
+hf_indices = [2 4 6]; %[2:4, 6:8, 10:12];
+no_hf_indices = length(hf_indices);
+lf_indices = [1 3 5]; %[1 5 9];
+no_lf_indices = length(lf_indices);
 
 for b = 1:2
     
@@ -169,8 +171,8 @@ save_as_pdf(gcf, 'multivar_PAC_test')
 
 figure
 
-hf_indices = [2:4, 6:8, 10:12]; no_hf_indices = length(hf_indices);
-lf_indices = [1 5 9]; no_lf_indices = length(lf_indices);
+% hf_indices = [2:4, 6:8, 10:12]; no_hf_indices = length(hf_indices);
+% lf_indices = [1 5 9]; no_lf_indices = length(lf_indices);
 
 for b = 1:2
     
@@ -203,5 +205,73 @@ for b = 1:2
 end
 
 save_as_pdf(gcf, 'multivar_PAC_test_cross')
+
+figure
+
+for b = 1:2
+    
+    upper_clim = all_dimensions(@nanmax, mv_PAC_test(:, lf_indices, lf_indices, b));
+    lower_clim = all_dimensions(@nanmin, mv_PAC_test(:, lf_indices, lf_indices, b));
+    
+    for d = 1:(no_drugs - 1)
+        
+        subplot(2, no_drugs - 1, (b - 1)*(no_drugs - 1) + d)
+        
+        imagesc(reshape(mv_PAC_test(d, lf_indices, lf_indices, b), no_lf_indices, no_lf_indices))
+        
+        axis xy
+        
+        set(gca, 'XTick', 1:no_lf_indices, 'XTickLabel', tick_labels(lf_indices, b),...
+            'YTick', 1:no_lf_indices, 'YTickLabel', tick_labels(lf_indices, b))
+        
+        xticklabel_rotate([], 90)
+        
+        caxis([lower_clim upper_clim])
+        
+        title(drugs{d + 1})
+        
+        if d == 1, ylabel(long_band_labels{b + 4}), end
+        
+        if d == no_drugs - 1, colorbar, end
+        
+    end
+    
+end
+
+save_as_pdf(gcf, 'multivar_PAC_test_low')
+
+figure
+
+for b = 1:2
+    
+    upper_clim = all_dimensions(@nanmax, mv_PAC_test(:, hf_indices, hf_indices, b));
+    lower_clim = all_dimensions(@nanmin, mv_PAC_test(:, hf_indices, hf_indices, b));
+    
+    for d = 1:(no_drugs - 1)
+        
+        subplot(2, no_drugs - 1, (b - 1)*(no_drugs - 1) + d)
+        
+        imagesc(reshape(mv_PAC_test(d, hf_indices, hf_indices, b), no_hf_indices, no_hf_indices))
+        
+        axis xy
+        
+        set(gca, 'XTick', 1:no_hf_indices, 'XTickLabel', tick_labels(hf_indices, b),...
+            'YTick', 1:no_hf_indices, 'YTickLabel', tick_labels(hf_indices, b))
+        
+        xticklabel_rotate([], 90)
+        
+        caxis([lower_clim upper_clim])
+        
+        title(drugs{d + 1})
+        
+        if d == 1, ylabel(long_band_labels{b + 4}), end
+        
+        if d == no_drugs - 1, colorbar, end
+        
+    end
+    
+end
+
+save_as_pdf(gcf, 'multivar_PAC_test_high')
 
 end
