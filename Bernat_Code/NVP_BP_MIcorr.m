@@ -1,4 +1,4 @@
-function NVP_BP_comparison
+function NVP_BP_MIcorr
 
 close('all')
 
@@ -6,7 +6,7 @@ close('all')
 
 load('AP_freqs'), load('subjects'), load('drugs'), load('channels'), load('BP_bands')
 
-%% Setting up information about periods (time since injection).
+%% BP comparisons.
     
 load('BP_bands')
 
@@ -50,7 +50,7 @@ for ch = 1:2
         
         BP_se = nanstd([BP1 BP2])/sqrt(size(BP1, 1));
         
-        subplot(1, 4, plot_count)
+        subplot(3, 4, plot_count)
         
         % handle = bar([BP_median; nan nan]); 
         
@@ -90,6 +90,46 @@ for ch = 1:2
 
 end
 
-save_as_pdf(gcf, 'NVP_BP_comparison')
+%% MI and BP correlations.
+
+pairs = [cumsum(ones(3, 2)); nchoosek(1:3, 2); fliplr(nchoosek(1:3, 2))];
+
+no_pairs = length(pairs);
+
+channel_indices = [1 3];
+        
+load('NVP_MI_BP_pct_0to4hrs_by_6min.mat')
+
+no_channels = 3;
+
+for ch = 1:no_channels
+    
+    for band = 1:2
+        
+        pair_index = (pairs(:, 1) == ch) & (pairs(:, 2) == channel_indices(band));
+        
+        pair_corrs = All_corrs(:, band, pair_index);
+        
+        subplot(no_channels, no_channels, no_channels + (band - 1)*no_channels + ch)
+        
+        imagesc(reshape(pair_corrs, no_afs, no_pfs))
+        
+        colorbar
+        
+        axis xy
+        
+        title([channel_names{ch}, ' MI'], 'FontSize', 16)
+        
+        if ch == 1
+            
+            ylabel({'Correlation w/'; [channel_names{channel_indices(band)}, ' ', band_labels_long{band}]}, 'FontSize', 16)
+            
+        end
+        
+    end
+    
+end
+
+save_as_pdf(gcf, 'NVP_BP_comparison_MIcorr')
 
 end
