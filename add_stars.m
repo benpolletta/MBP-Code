@@ -33,11 +33,13 @@ if any(logical ~= 0)
     
     multiplier_vec = add_vec + mult_vec*yrange;
     
+    ylim_vec = add_vec + 1.5*mult_vec*yrange;
+    
     logical_multiplier = ones(size(logical))*diag(multiplier_vec);
     
     plot(t, logical.*logical_multiplier, '*')
     
-    ylim([min([yl, multiplier_vec]) max([yl, multiplier_vec])])
+    ylim([min([yl, ylim_vec]) max([yl, ylim_vec])])
     
 else
     

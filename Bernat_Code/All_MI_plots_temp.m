@@ -10,6 +10,7 @@ name=['ALL_',channel_label];
 subjects=text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
 drugs=text_read([name,'/',name,'_',measure,'_drugs.txt'],'%s');
 hr_periods=text_read([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
+sixmin_periods = text_read([name, '/', name, '_', measure, '_6min_periods.txt'], '%s');
 fourhr_periods=text_read([name,'/',name,'_',measure,'_4hr_periods.txt'],'%s');
 states=text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
     
@@ -28,16 +29,14 @@ mkdir (fig_dir)
 
 norms = {'', '_pct'}; no_norms = length(norms);
 
-%% Figures by hour.
-
 MI = load([name,'/',name,'_',measure,'_hr_MI.txt'],'%s');
-MI_4hr = load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
 MI_pct = load([name,'/',name,'_',measure,'_hr_MI_pct.txt'],'%s');
-MI_4hr_pct = load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
 MI_pct_by_state = load([name,'/',name,'_p0.99_IEzs_MI_pct_by_state.mat'], 'MI_pct');
 MI_pct_by_state = MI_pct_by_state.MI_pct;
 MI_4hr_pct_by_state = load([name,'/',name,'_p0.99_IEzs_MI_pct_by_state.mat'], 'fourhrMI_pct');
 MI_4hr_pct_by_state = MI_4hr_pct_by_state.fourhrMI_pct;
+
+%% Figures by hour.
 
 period_labels = cell(16,1);
 short_period_labels = cell(16,1);
@@ -82,43 +81,88 @@ no_periods = length(period_labels);
 %     
 %     
 % end
-    
-%% By state & hour.
-
+%     
+% %% By state & hour.
+% 
 % cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_hr_by_state'],no_states,no_periods,phases,amps,...
 %     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI)
 % 
 % cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_hr_pct_by_state'],no_states,no_periods,phases,amps,...
 %     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_pct_by_state)
+% 
+% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_hr_pct_by_state'],no_states,no_periods,phases,amps,...
+%     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr_pct_by_state)
 
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_hr_by_state'],no_states,no_periods,phases,amps,...
-    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr)
+%% Figures by 6 min. period.
 
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_hr_pct_by_state'],no_states,no_periods,phases,amps,...
-    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,hr_periods,MI_4hr_pct_by_state)
+[short_period_labels, ~, period_labels] = make_period_labels(-2, 6, '6mins');
+no_periods = length(period_labels);
 
-%% Figures by state and 4 hour period.
+[rows, cols] = subplot_size(no_states*no_periods);
 
-clear period_labels; clear short_period_labels; p=1;
-for i=1:1
-    period_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
-    short_period_labels{p}=['pre',num2str(4*i),'to',num2str(4*(i-1)+1)];
-    p=p+1;
+%% For each drug.
+
+for d=1:no_drugs
+    
+    % State-independent.
+    
+    cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hrMI_6min_',drug_labels{d}],9,9,phases,amps,...
+        {drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,sixmin_periods,MI)
+    
+    cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_hrMI_6min_pct_',drug_labels{d}],9,9,phases,amps,...
+        {drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},drugs,sixmin_periods,MI_pct)
+    
+    % State-dependent.
+    
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_6min_by_state_',drug_labels{d}],...
+        rows,cols,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},...
+        {short_period_labels, period_labels},drugs,states,sixmin_periods,MI)
+    
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_6min_pct_by_state_',drug_labels{d}],...
+        rows,cols,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},...
+        {short_period_labels, period_labels},drugs,states,sixmin_periods,MI_pct_by_state)
+    
+    cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_6min_pct_by_state_',drug_labels{d}],...
+        rows,cols,phases,amps,{drug_labels(d),drug_labels(d)},{state_labels, long_state_labels},...
+        {short_period_labels, period_labels},drugs,states,sixmin_periods,MI_4hr_pct_by_state)
+    
 end
-for i=1:4
-    period_labels{p}=['Hours ',num2str(4*(i-1)+1),' to ',num2str(4*i),' Postinjection'];
-    short_period_labels{p}=['post',num2str(4*(i-1)+1),'to',num2str(4*i)];
-    p=p+1;
-end
-no_periods=length(period_labels);
+    
+%% By state & 6 min. period.
 
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_4hr_by_state'],no_states,no_periods,phases,amps,...
-    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI)
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_6min_by_state'],no_states,no_periods,phases,amps,...
+    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,sixmin_periods,MI)
 
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_4hr_pct_by_state'],no_states,no_periods,phases,amps,...
-    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI_pct_by_state)
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_6min_pct_by_state'],no_states,no_periods,phases,amps,...
+    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,sixmin_periods,MI_pct_by_state)
 
-cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_4hr_pct_by_state'],no_states,no_periods,phases,amps,...
-    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI_4hr_pct_by_state)
+cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_6min_pct_by_state'],no_states,no_periods,phases,amps,...
+    {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,sixmin_periods,MI_4hr_pct_by_state)
+
+% %% Figures by state and 4 hour period.
+% 
+% MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');
+% 
+% clear period_labels; clear short_period_labels; p=1;
+% for i=1:1
+%     period_labels{p}=['Hours ',num2str(4*i),' to ',num2str(4*(i-1)+1),' Preinjection'];
+%     short_period_labels{p}=['pre',num2str(4*i),'to',num2str(4*(i-1)+1)];
+%     p=p+1;
+% end
+% for i=1:4
+%     period_labels{p}=['Hours ',num2str(4*(i-1)+1),' to ',num2str(4*i),' Postinjection'];
+%     short_period_labels{p}=['post',num2str(4*(i-1)+1),'to',num2str(4*i)];
+%     p=p+1;
+% end
+% no_periods=length(period_labels);
+% 
+% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_4hr_by_state'],no_states,no_periods,phases,amps,...
+%     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI)
+% 
+% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_hrMI_4hr_pct_by_state'],no_states,no_periods,phases,amps,...
+%     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI_pct_by_state)
+% 
+% cplot_collected_MI_by_3_categories([fig_dir,'/',name,'_',measure,'_4hrMI_4hr_pct_by_state'],no_states,no_periods,phases,amps,...
+%     {drug_labels, drug_labels},{state_labels, long_state_labels},{short_period_labels, period_labels},drugs,states,fourhr_periods,MI_4hr_pct_by_state)
 
 end
