@@ -29,11 +29,6 @@ for p = 1:no_pairs
     subjects = text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
     sMI_hrs = text_read([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
     states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
-    % summed_struct = load([name,'/',name,'_',measure,'_summed.mat']);
-    % band_labels = summed_struct.band_labels;
-    % no_bands = length(band_labels);
-    % summed_MI = summed_struct.summed_MI;
-    % clear summed_struct
     MI = load([name, '/', name, '_', measure, '_hr_MI.txt']);
     
     load('BP_bands')

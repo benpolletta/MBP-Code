@@ -1,6 +1,6 @@
 function MI_MK801_NVP_figure % (hi_hr, cplot_norm)
 
-hi_hr = 'drug'; cplot_norm = '_row';
+hi_hr = 'drug'; cplot_norm = '';
 
 phase_freqs = 1:.25:12; amp_freqs = 20:5:200;
 no_pfs = length(phase_freqs); no_afs = length(amp_freqs);
@@ -51,28 +51,6 @@ for n=1:no_norms
     for c=1:no_channels
         
         ch_dir = ['ALL_', channel_names{c}];
-
-        % %% Getting preinjection data.
-        % 
-        % if isempty(dir([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection.mat']))
-        % 
-        %     hr_periods = text_read([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_periods.txt'],'%s');
-        % 
-        %     MI = load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '.txt']);
-        % 
-        %     preinj_indices = strcmp(hr_periods, 'pre1') | strcmp(hr_periods, 'pre2');
-        % 
-        %     preinj_data(:, :, 1, c, n) = reshape(nanmedian(MI(preinj_indices, :)), no_afs, no_pfs);
-        % 
-        %     preinj_data(:, :, 2, c, n) = reshape(nanmean(MI(preinj_indices, :)), no_afs, no_pfs);
-        % 
-        %     save([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection'], 'preinj_data')
-        % 
-        % else
-        % 
-        %     load([ch_dir, '/', ch_dir, '_p0.99_IEzs_hr_MI', norms{n}, '_preinjection.mat'])
-        % 
-        % end
             
         %% Getting colorplot data.
         
@@ -151,7 +129,7 @@ for n = 1:no_norms
             
             for d = 1:(no_drugs - 1)
                 
-                All_cplot_for_plot(:, :, d, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4 - 1, s, c, n);
+                All_cplot_for_plot(:, :, d, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4, s, c, n);
                 
             end
             
@@ -232,6 +210,8 @@ for n = 1:no_norms
                 elseif strcmp(cplot_norm, '_col')
                     
                     caxis([min_by_drug(d, s, n) max_by_drug(d, s, n)])
+                    
+                    colorbar
                     
                 else
                     
@@ -318,16 +298,6 @@ for n = 1:no_norms
         end
                 
         save_as_pdf(gcf,['ALL_MI',norms{n},'_multichannel_MK801_NVP_', hi_hr, '_hi_', stats{s}, cplot_norm]) %, 'orientation', 'portrait')
-        
-    end
-    
-end
-    
-for n=1:no_norms
-    
-    for s=1:no_stats
-            
-        open(['ALL_MI',norms{n},'_multichannel_MK801_NVP_', hi_hr, '_hi_', stats{s}, cplot_norm, '.fig'])
         
     end
     

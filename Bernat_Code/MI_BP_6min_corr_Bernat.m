@@ -24,6 +24,8 @@ hrs_post = hr_limits(2);
 sixmin_periods = str2double(cellstr(sixmin_periods));
 no_periods = length(sixmin_periods);
 
+All_corrs = nan(no_afs*no_pfs, size(band_limits, 1), no_pairs);
+
 for p = 1:no_pairs
     
     name = ['ALL_', channel_names{pairs(p, 1)}];
@@ -94,7 +96,7 @@ for p = 1:no_pairs
     
     drug_BP_selected_hrs = BP_drug_data(:, BP_pd_index, 1)';
     
-    All_corrs = nancorr(drug_MI_selected_hrs, drug_BP_selected_hrs);
+    pair_corrs = nancorr(drug_MI_selected_hrs, drug_BP_selected_hrs);
     
     figure
     
@@ -102,7 +104,7 @@ for p = 1:no_pairs
         
         subplot(rows, cols, band)
         
-        imagesc(phase_freqs, amp_freqs, reshape(All_corrs(:, band), no_afs, no_pfs))
+        imagesc(phase_freqs, amp_freqs, reshape(pair_corrs(:, band), no_afs, no_pfs))
         
         axis xy
         
@@ -112,10 +114,14 @@ for p = 1:no_pairs
         
     end
     
+    All_corrs(:, :, p) = pair_corrs;
+    
     mtit(sprintf('%s, %s MI by %s BP%s, %d to %d Hours, %s', drug, channel_names{pairs(p, :)}, BP_norm(2:end), hr_limits, state), 'FontSize', 16)
     
     save_as_pdf(gcf, sprintf('%s_%sMI_%sBP%s_%dto%dhrs_%s_by_6min', drug, channel_names{pairs(p, :)}, BP_norm, hr_limits, state))
     
 end
+    
+save(sprintf('%s_%sMI_%sBP%s_%dto%dhrs_%s_by_6min', drug, channel_names{pairs(p, :)}, BP_norm, hr_limits, state), 'drug', 'BP_norm', 'hr_limits', 'state', 'All_corrs')
 
 end

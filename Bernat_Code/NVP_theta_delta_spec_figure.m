@@ -1,8 +1,6 @@
-function NVP_theta_delta_spec_figure%(hour_lims,freq_lims,no_hr_ticks,no_freq_ticks,clims)
+function NVP_theta_delta_spec_figure
 
-% SAMPLE CALL: plot_spec_horiz_all_channels([-120 360], [0 200], 8, 6, 'rows')
-
-% freq_label = sprintf('%g-%g',freq_lims(1),freq_lims(2));
+figure
 
 freqs = 500*(1:2^9)/(2^10); freqs = freqs(freqs <= 200);
 
@@ -124,11 +122,11 @@ for n = 1 % 1:no_norms
         
         for d = 3 % 1:no_drugs
             
-            handle(d, n, s) = figure;
-            
             %% Plotting spectra by channel.
             
             for c = 1:no_channels
+        
+                channel_name = channel_names{channels_selected(c)};
                 
                 for b = 1 % :no_bands
                     
@@ -169,13 +167,9 @@ for n = 1 % 1:no_norms
             
             boundedline(short_BP_6min_labels'/60, plot_mean, prep_for_boundedline(plot_se), 'cmap', colormap)
             
-            % set(gca, 'XTick', 1:tick_spacing:no_BP_6min_periods, 'XTickLabel', short_BP_6min_labels(1:tick_spacing:no_BP_6min_periods))
-            
             axis tight
             
             legend({'Fr. 1 - 5 Hz', 'CA1 5 - 11 Hz'})
-            
-            % title(band_labels{BP_band_indices(b)})
             
             xlabel('Time Rel. Inj. (h)')
             
@@ -191,20 +185,16 @@ for n = 1 % 1:no_norms
             
             boundedline(short_BP_6min_labels'/60, plot_mean, prep_for_boundedline(plot_se), 'cmap', colormap)
             
-            % set(gca, 'XTick', 1:tick_spacing:no_BP_6min_periods, 'XTickLabel', short_BP_6min_labels(1:tick_spacing:no_BP_6min_periods))
-            
             axis tight
             
             legend({'Fr. 5 - 11 Hz', 'CA1 1 - 5 Hz'})
             
-            % title(band_labels{BP_band_indices(b)})
-            
             xlabel('Time Rel. Inj. (h)')
-            
-            save_as_pdf(gcf,['ALL_',drugs{d},'_spec_',norms{n},'theta_delta_', stats{s}])
             
         end
         
     end
     
 end
+            
+save_as_pdf(gcf,'ALL_NVP_spec_pct_theta_delta')

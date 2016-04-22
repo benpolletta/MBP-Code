@@ -30,7 +30,7 @@ for p = 1:no_pairs
     measure = 'p0.99_IEzs';
     
     MI_drugs = text_read([name,'/',name,'_',measure,'_drugs.txt'],'%s');
-    subjects = text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
+    MI_subjects = text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
     MI_hrs = text_read([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
     MI_states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
     MI = load([name, '/', name, '_', measure, '_hr_MI.txt']);
@@ -39,10 +39,11 @@ for p = 1:no_pairs
     
     name = ['ALL_', channel_names{pairs(p, 2)}];
     
-    BP_struct = load([name, '/', name, '_BP', BP_norm, '_6min.mat']);
-    BP_data = BP_struct.BP_stats;
-    BP_pds = BP_struct.cat2_labels;
-    BP_drugs = BP_structs.cat1_labels;
+    BP_drugs = text_read([name,'/',name,'_drugs.txt'],'%s');
+    BP_subjects = text_read([name,'/',name,'_subjects.txt'],'%s');
+    BP_hrs = text_read([name,'/',name,'_hrs.txt'],'%s');
+    BP_states = text_read([name,'/',name,'_states.txt'],'%s');
+    BP = load([name, '/', name, '_BP.txt']);
     
     %% Selecting states.
     
