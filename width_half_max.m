@@ -1,4 +1,4 @@
-function [whm, shm_sum max_freq, max_value] = width_half_max(data, sampling_freq, freq_range, smooth_freq, plot_opt)
+function [whm, shm_sum, max_freq, max_value] = width_half_max(data, sampling_freq, freq_range, smooth_freq, plot_opt)
 
 data_length = length(data);
 

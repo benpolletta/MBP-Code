@@ -25,9 +25,9 @@ for p = 1:no_pairs
     
     measure = 'p0.99_IEzs';
     
-    sMI_drugs = text_read([name,'/',name,'_',measure,'_drugs.txt'],'%s');
+    MI_drugs = text_read([name,'/',name,'_',measure,'_drugs.txt'],'%s');
     subjects = text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
-    sMI_hrs = text_read([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
+    MI_hrs = text_read([name,'/',name,'_',measure,'_hr_periods.txt'],'%s');
     states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
     MI = load([name, '/', name, '_', measure, '_hr_MI.txt']);
     
@@ -54,7 +54,7 @@ for p = 1:no_pairs
         for h=1:no_periods
             
             drug_MI_selected_hrs(((h - 1)*220*no_subjects + 1):(h*220*no_subjects), :) = ...
-                MI(strcmp(sMI_hrs, hr_periods{h}) & strcmp(sMI_drugs, drug), :);
+                MI(strcmp(MI_hrs, hr_periods{h}) & strcmp(MI_drugs, drug), :);
             
             drug_BP_selected_hrs(((h - 1)*220*no_subjects + 1):(h*220*no_subjects), :) = ...
                 BP(strcmp(BP_hrs, hr_periods{h}) & strcmp(BP_drugs, drug), :);
