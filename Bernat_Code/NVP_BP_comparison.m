@@ -34,7 +34,7 @@ chan_labels = {'Frontal', 'CA1'}; band_labels = {'Delta', 'Theta'};
 
 colors = {[1 .5 0], [1 .5 .5]; [0 1 .5], [1 0 1]};
 
-bonferroni_count = 4; plot_count = 1;
+bonferroni_count = 2*3*3*20 + 4; plot_count = 1;
 
 for ch = 1:2
     
@@ -60,7 +60,7 @@ for ch = 1:2
         
         bar_pos = get_bar_pos(handle);
         
-        [~, p_val] = ttest(BP1, BP2); % ranksum(BP1, BP2);
+        p_val = ranksum(BP1, BP2); % [~, p_val] = ttest(BP1, BP2);
         
         if p_val < .05/bonferroni_count
             

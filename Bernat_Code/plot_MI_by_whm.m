@@ -1,4 +1,4 @@
-function plot_MI_by_whm(quantile_used, states)
+function plot_MI_by_whm(drug, quantile_used, shm_lim, states)
 
 load('subjects.mat'), load('AP_freqs.mat')
 
@@ -18,7 +18,7 @@ if ~isempty(states)
     
 end
 
-load(['delta_MI_q', num2str(quantile_used), state_label, '.mat'])
+load([drug, '_delta_MI_q', num2str(quantile_used), '_shm', num2str(shm_lim), state_label, '.mat'])
 
 delta_labels = {'Low whm', 'Low shm', 'Low shm/whm', 'Low whm & shm', 'Low whm & shm/whm', 'Low shm & shm/whm', 'Low whm & shm & shm/whm'};
 
@@ -42,7 +42,7 @@ for s = 1:subj_num
     
     mtit([subject, ' MI During Narrowband Delta', long_state_label])
     
-    save_as_pdf(gcf, [subject, '_delta_MI', state_label])
+    save_as_pdf(gcf, [subject, '_', drug, '_delta_MI_q', num2str(quantile_used), '_shm', num2str(shm_lim), state_label])
     
 end
 
@@ -62,4 +62,4 @@ end
 
 mtit(['MI During Narrowband Delta', long_state_label])
 
-save_as_pdf(gcf, ['delta_MI', state_label])
+save_as_pdf(gcf, [drug, '_delta_MI_q', num2str(quantile_used), '_shm', num2str(shm_lim), state_label])

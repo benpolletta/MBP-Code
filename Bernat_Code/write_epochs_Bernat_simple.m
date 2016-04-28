@@ -24,7 +24,7 @@ for c = 1:no_channels
     fprintf(fid_channels_list,'%s\n',epoch_list_name);
     fid_epoch_list = fopen(epoch_list_name,'w');
 
-    fieldname = char(fieldnames(9-channels(c)))
+    fieldname = char(fieldnames(channels(c))); % char(fieldnames(9-channels(c)))
     channel_data = getfield(data,fieldname);
     channel_data = getfield(channel_data,'values');
     no_epochs = floor(length(channel_data)/epoch_length);

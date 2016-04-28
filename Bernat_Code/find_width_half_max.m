@@ -1,4 +1,4 @@
-function find_width_half_max
+function find_width_half_max(drug)
 
 load('subjects.mat')
 
@@ -6,7 +6,7 @@ present_dir = pwd;
 
 for s = 1:length(subjects)
     
-   record_dir = [subjects{s}, '_saline'];
+   record_dir = [subjects{s}, '_', drug];
    
    cd (record_dir)
    
