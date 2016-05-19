@@ -32,7 +32,7 @@ for s = 1:subj_num
         
         subplot(3, 3, i)
         
-        imagesc(phase_freqs, amp_freqs, reshape(median_subj_MI(:, i, s), no_afs, no_pfs))
+        imagesc(phase_freqs, amp_freqs, reshape(median_subj_dMI(:, i, s), no_afs, no_pfs))
         
         axis xy
         
@@ -52,9 +52,11 @@ for i = 1:7
     
     subplot(3, 3, i)
     
-    imagesc(phase_freqs, amp_freqs, reshape(median_MI(:, i), no_afs, no_pfs))
+    imagesc(phase_freqs, amp_freqs, reshape(median_dMI(:, i), no_afs, no_pfs))
     
     axis xy
+    
+    colorbar
     
     title(delta_labels{i})
     

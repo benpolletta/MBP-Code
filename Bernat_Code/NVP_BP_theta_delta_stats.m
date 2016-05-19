@@ -46,9 +46,13 @@ for order = 1:2
         
         BP2 = BP(strcmp(CA1_BP_6mins, pd_labels{pd}) & strcmp(CA1_BP_drugs, 'NVP'), band_orders(order, 2), 2);
         
-        p_vals(pd, 1, order) = ranksum(BP1, BP2, 'tail', 'right');
+        ranksum_p_vals(pd, 1, order) = ranksum(BP1, BP2, 'tail', 'right');
         
-        p_vals(pd, 2, order) = ranksum(BP1, BP2, 'tail', 'left');
+        ranksum_p_vals(pd, 2, order) = ranksum(BP1, BP2, 'tail', 'left');
+        
+        ttest_p_vals(pd, 1, order) = ttest(BP1, BP2, 'tail', 'right');
+        
+        ttest_p_vals(pd, 2, order) = ttest(BP1, BP2, 'tail', 'left');
         
     end
 
