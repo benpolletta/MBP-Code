@@ -1,4 +1,4 @@
-function collect_MI_by_whm(quantile_used, states)
+function collect_MI_by_whm(drug, quantile_used, shm_lim, states)
 
 load('subjects.mat'), load('AP_freqs.mat')
     
@@ -26,10 +26,11 @@ MI_states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
 MI = load([name, '/', name, '_', measure, '_hr_MI.txt']);
 
 delta_MI = nan(ceil(quantile_used*size(MI, 1)), size(MI, 2), 7);
+non_delta_MI = nan(ceil((1 - quantile_used)*size(MI, 1)), size(MI, 2), 7);
 
-median_subj_MI = nan(size(MI, 2), 7, subj_num);
+[median_subj_dMI, median_subj_ndMI] = deal(nan(size(MI, 2), 7, subj_num));
 
-MI_marker = zeros(7);
+[dMI_marker, ndMI_marker] = deal(zeros(7));
 
 pairs = nchoosek(1:3, 2);
 
@@ -39,11 +40,11 @@ for s = 1:subj_num
     
     subject = subjects{s};
     
-    record_dir = [subject, '_saline'];
+    record_dir = [subject, '_', drug];
     
-    subj_MI_index = strcmp(MI_subjects, subject) & strcmp(MI_drugs, 'saline');
+    subj_MI_index = strcmp(MI_subjects, subject) & strcmp(MI_drugs, drug);
     
-    if ~isempty(state)
+    if ~isempty(states)
        
         subj_state_index = zeros(sum(subj_MI_index), 1);
         
@@ -67,13 +68,21 @@ for s = 1:subj_num
     % 
     % shm_sum = shm_sum(subj_state_index);
     
+    if length(whm) > length(subj_state_index)
+        
+        whm((length(subj_state_index) + 1):end) = [];
+        
+        shm_sum((length(subj_state_index) + 1):end) = [];
+        
+    end
+    
     shm_whm_q = shm_sum./whm;
     
     low_whm_indices = whm < quantile(whm, quantile_used) & subj_state_index;
     
     low_shm_sum_indices = shm_sum < quantile(shm_sum, quantile_used) & subj_state_index;
     
-    low_shm_whm_q_indices = shm_whm_q < 1.1 & subj_state_index;
+    low_shm_whm_q_indices = shm_whm_q < shm_lim & subj_state_index;
     
     indices = [low_whm_indices low_shm_sum_indices low_shm_whm_q_indices];
     
@@ -81,13 +90,21 @@ for s = 1:subj_num
     
     for i = 1:3
         
-        length_selected_MI = sum(indices(:, i));
+        length_selected_dMI = sum(indices(:, i));
         
-        delta_MI(MI_marker(i) + (1:length_selected_MI), :, i) = subj_MI(indices(:, i), :);
+        delta_MI(dMI_marker(i) + (1:length_selected_dMI), :, i) = subj_MI(indices(:, i), :);
         
-        median_subj_MI(:, i, s) = median(subj_MI(indices(:, i), :))';
+        median_subj_dMI(:, i, s) = median(subj_MI(indices(:, i), :))';
         
-        MI_marker(i) = MI_marker(i) + length_selected_MI;
+        dMI_marker(i) = dMI_marker(i) + length_selected_dMI;
+        
+        length_selected_ndMI = sum(~indices(:, i));
+        
+        non_delta_MI(ndMI_marker(i) + (1:length_selected_ndMI), :, i) = subj_MI(~indices(:, i), :);
+        
+        median_subj_ndMI(:, i, s) = median(subj_MI(~indices(:, i), :))';
+        
+        ndMI_marker(i) = ndMI_marker(i) + length_selected_ndMI;
         
     end
     
@@ -95,34 +112,54 @@ for s = 1:subj_num
         
         index = indices(:, pairs(p, 1)) & indices(:, pairs(p, 2));
         
-        length_selected_MI = sum(index);
+        length_selected_dMI = sum(index);
         
-        delta_MI(MI_marker(3 + p) + (1:length_selected_MI), :, 3 + p) = subj_MI(index, :);
+        delta_MI(dMI_marker(3 + p) + (1:length_selected_dMI), :, 3 + p) = subj_MI(index, :);
         
-        median_subj_MI(:, 3 + p, s) = median(subj_MI(index, :))';
+        median_subj_dMI(:, 3 + p, s) = median(subj_MI(index, :))';
         
-        MI_marker(3 + p) = MI_marker(3 + p) + length_selected_MI;
+        dMI_marker(3 + p) = dMI_marker(3 + p) + length_selected_dMI;
+        
+        length_selected_ndMI = sum(~index);
+        
+        non_delta_MI(ndMI_marker(3 + p) + (1:length_selected_ndMI), :, 3 + p) = subj_MI(~index, :);
+        
+        median_subj_ndMI(:, 3 + p, s) = median(subj_MI(~index, :))';
+        
+        ndMI_marker(3 + p) = ndMI_marker(3 + p) + length_selected_ndMI;
         
     end
     
     index = cumprod(indices, 2); index = logical(index(:, 3));
     
-    length_selected_MI = sum(index);
+    length_selected_dMI = sum(index);
     
-    delta_MI(MI_marker(7) + (1:length_selected_MI), :, 7) = subj_MI(index, :);
+    delta_MI(dMI_marker(7) + (1:length_selected_dMI), :, 7) = subj_MI(index, :);
         
-    median_subj_MI(:, 7, s) = median(subj_MI(index, :))';
+    median_subj_dMI(:, 7, s) = median(subj_MI(index, :))';
     
-    MI_marker(7) = MI_marker(7) + length_selected_MI;
+    dMI_marker(7) = dMI_marker(7) + length_selected_dMI;
+    
+    length_selected_ndMI = sum(~index);
+    
+    non_delta_MI(ndMI_marker(7) + (1:length_selected_ndMI), :, 7) = subj_MI(~index, :);
+        
+    median_subj_ndMI(:, 7, s) = median(subj_MI(~index, :))';
+    
+    ndMI_marker(7) = ndMI_marker(7) + length_selected_ndMI;
     
 end
 
-median_MI = nan(size(MI, 2), 7);
+[median_dMI, median_ndMI] = deal(nan(size(MI, 2), 7));
 
 for i = 1:7
     
-    median_MI(:, i) = nanmedian(delta_MI(:, :, i))';
+    median_dMI(:, i) = nanmedian(delta_MI(:, :, i))';
+    
+    median_ndMI(:, i) = nanmedian(non_delta_MI(:, :, i))';
     
 end
 
-save(['delta_MI_q', num2str(quantile_used), state_label, '.mat'], 'state', 'quantile_used', 'delta_MI', 'median_subj_MI', 'median_MI')
+save([drug, '_delta_MI_q', num2str(quantile_used), '_shm', num2str(shm_lim), state_label, '.mat'], '-v7.3',...
+    'drug', 'shm_lim', 'state', 'quantile_used', 'delta_MI', 'median_subj_dMI', 'median_dMI',...
+    'non_delta_MI', 'median_subj_ndMI', 'median_ndMI')
