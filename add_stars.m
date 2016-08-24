@@ -19,7 +19,7 @@ if any(logical ~= 0)
     
     set(handle, 'NextPlot', 'add', 'ColorOrder', c_order)
     
-    axis(handle, 'tight')
+    % axis(handle, 'tight')
     
     yl = ylim(handle);
     
@@ -43,7 +43,7 @@ if any(logical ~= 0)
     
 else
     
-    axis(handle, 'tight')
+    % axis(handle, 'tight')
     
 end
 

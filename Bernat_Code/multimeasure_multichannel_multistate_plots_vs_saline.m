@@ -67,7 +67,7 @@ for c = 1:3
         
         imagesc(phase_freqs, amp_freqs, plotted_MI)
         
-        caxis([MI_low MI_high])
+        colorbar % caxis([MI_low MI_high])
         
         axis xy
         
