@@ -223,7 +223,7 @@ for n = 1:no_norms
                 
                 if c == 1
                     
-                    title({drugs{d}; [long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d, s, c, n) + 4 - 1}})
+                    title({drugs{d}; [long_stats{s}, ' MI, ', long_norms{n}]; long_hr_labels{max_hr_indices(d, s, c, n) + 4}})
                     
                 % else
                 % 
