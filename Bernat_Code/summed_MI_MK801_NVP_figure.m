@@ -115,10 +115,10 @@ for n = 1:no_norms
                 
                 clear plot_stats plot_test
                 
-                plot_stats = [All_BP_stats(:, :, bands_plotted(b), s, 1) All_BP_stats(:, :, bands_plotted(b), s, d)];
+                plot_stats = All_BP_stats(:, :, bands_plotted(b), s, d) - All_BP_stats(:, :, bands_plotted(b), s, 1);
+                % [All_BP_stats(:, :, bands_plotted(b), s, 1) All_BP_stats(:, :, bands_plotted(b), s, d)];
                 
-                plot_test(:, :) = [nan(size(All_BP_test(:, :, bands_plotted(b), d - 1)))... % drug_p_val_index(d) - 1)))...
-                    All_BP_test(:, :, bands_plotted(b), d - 1)]; % drug_p_val_index(d) - 1)];
+                plot_test(:, :) = All_BP_test(:, :, bands_plotted(b), d - 1); %]; % drug_p_val_index(d) - 1)]; [nan(size(All_BP_test(:, :, bands_plotted(b), d - 1)))... % drug_p_val_index(d) - 1)))...
                 
                 plot_test(plot_test == 0) = nan;
                 
@@ -126,13 +126,15 @@ for n = 1:no_norms
                 
                 med_range = max(max(plot_stats(:, :, 1))) - med_min;
                 
-                test_multiplier = ones(size(plot_test))*diag(med_min - [nan nan nan 0.05 .1 .15]*med_range);
+                test_multiplier = ones(size(plot_test))*diag(med_min - [0.05 .1 .15]*med_range); % [nan nan nan 0.05 .1 .15]*med_range);
                 
-                subplot(no_drugs - 2, no_bands_plotted, (d - 2)*no_bands_plotted + b)
+                subplot(no_bands_plotted, no_drugs - 2, (b - 1)*(no_drugs - 2) + d - 1) % (d - 2)*no_bands_plotted + b)
                 
-                set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'--','-','*','*'}, 'ColorOrder', c_order)
+                set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'-','*','*'}, 'ColorOrder', c_order) % {'--','-','*','*'}
                 
-                plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier])
+                ax(b, d - 1) = gca;
+                
+                plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier]);
                 
                 set(gca, 'XTick', 1:tick_spacing:no_BP_hr_periods, 'XTickLabel', short_BP_hr_labels(1:tick_spacing:end), 'FontSize', 16)
                 
@@ -146,7 +148,7 @@ for n = 1:no_norms
                     
                     if d - 1 == 1
                         
-                        legend({'Fr., sal.', 'Occi., sal.', 'CA1, sal.', 'Fr., drug', 'Occi., drug', 'CA1, drug'},...
+                        legend({'Fr., drug - sal.', 'Occi., drug - sal.', 'CA1, drug - sal.', 'Fr., drug', 'Occi., drug', 'CA1, drug'},...
                             'Location', 'NorthEast', 'FontSize', 6)
                         
                     end
@@ -166,6 +168,8 @@ for n = 1:no_norms
             end
             
         end
+            
+        linkaxes([flipud(ax(:, 1)); ax(:, 2)])
                 
         save_as_pdf(gcf,['ALL_summed_MI',norms{n},'_multichannel_MK801_NVP_', hi_hr, '_hi_', stats{s}, cplot_norm]) %, 'orientation', 'portrait')
         

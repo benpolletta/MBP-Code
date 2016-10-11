@@ -16,19 +16,19 @@ for s = 1:length(subjects)
    
    epoch_no = length(epoch_names);
    
-   [whm, shm_sum, max_freqs, max_vals] = deal(nan(epoch_no, 1));
+   [whm, shm_sum, max_freqs, max_vals, entropy] = deal(nan(epoch_no, 1));
    
    parfor e = 1:epoch_no
        
        data = load(epoch_names{e});
        
-       [whm(e), shm_sum(e), max_freqs(e), max_vals(e)] = width_half_max(data, 1000, [0.25 4.75], .075, 0);
+       [whm(e), shm_sum(e), max_freqs(e), max_vals(e), entropy(e)] = width_half_max(data, 1000, [0.25 4.75], .075, 0);
        
    end
    
    cd (present_dir)
    
-   save([record_dir, '_chan1_whm.mat'], 'whm', 'shm_sum', 'max_freqs', 'max_vals')
+   save([record_dir, '_chan1_whm.mat'], 'whm', 'shm_sum', 'max_freqs', 'max_vals', 'entropy')
    
    figure
    

@@ -25,14 +25,18 @@ MI_subjects = text_read([name,'/',name,'_',measure,'_subjects.txt'],'%s');
 MI_states = text_read([name,'/',name,'_',measure,'_states.txt'],'%s');
 MI = load([name, '/', name, '_', measure, '_hr_MI.txt']);
 
-delta_MI = nan(ceil(quantile_used*size(MI, 1)), size(MI, 2), 7);
-non_delta_MI = nan(ceil((1 - quantile_used)*size(MI, 1)), size(MI, 2), 7);
+no_criteria = 4;
+no_pairs = nchoosek(no_criteria, 2);
+no_figures = no_criteria + no_pairs + 1;
 
-[median_subj_dMI, median_subj_ndMI] = deal(nan(size(MI, 2), 7, subj_num));
+delta_MI = nan(ceil(quantile_used*size(MI, 1)), size(MI, 2), no_figures);
+non_delta_MI = nan(ceil((1 - quantile_used)*size(MI, 1)), size(MI, 2), no_figures);
 
-[dMI_marker, ndMI_marker] = deal(zeros(7));
+[median_subj_dMI, median_subj_ndMI] = deal(nan(size(MI, 2), no_figures, subj_num));
 
-pairs = nchoosek(1:3, 2);
+[dMI_marker, ndMI_marker] = deal(zeros(no_figures, 1));
+
+pairs = nchoosek(1:no_criteria, 2);
 
 delta_labels = {'Low whm', 'Low shm', 'Low shm/whm', 'Low whm & shm', 'Low whm & shm/whm', 'Low shm & shm/whm', 'Low whm & shm & shm/whm'};
 
@@ -60,7 +64,7 @@ for s = 1:subj_num
         
     end
     
-    clear whm shm_sum
+    clear whm shm_sum entropy
     
     load([record_dir, '_chan1_whm.mat'])
 
@@ -74,6 +78,8 @@ for s = 1:subj_num
         
         shm_sum((length(subj_state_index) + 1):end) = [];
         
+        entropy((length(subj_state_index) + 1):end) = [];
+        
     end
     
     shm_whm_q = shm_sum./whm;
@@ -84,7 +90,9 @@ for s = 1:subj_num
     
     low_shm_whm_q_indices = shm_whm_q < shm_lims(1) & subj_state_index;
     
-    indices = [low_whm_indices low_shm_sum_indices low_shm_whm_q_indices];
+    low_entropy_indices = entropy < quantile(entropy, quantile_used) & subj_state_index;
+    
+    indices = [low_whm_indices low_shm_sum_indices low_shm_whm_q_indices low_entropy_indices];
     
     high_whm_indices = whm > quantile(whm, 1 - quantile_used) & subj_state_index;
     
@@ -92,11 +100,13 @@ for s = 1:subj_num
     
     high_shm_whm_q_indices = shm_whm_q > shm_lims(2) & subj_state_index;
     
-    non_indices = [high_whm_indices high_shm_sum_indices high_shm_whm_q_indices];
+    high_entropy_indices = entropy > quantile(entropy, 1 - quantile_used) & subj_state_index;
+    
+    non_indices = [high_whm_indices high_shm_sum_indices high_shm_whm_q_indices high_entropy_indices];
     
     subj_MI = MI(subj_MI_index, :);
     
-    for i = 1:3
+    for i = 1:no_criteria
         
         length_selected_dMI = sum(indices(:, i));
         
@@ -116,55 +126,55 @@ for s = 1:subj_num
         
     end
     
-    for p = 1:3
+    for p = 1:no_pairs
         
         index = indices(:, pairs(p, 1)) & indices(:, pairs(p, 2));
         
         length_selected_dMI = sum(index);
         
-        delta_MI(dMI_marker(3 + p) + (1:length_selected_dMI), :, 3 + p) = subj_MI(index, :);
+        delta_MI(dMI_marker(no_criteria + p) + (1:length_selected_dMI), :, no_criteria + p) = subj_MI(index, :);
         
-        median_subj_dMI(:, 3 + p, s) = median(subj_MI(index, :))';
+        median_subj_dMI(:, no_criteria + p, s) = median(subj_MI(index, :))';
         
-        dMI_marker(3 + p) = dMI_marker(3 + p) + length_selected_dMI;
+        dMI_marker(no_criteria + p) = dMI_marker(no_criteria + p) + length_selected_dMI;
         
         non_index = non_indices(:, pairs(p, 1)) & non_indices(:, pairs(p, 2));
         
         length_selected_ndMI = sum(non_index);
         
-        non_delta_MI(ndMI_marker(3 + p) + (1:length_selected_ndMI), :, 3 + p) = subj_MI(non_index, :);
+        non_delta_MI(ndMI_marker(no_criteria + p) + (1:length_selected_ndMI), :, no_criteria + p) = subj_MI(non_index, :);
         
-        median_subj_ndMI(:, 3 + p, s) = median(subj_MI(non_index, :))';
+        median_subj_ndMI(:, no_criteria + p, s) = median(subj_MI(non_index, :))';
         
-        ndMI_marker(3 + p) = ndMI_marker(3 + p) + length_selected_ndMI;
+        ndMI_marker(no_criteria + p) = ndMI_marker(no_criteria + p) + length_selected_ndMI;
         
     end
     
-    index = cumprod(indices, 2); index = logical(index(:, 3));
+    index = cumprod(indices, 2); index = logical(index(:, end));
     
     length_selected_dMI = sum(index);
     
-    delta_MI(dMI_marker(7) + (1:length_selected_dMI), :, 7) = subj_MI(index, :);
+    delta_MI(dMI_marker(no_figures) + (1:length_selected_dMI), :, no_figures) = subj_MI(index, :);
         
-    median_subj_dMI(:, 7, s) = median(subj_MI(index, :))';
+    median_subj_dMI(:, no_figures, s) = median(subj_MI(index, :))';
     
-    dMI_marker(7) = dMI_marker(7) + length_selected_dMI;
+    dMI_marker(no_figures) = dMI_marker(no_figures) + length_selected_dMI;
     
     non_index = cumprod(non_indices, 2); non_index = logical(non_index(:, 3));
     
     length_selected_ndMI = sum(non_index);
     
-    non_delta_MI(ndMI_marker(7) + (1:length_selected_ndMI), :, 7) = subj_MI(non_index, :);
+    non_delta_MI(ndMI_marker(no_figures) + (1:length_selected_ndMI), :, no_figures) = subj_MI(non_index, :);
         
-    median_subj_ndMI(:, 7, s) = median(subj_MI(non_index, :))';
+    median_subj_ndMI(:, no_figures, s) = median(subj_MI(non_index, :))';
     
-    ndMI_marker(7) = ndMI_marker(7) + length_selected_ndMI;
+    ndMI_marker(no_figures) = ndMI_marker(no_figures) + length_selected_ndMI;
     
 end
 
-[median_dMI, median_ndMI] = deal(nan(size(MI, 2), 7));
+[median_dMI, median_ndMI] = deal(nan(size(MI, 2), no_figures));
 
-for i = 1:7
+for i = 1:no_figures
     
     median_dMI(:, i) = nanmedian(delta_MI(:, :, i))';
     

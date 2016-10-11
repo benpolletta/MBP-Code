@@ -7,13 +7,13 @@ no_freqs = length(freqs);
 
 if isempty(no_cycles), no_cycles = 7*ones(no_freqs,1); end
     
-window_size = max(no_cycles*(sampling_freq/min(freqs)), sampling_freq);
+window_size = max(max(no_cycles*(sampling_freq/min(freqs))), sampling_freq);
 
 wavelets = dftfilt3(freqs, no_cycles, sampling_freq, 'winsize', window_size);
 
 ws = nan(data_length, no_freqs, no_channels);
 
-flip_length = min(sampling_freq, data_length);
+flip_length = min(sampling_freq, floor(data_length/2) - 1);
 
 data_reflected = [flipud(data(1:flip_length, :)); data; flipud(data((end - flip_length + 1):end, :))];
 

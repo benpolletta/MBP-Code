@@ -1,4 +1,4 @@
-function [whm, shm_sum, max_freq, max_value] = width_half_max(data, sampling_freq, freq_range, smooth_freq, plot_opt)
+function [whm, shm_sum, max_freq, max_value, entropy] = width_half_max(data, sampling_freq, freq_range, smooth_freq, plot_opt)
 
 data_length = length(data);
 
@@ -51,6 +51,10 @@ whm_end = min(super_hm_ends(super_hm_ends > max_index)) - 1;
 whm = whm_end - whm_start + 1;
 
 if isempty(whm), whm = nan; end
+
+data_hat_normalized = data_hat_selected./sum(data_hat_selected);
+
+entropy = - nansum(data_hat_normalized.*log(data_hat_normalized));
 
 if plot_opt == 1
     

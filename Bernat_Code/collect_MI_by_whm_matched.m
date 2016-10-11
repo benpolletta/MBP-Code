@@ -58,7 +58,7 @@ for s = 1:subj_num
         
     end
     
-    clear whm shm_sum
+    clear whm shm_sum entropy
     
     load([record_dir, '_chan1_whm.mat'])
 
@@ -72,6 +72,8 @@ for s = 1:subj_num
         
         shm_sum((length(subj_state_index) + 1):end) = [];
         
+        entropy((length(subj_state_index) + 1):end) = [];
+        
     end
     
     shm_whm_q = shm_sum./whm;
@@ -82,6 +84,8 @@ for s = 1:subj_num
     
     low_shm_whm_q_indices = shm_whm_q < shm_lim & subj_state_index;
     
+    low_entropy_indices = entropy < quantile(entropy, quantile_used) & subj_state_index;
+    
     indices = [low_whm_indices low_shm_sum_indices low_shm_whm_q_indices];
     
     high_whm_indices = whm >= quantile(whm, quantile_used) & subj_state_index;
@@ -89,6 +93,8 @@ for s = 1:subj_num
     high_shm_sum_indices = shm_sum >= quantile(shm_sum, quantile_used) & subj_state_index;
     
     high_shm_whm_q_indices = shm_whm_q >= shm_lim & subj_state_index;
+    
+    high_entropy_indices = entropy >= quantile(entropy, quantile_used) & subj_state_index;
     
     non_indices = [high_whm_indices high_shm_sum_indices high_shm_whm_q_indices];
     
