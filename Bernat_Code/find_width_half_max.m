@@ -30,35 +30,31 @@ for s = 1:length(subjects)
    
    save([record_dir, '_chan1_whm.mat'], 'whm', 'shm_sum', 'max_freqs', 'max_vals', 'entropy')
    
+   whm_mat = [whm shm_sum entropy]; no_criteria = size(whm_mat, 2);
+   
+   crit_labels = {'whm', 'shm_sum', 'entropy'};
+   
    figure
    
-   subplot(2, 2, 1)
-   
-   [n_whm, centers_whm] = hist(whm, 25);
-   
-   plot(centers_whm, n_whm)
-   
-   axis tight
-   
-   subplot(2, 2, 2)
-   
-   plot(whm, '*')
-   
-   axis tight
-   
-   subplot(2, 2, 3)
-   
-   [n_shm, centers_shm] = hist(shm_sum, 25);
-   
-   plot(centers_shm, n_shm)
-   
-   axis tight
-   
-   subplot(2, 2, 4)
-   
-   plot(shm_sum, '*')
-   
-   axis tight
+   for c = 1:no_criteria
+       
+       subplot(2, no_criteria, c)
+       
+       [n, centers] = hist(whm_mat(:, c), 25);
+       
+       plot(centers, n)
+       
+       axis tight
+       
+       title(crit_labels{c})
+       
+       subplot(2, no_criteria, no_criteria + c)
+       
+       plot(whm_mat(:, c), '*')
+       
+       axis tight
+       
+   end
    
    save_as_pdf(gcf, [record_dir, '_chan1_whm'])
    

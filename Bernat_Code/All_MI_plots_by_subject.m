@@ -74,6 +74,38 @@ for s=1:no_subjects
         
 end
 
+%% Figures by six minute period.
+
+[short_period_labels, ~, period_labels] = make_period_labels(-2, 6, '6mins');
+no_periods = length(period_labels);
+[rows, cols] = subplot_size(no_periods);
+
+for s=1:no_subjects
+    
+    subject=char(subj_labels{s});
+    
+    subj_MI=MI(strcmp(subjects,subject),:);
+    
+    subj_MI_pct=MI_pct(strcmp(subjects,subject),:);
+    
+    subj_drugs=drugs(strcmp(subjects,subject));
+    
+%     subj_states=states(strcmp(subjects,subject),:);
+    
+    subj_periods=hr_periods(strcmp(subjects,subject));
+    
+    for d=1:no_drugs
+    
+        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_6min_',subject,'_',drug_labels{d}],...
+            rows,cols,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI)
+    
+        cplot_collected_MI_by_categories([fig_dir,'/',name,'_',measure,'_6min_pct_',subject,'_',drug_labels{d}],...
+            rows,cols,phases,amps,{drug_labels(d), drug_labels(d)},{short_period_labels, period_labels},subj_drugs,subj_periods,subj_MI_pct)
+    
+    end
+        
+end
+
 %% Figures by state and 4 hour period.
 
 MI=load([name,'/',name,'_',measure,'_4hr_MI.txt'],'%s');

@@ -106,23 +106,23 @@ for s = 1:subj_num
     
     subj_MI = MI(subj_MI_index, :);
     
-    for i = 1:no_criteria
+    for c = 1:no_criteria
         
-        length_selected_dMI = sum(indices(:, i));
+        length_selected_dMI = sum(indices(:, c));
         
-        delta_MI(dMI_marker(i) + (1:length_selected_dMI), :, i) = subj_MI(indices(:, i), :);
+        delta_MI(dMI_marker(c) + (1:length_selected_dMI), :, c) = subj_MI(indices(:, c), :);
         
-        median_subj_dMI(:, i, s) = median(subj_MI(indices(:, i), :))';
+        median_subj_dMI(:, c, s) = median(subj_MI(indices(:, c), :))';
         
-        dMI_marker(i) = dMI_marker(i) + length_selected_dMI;
+        dMI_marker(c) = dMI_marker(c) + length_selected_dMI;
         
-        length_selected_ndMI = sum(non_indices(:, i));
+        length_selected_ndMI = sum(non_indices(:, c));
         
-        non_delta_MI(ndMI_marker(i) + (1:length_selected_ndMI), :, i) = subj_MI(non_indices(:, i), :);
+        non_delta_MI(ndMI_marker(c) + (1:length_selected_ndMI), :, c) = subj_MI(non_indices(:, c), :);
         
-        median_subj_ndMI(:, i, s) = median(subj_MI(non_indices(:, i), :))';
+        median_subj_ndMI(:, c, s) = median(subj_MI(non_indices(:, c), :))';
         
-        ndMI_marker(i) = ndMI_marker(i) + length_selected_ndMI;
+        ndMI_marker(c) = ndMI_marker(c) + length_selected_ndMI;
         
     end
     
@@ -174,11 +174,11 @@ end
 
 [median_dMI, median_ndMI] = deal(nan(size(MI, 2), no_figures));
 
-for i = 1:no_figures
+for c = 1:no_figures
     
-    median_dMI(:, i) = nanmedian(delta_MI(:, :, i))';
+    median_dMI(:, c) = nanmedian(delta_MI(:, :, c))';
     
-    median_ndMI(:, i) = nanmedian(non_delta_MI(:, :, i))';
+    median_ndMI(:, c) = nanmedian(non_delta_MI(:, :, c))';
     
 end
 

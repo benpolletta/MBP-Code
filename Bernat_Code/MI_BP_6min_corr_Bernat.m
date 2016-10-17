@@ -122,6 +122,6 @@ for p = 1:no_pairs
     
 end
     
-save(sprintf('%s_%sMI_%sBP%s_%dto%dhrs_%s_by_6min', drug, channel_names{pairs(p, :)}, BP_norm, hr_limits, state), 'drug', 'BP_norm', 'hr_limits', 'state', 'All_corrs')
+save(sprintf('%s_MI_BP%s_%dto%dhrs_%s_by_6min', drug, BP_norm, hr_limits, state), 'drug', 'BP_norm', 'hr_limits', 'state', 'All_corrs')
 
 end
