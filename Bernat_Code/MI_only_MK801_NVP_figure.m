@@ -63,39 +63,7 @@ for n=1:no_norms
             
         end
         
-        %% Getting time series data.
-        
-        suffix = ['hrMI', norms{n}, '_hr_BP_stats'];
-        
-        load([ch_dir, '/', ch_dir, '_summed_', suffix, '.mat'])
-        
-        BP_stats_new = permute(BP_stats, [2, 1, 3, 4]);
-        
-        BPs_dims = size(BP_stats_new);
-        
-        BP_stats_new = reshape(BP_stats_new, BPs_dims(1), 1, BPs_dims(2), BPs_dims(3), BPs_dims(4));
-        
-        All_BP_stats(:, c, :, :, :, n) = BP_stats_new(1:no_BP_hr_periods, :, :, 1, :); % [1 4 5] are where the median, mean, and std are.
-        
-        %% Getting stats p-values.
-        
-        ranksum_suffix = ['hrMI', norms{n}, '_hr_ranksum'];
-        
-        load([ch_dir, '/', ch_dir, '_summed_', ranksum_suffix, '.mat'])
-        
-        BP_ranksum_new = permute(BP_ranksum, [2, 1, 3]);
-        
-        BPr_dims = size(BP_ranksum_new);
-        
-        BP_ranksum_new = reshape(BP_ranksum_new, BPr_dims(1), 1, BPr_dims(2), BPr_dims(3));
-        
-        All_BP_ranksum(:, c, :, :, n) = BP_ranksum_new(1:no_BP_hr_periods, :, :, :);
-        
     end
-    
-    % Bonferroni correcting & testing p-values.
-    
-    All_BP_test(:, :, :, :, n) = All_BP_ranksum(:, :, :, :, n) <= .01/(3*sum_all_dimensions(~isnan(All_BP_ranksum(:, :, :, :, n))));
     
 end
 
@@ -129,7 +97,8 @@ for n = 1:no_norms
             
             for d = 1:(no_drugs - 1)
                 
-                All_cplot_for_plot(:, :, d, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4, s, c, n);
+                All_cplot_for_plot(:, :, d, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4, s, c, n)...
+                    - All_cplot_data(:, :, 1, max_hr_indices(d, s, c, n) + 4, s, c, n);
                 
             end
             
@@ -161,34 +130,6 @@ for n = 1:no_norms
         
         for c = 1:no_channels
             
-            % subplot(no_channels + no_bands_plotted, no_drugs + 1, (c - 1)*(no_drugs + 1) + 1)
-            % 
-            % imagesc(phase_freqs, amp_freqs, All_cplot_for_plot(:, :, 1, s, c, n))
-            % 
-            % if strcmp(cplot_norm, '_row')
-            % 
-            %     caxis([min_by_channel(s, c, n) max_by_channel(s, c, n)])
-            % 
-            % elseif strcmp(cplot_norm, '_col')
-            % 
-            %     caxis([min_by_drug(1, s, n) max_by_drug(1, s, n)])
-            % 
-            % else
-            % 
-            %     colorbar
-            % 
-            % end
-            % 
-            % axis xy
-            % 
-            % ylabel(channel_names(c))
-            % 
-            % if c == 1
-            % 
-            %     title({'Preinjection,'; [long_stats{s}, ' MI, ', long_norms{n}]; 'Hours 1 & 2 Preinjection'})
-            % 
-            % end
-            
             for d = 2:(no_drugs - 1)
                 
                 %% Plotting comodulograms.
@@ -214,6 +155,10 @@ for n = 1:no_norms
                     colorbar('FontSize', 16)
                     
                 else
+                    
+                    c_lims = caxis;
+                    
+                    caxis([max(c_lims(1), -abs(c_lims(2))) c_lims(2)])
                     
                     colorbar('FontSize', 16)
                     
@@ -246,47 +191,3 @@ for n = 1:no_norms
 end
 
 end
-
-% function [max_phase, max_pd] = get_peak_periods
-% 
-% phase_freqs = 1:.25:12; amp_freqs = 20:5:200;
-% no_pfs = length(phase_freqs); no_afs = length(amp_freqs);
-% 
-% load('channels.mat'), no_channels = length(channel_names);
-% 
-% load('drugs.mat')
-% 
-% stats={'median','mean','std'}; no_stats = length(stats);
-% 
-% no_pre=4; no_post=12;
-% [hr_labels, ~, ~]=make_period_labels(no_pre,no_post,'hrs');
-% no_hr_periods = length(hr_labels);
-% 
-% All_cplot_data = nan(no_afs, no_pfs, no_drugs, no_hr_periods, no_channels);
-% 
-% for c = 1:no_channels
-%     
-%     for d = 1:no_drugs
-%         
-%         load(['ALL_',channel_names{c},'/ALL_',channel_names{c},'_p0.99_IEzs_MI',...
-%             '/ALL_',channel_names{c},'_p0.99_IEzs_hr_',drugs{d},'_cplot_data.mat'])
-%         
-%         All_cplot_data(:, :, d, :, c) = MI_stats(:, :, 1, :, 1);
-%         
-%     end
-%     
-% end
-% 
-% max_MI_data = reshape(max(max(All_cplot_data)), no_drugs, no_hr_periods, no_channels);
-% 
-% [~, max_pd_indices] = max(max_MI_data, [], 2);
-% 
-% max_pd = hr_labels(reshape(max_pd_indices, no_drugs, no_channels));
-% 
-% max_phase_data = reshape(max(All_cplot_data), no_pfs, no_drugs, no_hr_periods, no_channels);
-%  
-% [~, max_phase_indices] = max(max_phase_data);
-% 
-% max_phase = permute(phase_freqs(max_phase_indices), [2 1 3]);
-% 
-% end

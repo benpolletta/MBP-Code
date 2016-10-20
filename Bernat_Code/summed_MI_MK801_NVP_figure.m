@@ -51,7 +51,7 @@ for n=1:no_norms
     for c=1:no_channels
         
         ch_dir = ['ALL_', channel_names{c}];
-            
+        
         %% Getting colorplot data.
         
         for d = 1:(no_drugs - 1)
@@ -105,13 +105,11 @@ for n = 1:no_norms
         
         handle(n, s) = figure;
         
-        for c = 1:no_channels
-            
         %% Plotting time series w/ stats.
         
-        for d = 2:(no_drugs - 1)
+        for b = 1:no_bands_plotted
             
-            for b = 1:no_bands_plotted
+            for d = 2:(no_drugs - 1)
                 
                 clear plot_stats plot_test
                 
@@ -128,11 +126,9 @@ for n = 1:no_norms
                 
                 test_multiplier = ones(size(plot_test))*diag(med_min - [0.05 .1 .15]*med_range); % [nan nan nan 0.05 .1 .15]*med_range);
                 
-                subplot(no_bands_plotted, no_drugs - 2, (b - 1)*(no_drugs - 2) + d - 1) % (d - 2)*no_bands_plotted + b)
+                ax(b, d - 1) = subplot(no_bands_plotted, no_drugs - 2, (b - 1)*(no_drugs - 2) + d - 1); % (d - 2)*no_bands_plotted + b)
                 
                 set(gca, 'NextPlot', 'add', 'LineStyleOrder', {'-','*','*'}, 'ColorOrder', c_order) % {'--','-','*','*'}
-                
-                ax(b, d - 1) = gca;
                 
                 plot((1:no_BP_hr_periods)', [plot_stats plot_test.*test_multiplier]);
                 
@@ -144,37 +140,37 @@ for n = 1:no_norms
                 
                 if b == 1
                     
-                    ylabel(drugs{d})
+                    title(drugs{d})
                     
                     if d - 1 == 1
                         
-                        legend({'Fr., drug - sal.', 'Occi., drug - sal.', 'CA1, drug - sal.', 'Fr., drug', 'Occi., drug', 'CA1, drug'},...
+                        legend({'Fr., drug - sal.', 'Occi., drug - sal.', 'CA1, drug - sal.'},...
                             'Location', 'NorthEast', 'FontSize', 6)
                         
                     end
                     
-                end
-                
-                if d - 1 == 1
-                    
-                    title(band_labels{bands_plotted(b)})
-                    
-                elseif d - 1 == 2
+                elseif b == no_bands_plotted
                     
                     xlabel('Time Rel. Inj. (h)')
                     
                 end
                 
+                if d - 1 == 1
+                    
+                    ylabel(band_labels{bands_plotted(b)})
+                    
+                end
+                
             end
             
-        end
+            linkaxes(ax(b, :))
             
-        linkaxes([flipud(ax(:, 1)); ax(:, 2)])
-                
+        end
+        
+        % linkaxes([flipud(ax(:, 1)); ax(:, 2)])
+        
         save_as_pdf(gcf,['ALL_summed_MI',norms{n},'_multichannel_MK801_NVP_', hi_hr, '_hi_', stats{s}, cplot_norm]) %, 'orientation', 'portrait')
         
     end
     
-end
-
 end

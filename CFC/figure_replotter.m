@@ -74,17 +74,17 @@ for i=1:length(numbers)
     
     axis xy
     
-    if ~any(isnan([min_MI max_MI])) && ~any(isinf([min_MI max_MI]))
-        
-%         if min_MI < max_MI
-%             caxis([min_MI max_MI])
+%     if ~any(isnan([min_MI max_MI])) && ~any(isinf([min_MI max_MI]))
+%         
+% %         if min_MI < max_MI
+% %             caxis([min_MI max_MI])
+% %         end
+%         
+%         if 0 < max_MI
+%             caxis([0 max_MI])
 %         end
-        
-        if 0 < max_MI
-            caxis([0 max_MI])
-        end
-        
-    end
+%         
+%     end
     
 %     if length(numbers)==1
     
@@ -141,7 +141,11 @@ for i=1:length(numbers)
         elseif col==cols
             colorbar
         end
-                
+       
+    else
+        
+        colorbar
+        
     end
     
 end

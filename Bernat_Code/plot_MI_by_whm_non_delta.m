@@ -37,17 +37,17 @@ pairs = nchoosek(1:length(criteria), 2);
 
 for c = 1:length(criteria)
     
-    delta_labels{c} = ['Low ', criteria{c}];
+    delta_labels{c} = ['High ', criteria{c}];
     
 end
 
 for p = 1:length(pairs)
     
-    delta_labels{length(criteria) + p} = ['Low ', criteria{pairs(p, 1)}, ' & ', criteria{pairs(p, 2)}];
+    delta_labels{length(criteria) + p} = ['High ', criteria{pairs(p, 1)}, ' & ', criteria{pairs(p, 2)}];
     
 end
 
-delta_labels{end + 1} = 'Low shm & whm & shm/whm & entropy';
+delta_labels{end + 1} = 'High shm & whm & shm/whm & entropy';
 
 no_deltas = length(delta_labels);
 
