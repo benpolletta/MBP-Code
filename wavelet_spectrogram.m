@@ -6,7 +6,7 @@ if isempty(freqs), freqs = 1:(sampling_freq/2); end
 no_freqs = length(freqs);
 
 if isempty(no_cycles), no_cycles = 7*ones(no_freqs,1); end
-    
+
 window_size = max(max(no_cycles*(sampling_freq/min(freqs))), sampling_freq);
 
 wavelets = dftfilt3(freqs, no_cycles, sampling_freq, 'winsize', window_size);
