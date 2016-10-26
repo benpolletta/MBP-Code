@@ -27,15 +27,21 @@ if any(logical ~= 0)
     
     add_vec = yl(1)*(side_vec == 0) + yl(2)*(side_vec == 1);
     
-    mult_vec(side_vec == 0) = -.05*(1:sum(side_vec == 0));
+    logical_not_empty_indicator = sum(~isnan(logical)) ~= 0;
     
-    mult_vec(side_vec == 1) = .05*(1:sum(side_vec == 1));
+    mult_vec(side_vec == 0) = -.05*cumsum(logical_not_empty_indicator(side_vec == 0));
+    
+    mult_vec(side_vec == 1) = .05*cumsum(logical_not_empty_indicator(side_vec == 1));
     
     multiplier_vec = add_vec + mult_vec*yrange;
     
     ylim_vec = add_vec + 1.5*mult_vec*yrange;
     
     logical_multiplier = ones(size(logical))*diag(multiplier_vec);
+    
+    % logical_multiplier(:, sum(~isnan(logical)) == 0) = [];
+    % 
+    % logical(:, sum(~isnan(logical)) == 0) = [];
     
     plot(t, logical.*logical_multiplier, '*')
     

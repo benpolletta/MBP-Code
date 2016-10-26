@@ -1,4 +1,4 @@
-function delta_theta_corr_figure(BP_norm, drug)
+function delta_theta_corr_figure(BP_norm, drug, ds_factor)
 
 load('subjects.mat')
    
@@ -30,15 +30,19 @@ for s = 1:no_subjects
     
     subj_delta = nanzscore(fr_delta(strcmp(fr_subjects, subjects{s}) & fr_p4_index & strcmp(fr_drugs, drug)));
     
+    subj_delta = downsample(subj_delta, ds_factor);
+    
     delta((end + 1):(end + length(subj_delta))) = subj_delta;
     
     subj_theta = nanzscore(ca1_theta(strcmp(ca1_subjects, subjects{s}) & ca1_p4_index & strcmp(ca1_drugs, drug)));
+    
+    subj_theta = downsample(subj_theta, ds_factor);
     
     theta((end + 1):(end + length(subj_theta))) = subj_theta;
     
     subplot(3, 2, s)
     
-    [n, c] = hist3([subj_delta subj_theta], [100 100]);
+    [n, c] = hist3([subj_delta subj_theta], round([50 50]/sqrt(ds_factor)));
     
     imagesc(c{1}, c{2}, n)
     
@@ -64,7 +68,7 @@ for s = 1:no_subjects
     
 end
 
-save_as_pdf(gcf, [drug, '_theta_delta_corr_subjects'])
+save_as_pdf(gcf, [drug, '_theta_delta_corr_subjects_ds', num2str(ds_factor, '%.3g')])
 
 % delta = fr_delta(fr_p4_index & strcmp(fr_drugs, 'NVP'));
 % 
@@ -72,7 +76,7 @@ save_as_pdf(gcf, [drug, '_theta_delta_corr_subjects'])
 
 figure
 
-[n, c] = hist3([delta' theta'], [100 100]);
+[n, c] = hist3([delta' theta'], round([100 100]/sqrt(ds_factor)));
 
 imagesc(c{1}, c{2}, n)
 
@@ -92,8 +96,8 @@ p = polyfit(delta, theta, 1);
 
 plot(c{1}, p(1)*c{1} + p(2), 'w')
 
-save_as_pdf(gcf, [drug, '_theta_delta_corr'])
-
 [rho, p] = corr(delta', theta');
 
 title([drug, ', \rho = ', num2str(rho, '%.3g'), ', p = ', num2str(p, '%.3g')], 'FontSize', 16)
+
+save_as_pdf(gcf, [drug, '_theta_delta_corr_ds', num2str(ds_factor, '%.3g')])

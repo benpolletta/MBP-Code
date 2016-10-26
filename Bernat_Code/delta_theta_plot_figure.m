@@ -1,4 +1,4 @@
-function delta_theta_corr_figure(BP_norm, drug)
+function delta_theta_plot_figure(BP_norm, drug, ds_factor)
 
 load('subjects.mat')
    
@@ -38,15 +38,19 @@ for s = 1:no_subjects
     
     subplot(3, 2, s)
     
-    plot(downsample(1:length(subj_delta), 5)', [downsample(subj_delta, 5) downsample(subj_theta, 5)])
+    plot(downsample(1:length(subj_delta), ds_factor)', [downsample(subj_delta, ds_factor) downsample(subj_theta, ds_factor)])
     
     axis tight
+    
+    hold on
+    
+    plot(downsample(1:length(subj_delta), ds_factor)', zeros(size(downsample(1:length(subj_delta), ds_factor)')), '--k')
     
     title(subjects{s}, 'FontSize', 16)
     
 end
 
-save_as_pdf(gcf, [drug, '_theta_delta_line_subjects'])
+save_as_pdf(gcf, [drug, '_theta_delta_line_subjects_ds', num2str(ds_factor, '%.3g')])
 
 % delta = fr_delta(fr_p4_index & strcmp(fr_drugs, 'NVP'));
 % 
@@ -54,10 +58,14 @@ save_as_pdf(gcf, [drug, '_theta_delta_line_subjects'])
 
 figure
 
-plot(downsample(1:length(delta), 5)', [downsample(delta, 5)' downsample(theta, 5)'])
+plot(downsample(1:length(delta), ds_factor)', [downsample(delta, ds_factor)' downsample(theta, ds_factor)'])
 
 axis tight
 
+hold on
+    
+plot(downsample(1:length(subj_delta), ds_factor)', zeros(size(downsample(1:length(subj_delta), ds_factor)')), '--k')
+
 title(drug, 'FontSize', 16)
 
-save_as_pdf(gcf, [drug, '_theta_delta_line'])
+save_as_pdf(gcf, [drug, '_theta_delta_line_ds', num2str(ds_factor, '%.3g')])

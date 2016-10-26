@@ -11,7 +11,7 @@ no_bands=length(band_labels);
 no_cats1=length(cat1_labels);
 no_cats2=length(cat2_labels);
 
-BP_ranksum = nan(no_bands, no_cats2, no_cats1 - 1);
+BP_ranksum = nan(no_bands, no_cats2, no_cats1 - 1, 2);
 
 close('all')
 
@@ -39,8 +39,10 @@ for c1=2:no_cats1
             
             for b = 1:no_bands
             
-                BP_ranksum(b, c2, c1 - 1) = ranksum(BP_1_cat2(:, b), BP_cat1_cat2(:, b), 'tail', 'left');
+                BP_ranksum(b, c2, c1 - 1, 1) = ranksum(BP_1_cat2(:, b), BP_cat1_cat2(:, b), 'tail', 'left');
             
+                BP_ranksum(b, c2, c1 - 1, 2) = ranksum(BP_1_cat2(:, b), BP_cat1_cat2(:, b), 'tail', 'right');
+                
             end
             
         else

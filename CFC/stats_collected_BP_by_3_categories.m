@@ -19,7 +19,7 @@ no_cats3=length(cat3_labels);
 stat_labels={'median','Q1','Q3','mean','std'};
 no_stats=length(stat_labels);
 
-BP_ranksum = zeros(no_bands, no_cats3, no_cats1 - 1, no_cats2);
+BP_ranksum = zeros(no_bands, no_cats3, no_cats1 - 1, no_cats2, 2);
 
 close('all')
 
@@ -58,7 +58,9 @@ for c3=1:no_cats3
                 
                 for b = 1:no_bands
                     
-                    BP_ranksum(b, c3, c1 - 1, c2) = ranksum(BP_1_cat2(:, b), BP_cat1_cat2(:, b), 'tail', 'left');
+                    BP_ranksum(b, c3, c1 - 1, c2, 1) = ranksum(BP_1_cat2(:, b), BP_cat1_cat2(:, b), 'tail', 'left');
+                    
+                    BP_ranksum(b, c3, c1 - 1, c2, 2) = ranksum(BP_1_cat2(:, b), BP_cat1_cat2(:, b), 'tail', 'right');
                     
                 end
                 
