@@ -2,6 +2,10 @@ function comp_mat = compare_channels
 
 load('channels'), load('subjects'), load('drugs')
         
+comp_mat = nan(no_subjects*no_channels, no_subjects*no_channels, no_drugs);
+
+figure
+
 for d = 1:no_drugs
     
     drug = drugs{d};
@@ -27,7 +31,10 @@ for d = 1:no_drugs
                     
                     y_index = (sy - 1)*no_channels + chy;
                     
-                    comp_mat(x_index, y_index, d) =
+                    y_epoch = load(sprintf('%s_%s/%s_%s_chan%d_epoch%d', subjects{sy}, drug,...
+                        subjects{sy}, drug, y_chan, 1123));
+                    
+                    comp_mat(x_index, y_index, d) = sum(x_epoch - y_epoch);
                     
                 end
                 
@@ -37,5 +44,15 @@ for d = 1:no_drugs
         
     end
     
+    subplot(1, no_drugs, d)
+    
+    imagesc(comp_mat(:, :, d))
+    
+    axis xy
+    
+    set(gca, 'XTickLabel', labels, 'YTickLabel', labels)
+    
 end
+
+save_as_pdf(gcf, 'compare_channels')
         
