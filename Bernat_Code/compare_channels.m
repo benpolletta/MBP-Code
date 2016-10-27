@@ -2,7 +2,7 @@ function [x_nans, y_nans, comp_mat] = compare_channels
 
 load('channels'), load('subjects'), load('drugs')
         
-[x_nans, y_nans, comp_mat] = nan(no_subjects*no_channels, no_subjects*no_channels, no_drugs);
+[x_nans, y_nans, comp_mat] = deal(nan(no_subjects*no_channels, no_subjects*no_channels, no_drugs));
 
 figure
 
