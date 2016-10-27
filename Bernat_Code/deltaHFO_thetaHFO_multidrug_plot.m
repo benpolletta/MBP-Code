@@ -113,13 +113,13 @@ for ch = 1:no_channels
             
             subj_deltaHFO(nan_indicator) = []; subj_thetaHFO(nan_indicator) = [];
             
-            p = polyfit(subj_deltaHFO, subj_thetaHFO, 1);
+            p_fit = polyfit(subj_deltaHFO, subj_thetaHFO, 1);
             
-            plot(c{1}, p(1)*c{1} + p(2), 'w')
+            plot(c{1}, p_fit(1)*c{1} + p_fit(2), 'w')
             
-            [rho, p] = corr(subj_deltaHFO, subj_thetaHFO);
+            [rho, p_fit] = corr(subj_deltaHFO, subj_thetaHFO);
             
-            title(['\rho = ', num2str(rho, '%.3g'), ', p = ', num2str(p, '%.3g')], 'FontSize', 16)
+            title(['\rho = ', num2str(rho, '%.3g'), ', p = ', num2str(p_fit, '%.3g')], 'FontSize', 16)
             
         end
         
@@ -149,13 +149,15 @@ for ch = 1:no_channels
             
             deltaHFO(nan_indicator) = []; thetaHFO(nan_indicator) = [];
             
-            p = polyfit(deltaHFO, thetaHFO, 1);
+            p_fit = polyfit(deltaHFO, thetaHFO, 1);
             
-            plot(c{1}, p(1)*c{1} + p(2), 'w')
+            plot(c{1}, p_fit(1)*c{1} + p_fit(2), 'w')
             
             [rho, p] = corr(deltaHFO', thetaHFO');
             
             title(['\rho = ', num2str(rho, '%.3g'), ', p = ', num2str(p, '%.3g')], 'FontSize', 16)
+            
+            save([channel, '_', drug, '_thetaHFO_deltaHFO_multidrug_ds', num2str(ds_factor, '%.3g'), '.mat'], 'n', 'c', 'p_fit', 'rho', 'p')
             
         end
         

@@ -11,6 +11,10 @@ load('drugs.mat'), drug_labels = drugs; clear drugs
 load('AP_freqs.mat')
 
 measure = 'p0.99_IEzs';
+    
+median_qPAC = nan(no_afs*no_pfs, 2, no_drugs, no_channels);
+
+overlap = nan(no_subjects, no_drugs, no_channels);
 
 for ch = 1:no_channels
     
@@ -86,6 +90,8 @@ for ch = 1:no_channels
             
             end
             
+            overlap(s, d, ch) = sum(sum(subj_PAC_indices, 2) > 1)/mean(sum(subj_PAC_indices));
+            
         end
         
         save_as_pdf(gcf, sprintf('%s_%s_dHFO_tHFO_quantiles_q%.3g', subject, channel, q))
@@ -101,6 +107,8 @@ for ch = 1:no_channels
         for lf = 1:2
             
             subplot(no_drugs, 2, (d - 1)*2 + lf)
+                
+            median_qPAC(:, lf, d, ch) = reshape(nanmedian(selected_PAC(:, :, lf, d)), no_afs*no_pfs, 1);
             
             imagesc(phase_freqs, amp_freqs, reshape(nanmedian(selected_PAC(:, :, lf, d)), no_afs, no_pfs))
             
@@ -139,3 +147,19 @@ for ch = 1:no_channels
     save_as_pdf(gcf, sprintf('%s_dHFO_tHFO_quantiles_q%.3g', channel, q))
     
 end
+
+save(sprintf('dHFO_tHFO_quantiles_q%.3g.mat', q), 'median_qPAC', 'overlap')
+
+figure
+
+barwitherr(reshape(nanstd(overlap), no_drugs, no_channels), reshape(nanmean(overlap), no_drugs, no_channels))
+
+set(gca, 'XTickLabel', drug_labels)
+
+title({sprintf('Overlap of %.3g^{th} Percentiles', 100*q);'Highest \delta-HFO and \theta-HFO PAC'})
+
+ylabel('Overlap Proportion')
+
+legend({'Fr.', 'Occi.', 'CA1'})
+
+save_as_pdf(gcf, sprintf('dHFO_tHFO_quantiles_q%.3g_overlap', q))

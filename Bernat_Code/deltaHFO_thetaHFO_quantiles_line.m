@@ -64,8 +64,6 @@ for ch = 1:no_channels
             
                 subplot(no_drugs, 2, (d - 1)*2 + lf)
                 
-                median_qPAC(:, lf, d, ch) = reshape(nanmedian(MI(subj_PAC_indices(:, lf), :)), no_afs*no_pfs, 1);
-                
                 imagesc(phase_freqs, amp_freqs, reshape(nanmedian(MI(subj_PAC_indices(:, lf), :)), no_afs, no_pfs))
                 
                 axis xy
@@ -111,6 +109,8 @@ for ch = 1:no_channels
         for lf = 1:2
             
             subplot(no_drugs, 2, (d - 1)*2 + lf)
+                
+            median_qPAC(:, lf, d, ch) = reshape(nanmedian(selected_PAC(:, :, lf, d)), no_afs*no_pfs, 1);
             
             imagesc(phase_freqs, amp_freqs, reshape(nanmedian(selected_PAC(:, :, lf, d)), no_afs, no_pfs))
             

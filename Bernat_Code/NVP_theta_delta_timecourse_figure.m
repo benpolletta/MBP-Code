@@ -175,6 +175,8 @@ for n = 1 % 1:no_norms
         
         axis(ax(1), 'tight'), axis(ax(2), 'tight')
         
+        box off
+        
         ylabel({'\fontsize{16}Occipital MI'; '\fontsize{14}(Median Sum)'}, 'Color', 'k')
         
         % plot_mean = All_sMI_stats(:, 2, end - 1, 1, d, n);

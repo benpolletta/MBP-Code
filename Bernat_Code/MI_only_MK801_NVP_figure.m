@@ -97,8 +97,8 @@ for n = 1:no_norms
             
             for d = 1:(no_drugs - 1)
                 
-                All_cplot_for_plot(:, :, d, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4, s, c, n)...
-                    - All_cplot_data(:, :, 1, max_hr_indices(d, s, c, n) + 4, s, c, n);
+                All_cplot_for_plot(:, :, d, s, c, n) = All_cplot_data(:, :, d, max_hr_indices(d, s, c, n) + 4, s, c, n); %...
+                    % - All_cplot_data(:, :, 1, max_hr_indices(d, s, c, n) + 4, s, c, n);
                 
             end
             
@@ -156,9 +156,9 @@ for n = 1:no_norms
                     
                 else
                     
-                    c_lims = caxis;
-                    
-                    caxis([max(c_lims(1), -abs(c_lims(2))) c_lims(2)])
+                    % c_lims = caxis;
+                    % 
+                    % caxis([max(c_lims(1), -abs(c_lims(2))) c_lims(2)])
                     
                     colorbar('FontSize', 16)
                     
