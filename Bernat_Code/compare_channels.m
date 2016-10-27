@@ -41,14 +41,14 @@ for d = 1:no_drugs
                     x_epoch = load(sprintf('%s_%s/%s_%s_chan%d_epoch%d.txt', subjects{subj_pairs(sp, 1)}, drug,...
                         subjects{subj_pairs(sp, 1)}, drug, x_chan, epoch));
                     
-                    x_nans(chx, chy, sp, d) = x_nans(x_index, y_index, d) + (sum(~isnan(x_epoch)) == 0);
+                    x_nans(chx, chy, sp, d) = x_nans(chx, chy, sp, d) + (sum(~isnan(x_epoch)) == 0);
                     
                     y_epoch = load(sprintf('%s_%s/%s_%s_chan%d_epoch%d.txt', subjects{subj_pairs(sp, 2)}, drug,...
                         subjects{subj_pairs(sp, 2)}, drug, y_chan, epoch));
                     
-                    y_nans(chx, chy, sp, d) = y_nans(x_index, y_index, d) + (sum(~isnan(y_epoch)) == 0);
+                    y_nans(chx, chy, sp, d) = y_nans(chx, chy, sp, d) + (sum(~isnan(y_epoch)) == 0);
                     
-                    comp_mat(chx, chy, sp, d) = comp_mat(x_index, y_index, d) + abs(nansum(x_epoch - y_epoch));
+                    comp_mat(chx, chy, sp, d) = comp_mat(chx, chy, sp, d) + abs(nansum(x_epoch - y_epoch));
                     
                 end
                 
