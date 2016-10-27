@@ -112,7 +112,7 @@ for s = 1:subj_num
         
         delta_MI(dMI_marker(c) + (1:length_selected_dMI), :, c) = subj_MI(indices(:, c), :);
         
-        median_subj_dMI(:, c, s) = median(subj_MI(indices(:, c), :))';
+        median_subj_dMI(:, c, s) = nanmedian(subj_MI(indices(:, c), :))';
         
         dMI_marker(c) = dMI_marker(c) + length_selected_dMI;
         
@@ -120,7 +120,7 @@ for s = 1:subj_num
         
         non_delta_MI(ndMI_marker(c) + (1:length_selected_ndMI), :, c) = subj_MI(non_indices(:, c), :);
         
-        median_subj_ndMI(:, c, s) = median(subj_MI(non_indices(:, c), :))';
+        median_subj_ndMI(:, c, s) = nanmedian(subj_MI(non_indices(:, c), :))';
         
         ndMI_marker(c) = ndMI_marker(c) + length_selected_ndMI;
         
@@ -134,7 +134,7 @@ for s = 1:subj_num
         
         delta_MI(dMI_marker(no_criteria + p) + (1:length_selected_dMI), :, no_criteria + p) = subj_MI(index, :);
         
-        median_subj_dMI(:, no_criteria + p, s) = median(subj_MI(index, :))';
+        median_subj_dMI(:, no_criteria + p, s) = nanmedian(subj_MI(index, :))';
         
         dMI_marker(no_criteria + p) = dMI_marker(no_criteria + p) + length_selected_dMI;
         
@@ -144,7 +144,7 @@ for s = 1:subj_num
         
         non_delta_MI(ndMI_marker(no_criteria + p) + (1:length_selected_ndMI), :, no_criteria + p) = subj_MI(non_index, :);
         
-        median_subj_ndMI(:, no_criteria + p, s) = median(subj_MI(non_index, :))';
+        median_subj_ndMI(:, no_criteria + p, s) = nanmedian(subj_MI(non_index, :))';
         
         ndMI_marker(no_criteria + p) = ndMI_marker(no_criteria + p) + length_selected_ndMI;
         
@@ -156,7 +156,7 @@ for s = 1:subj_num
     
     delta_MI(dMI_marker(no_figures) + (1:length_selected_dMI), :, no_figures) = subj_MI(index, :);
         
-    median_subj_dMI(:, no_figures, s) = median(subj_MI(index, :))';
+    median_subj_dMI(:, no_figures, s) = nanmedian(subj_MI(index, :))';
     
     dMI_marker(no_figures) = dMI_marker(no_figures) + length_selected_dMI;
     
@@ -166,7 +166,7 @@ for s = 1:subj_num
     
     non_delta_MI(ndMI_marker(no_figures) + (1:length_selected_ndMI), :, no_figures) = subj_MI(non_index, :);
         
-    median_subj_ndMI(:, no_figures, s) = median(subj_MI(non_index, :))';
+    median_subj_ndMI(:, no_figures, s) = nanmedian(subj_MI(non_index, :))';
     
     ndMI_marker(no_figures) = ndMI_marker(no_figures) + length_selected_ndMI;
     
