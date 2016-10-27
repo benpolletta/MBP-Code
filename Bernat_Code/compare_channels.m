@@ -38,7 +38,7 @@ for d = 1:no_drugs
                         
                         y_nans(x_index, y_index, d) = y_nans(x_index, y_index, d) + (sum(~isnan(y_epoch)) == 0);
                         
-                        comp_mat(x_index, y_index, d) = comp_mat(x_index, y_index, d) + nansum(x_epoch - y_epoch);
+                        comp_mat(x_index, y_index, d) = comp_mat(x_index, y_index, d) + abs(nansum(x_epoch - y_epoch));
                         
                     end
                     
