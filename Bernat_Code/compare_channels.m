@@ -20,6 +20,10 @@ for d = 1:no_drugs
         
         title(sprintf('%s, %s vs. %s', drug, subjects{subj_pairs}), 'FontSize', 16)
         
+        xlabels = cell(no_channels, 1);
+        
+        ylabels = cell(no_channels, 1);
+        
         for chx = 1:no_channels
             
             x_chan = location_channels{chx}(sx);
@@ -52,9 +56,9 @@ for d = 1:no_drugs
             
         end
         
-        xlabel(subjects{subj_pairs(sp, 1), 'FontSize', 14)
+        xlabel(subjects{subj_pairs(sp, 1)}, 'FontSize', 14)
         
-        ylabel(subjects{subj_pairs(sp, 2), 'FontSize', 14)
+        ylabel(subjects{subj_pairs(sp, 2)}, 'FontSize', 14)
         
         set(gca, 'XTick', 1:no_channels, 'XTickLabel', xlabels,...
             'YTick', 1:no_channels, 'YTickLabel', ylabels)
