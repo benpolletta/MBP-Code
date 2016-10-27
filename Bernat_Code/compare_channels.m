@@ -26,13 +26,13 @@ for d = 1:no_drugs
         
         for chx = 1:no_channels
             
-            x_chan = location_channels{chx}(sx);
+            x_chan = location_channels{chx}(subj_pairs(sp, 1));
             
             xlabels{chx} = sprintf('Ch. %d', chx);
             
             for chy = chx:no_channels
                 
-                y_chan = location_channels{chy}(sy);
+                y_chan = location_channels{chy}(subj_pairs(sp, 2));
                 
                 ylabels{chy} = sprintf('Ch. %d', chy);
                 
