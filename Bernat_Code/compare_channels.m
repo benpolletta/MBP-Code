@@ -28,13 +28,13 @@ for d = 1:no_drugs
             
             x_chan = location_channels{chx}(subj_pairs(sp, 1));
             
-            xlabels{chx} = sprintf('Ch. %d', chx);
+            xlabels{chx} = sprintf('Ch. %d', x_chan);
             
             for chy = chx:no_channels
                 
                 y_chan = location_channels{chy}(subj_pairs(sp, 2));
                 
-                ylabels{chy} = sprintf('Ch. %d', chy);
+                ylabels{chy} = sprintf('Ch. %d', y_chan);
                 
                 for epoch = 1123
                     
@@ -56,9 +56,9 @@ for d = 1:no_drugs
             
         end
         
-        colormap([1 1 1; colormap])
+        colormap([0 0 0; 1 1 1])
         
-        imagesc(1:no_channels, 1:no_channels, comp_mat(:, :, sp, d))
+        imagesc(1:no_channels, 1:no_channels, comp_mat(:, :, sp, d) > 0)
         
         xlabel(subjects{subj_pairs(sp, 1)}, 'FontSize', 14)
         
