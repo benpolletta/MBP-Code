@@ -172,13 +172,25 @@ for s = 1:subj_num
     
 end
 
+% end_dMI_marker = max(dMI_marker)
+% 
+% end_ndMI_marker = max(ndMI_marker)
+% 
+% delta_MI((end_dMI_marker + 1):end, :, :) = [];
+% 
+% non_delta_MI((end_ndMI_marker + 1):end, :, :) = [];
+
 [median_dMI, median_ndMI] = deal(nan(size(MI, 2), no_figures));
 
-for c = 1:no_figures
+for f = 1:no_figures
+
+    delta_MI(sum(delta_MI(:, :, f), 2) == 0, :, f) = nan;
     
-    median_dMI(:, c) = nanmedian(delta_MI(:, :, c))';
+    median_dMI(:, f) = nanmedian(delta_MI(:, :, f))';
+
+    non_delta_MI(sum(non_delta_MI(:, :, f), 2) == 0, :, f) = nan;
     
-    median_ndMI(:, c) = nanmedian(non_delta_MI(:, :, c))';
+    median_ndMI(:, f) = nanmedian(non_delta_MI(:, :, f))';
     
 end
 

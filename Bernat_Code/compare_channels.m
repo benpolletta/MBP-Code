@@ -18,7 +18,7 @@ for d = 1:no_drugs
         
         subplot(r, c, sp)
         
-        title(sprintf('%s, %s vs. %s', drug, subjects{subj_pairs}), 'FontSize', 16)
+        title(sprintf('%s, %s vs. %s', drug, subjects{subj_pairs(sp, :)}), 'FontSize', 16)
         
         xlabels = cell(no_channels, 1);
         
@@ -55,6 +55,10 @@ for d = 1:no_drugs
             end
             
         end
+        
+        colormap([1 1 1; colormap])
+        
+        imagesc(1:no_channels, 1:no_channels, comp_mat(:, :, sp, d))
         
         xlabel(subjects{subj_pairs(sp, 1)}, 'FontSize', 14)
         
