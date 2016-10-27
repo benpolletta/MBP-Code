@@ -27,7 +27,7 @@ for d = 1:no_drugs
                 
                 for chy = chx:no_channels
                     
-                    y_chan = location_channels{chx}(sx);
+                    y_chan = location_channels{chy}(sy);
                     
                     y_index = (sy - 1)*no_channels + chy;
                     
