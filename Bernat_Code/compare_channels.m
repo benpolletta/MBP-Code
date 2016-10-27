@@ -52,7 +52,7 @@ for d = 1:no_drugs
         
     end
     
-    comp_mat(x_nans(:, :, d) == 0 | y_nans(:, :, d) == 0, d) = max(comp_mat(:, :, d));
+    comp_mat(x_nans(:, :, d) == 0 | y_nans(:, :, d) == 0, d) = all_dimensions(@max, comp_mat(:, :, d));
     
     figure
     
