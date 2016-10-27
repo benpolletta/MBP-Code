@@ -16,7 +16,7 @@ for d = 1:no_drugs
             
             x_index = (sx - 1)*no_channels + chx;
             
-            labels{x_index} = sprintf('%s %s (ch. %d)', subjects{sx}, channel_names{chx}, x_chan);
+            labels{x_index} = sprintf('%s\n%s\n(ch. %d)', subjects{sx}, channel_names{chx}, x_chan);
             
             for sy = sx:no_subjects
                 
@@ -50,15 +50,13 @@ for d = 1:no_drugs
         
     end
     
-    comp_mat(x_nans(:, :, d) == 0 | y_nans(:, :, d) == 0, d) = nan;
-    
-    comp_mat(isnan(comp_mat(:, :, d))) = -inf;
-    
-    color_map = [1 1 1; colormap];
-    
-    colormap(color_map)
+    % comp_mat(isnan(comp_mat(:, :, d))) = -inf;
+    % 
+    % comp_mat(x_nans(:, :, d) > 0 | y_nans(:, :, d) > 0, d) = -inf;
     
     figure
+    
+    colormap([1 1 1; colormap])
     
     imagesc(1:(no_subjects*no_channels), 1:(no_subjects*no_channels), comp_mat(:, :, d))
     
