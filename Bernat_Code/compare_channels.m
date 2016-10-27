@@ -4,15 +4,13 @@ load('channels'), load('subjects'), load('drugs')
         
 [x_nans, y_nans, comp_mat] = deal(nan(no_subjects*no_channels, no_subjects*no_channels, no_drugs));
 
-figure
-
 for d = 1:no_drugs
     
     drug = drugs{d};
     
-    for chx = 1:no_channels
+    for sx = 1:no_subjects
         
-        for sx = 1:no_subjects
+        for chx = 1:no_channels
             
             x_chan = location_channels{chx}(sx);
             
@@ -28,7 +26,7 @@ for d = 1:no_drugs
                     
                     y_index = (sy - 1)*no_channels + chy;
                     
-                    for epoch = 1123:1223
+                    for epoch = 1123:1123
                         
                         x_epoch = load(sprintf('%s_%s/%s_%s_chan%d_epoch%d.txt', subjects{sx}, drug,...
                             subjects{sx}, drug, x_chan, epoch));
@@ -52,17 +50,26 @@ for d = 1:no_drugs
         
     end
     
-    comp_mat(x_nans(:, :, d) == 0 | y_nans(:, :, d) == 0, d) = all_dimensions(@max, comp_mat(:, :, d));
+    comp_mat(x_nans(:, :, d) == 0 | y_nans(:, :, d) == 0, d) = nan;
+    
+    comp_mat(isnan(comp_mat(:, :, d))) = -inf;
+    
+    color_map = [1 1 1; colormap];
+    
+    colormap(color_map)
     
     figure
     
-    imagesc(comp_mat(:, :, d))
+    imagesc(1:(no_subjects*no_channels), 1:(no_subjects*no_channels), comp_mat(:, :, d))
     
     axis xy
     
-    set(gca, 'XTickLabel', labels, 'YTickLabel', labels)
+    set(gca, 'XTick', 1:(no_subjects*no_channels), 'XTickLabel', labels,...
+        'YTick', 1:(no_subjects*no_channels), 'YTickLabel', labels)
 
     save_as_pdf(gcf, sprintf('%s_compare_channels', drug))
     
 end
+
+save('compare_channels.mat', 'x_nans', 'y_nans', 'comp_mat')
         
