@@ -34,7 +34,7 @@ for d = 1:no_drugs
                     y_epoch = load(sprintf('%s_%s/%s_%s_chan%d_epoch%d.txt', subjects{sy}, drug,...
                         subjects{sy}, drug, y_chan, 1123));
                     
-                    comp_mat(x_index, y_index, d) = sum(x_epoch - y_epoch);
+                    comp_mat(x_index, y_index, d) = nansum(x_epoch - y_epoch);
                     
                 end
                 
@@ -44,15 +44,15 @@ for d = 1:no_drugs
         
     end
     
-    subplot(1, no_drugs, d)
+    figure
     
     imagesc(comp_mat(:, :, d))
     
     axis xy
     
     set(gca, 'XTickLabel', labels, 'YTickLabel', labels)
+
+    save_as_pdf(gcf, sprintf('%s_compare_channels', drug))
     
 end
-
-save_as_pdf(gcf, 'compare_channels')
         
