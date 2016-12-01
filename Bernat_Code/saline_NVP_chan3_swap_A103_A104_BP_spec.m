@@ -25,19 +25,19 @@ for d = 1:drug_num
         
         old_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', from_subj, channel, from_subj, channel);
         
-        new_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', from_subj, channel, from_subj, channel);
+        new_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', to_subj, channel, to_subj, channel);
         
-        old_states_pds = text_read([old_sp_name, '.txt'],'%s%s%s%s%*[^\n]');
+        [fourhrs, hrs, states, sixmins] = text_read([old_sp_name, '.txt'],'%s%s%s%s%*[^\n]');
         
         fid = fopen([old_sp_name, '_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.txt'], 'w');
         
-        fprintf(fid, '%s%s%s%s%*[^\n]', old_states_pds);
+        fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
         
         fclose(fid);
         
         fid = fopen([new_sp_name, '_NEW_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.txt'], 'w');
         
-        fprintf(fid, '%s%s%s%s%*[^\n]', old_states_pds);
+        fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
         
         fclose(fid);
         
