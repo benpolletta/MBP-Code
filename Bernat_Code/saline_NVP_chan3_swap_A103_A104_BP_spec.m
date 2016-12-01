@@ -23,37 +23,43 @@ for d = 1:drug_num
         
         to_subj = subject_labels{subj_pairs(p, 2)};
         
-        old_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', from_subj, channel, from_subj, channel);
+        old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', from_subj, channel, from_subj, drug, channel);
         
-        new_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', to_subj, channel, to_subj, channel);
+        old_flag = ['_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS')];
         
-        [fourhrs, hrs, states, sixmins] = text_read([old_sp_name, '.txt'],'%s%s%s%s%*[^\n]');
+        new_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', to_subj, channel, to_subj, drug, channel);
         
-        fid = fopen([old_sp_name, '_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.txt'], 'w');
+        new_flag = ['_NEW_', datestr(now, 'mm-dd-yy-HH-MM-SS')];
         
-        fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+        for m = 1
+            
+            [fourhrs, hrs, states, sixmins] = text_read([old_filename, measures{m}, '.txt'],'%s%s%s%s%*[^\n]');
+            
+            fid = fopen([old_filename, measures{m}, old_flag, '.txt'], 'w');
+            
+            fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+            
+            fclose(fid);
+            
+            fid = fopen([new_filename, measures{m}, new_flag, '.txt'], 'w');
+            
+            fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+            
+            fclose(fid);
+            
+        end
         
-        fclose(fid);
-        
-        fid = fopen([new_sp_name, '_NEW_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.txt'], 'w');
-        
-        fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
-        
-        fclose(fid);
-        
-        % for m = 1:no_measures
-        % 
-        %     old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', from_subj, channel, from_subj, drug, channel, measures{m});
-        % 
-        %     new_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', to_subj, channel, to_subj, drug, channel, measures{m});
-        % 
-        %     load([old_filename, '.mat']);
-        % 
-        %     save([old_filename, '_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.mat'], 'BP_all', 'band_limits', 'band_labels')
-        % 
-        %     save([new_filename, '_NEW_', datestr(now, 'mm-dd-yy-HH-MM-SS'), '.mat'], 'BP_all', 'band_limits', 'band_labels')
-        % 
+        % for m = 2:3
+        %
+        %     load([old_filename, measures{m}, '.mat']);
+        %
+        %     save([old_filename, measures{m}, old_flag, '.mat'], 'BP_all', 'band_limits', 'band_labels')
+        %
+        %     save([new_filename, measures{m}, new_flag, '.mat'], 'BP_all', 'band_limits', 'band_labels')
+        %
         % end
+            
+        end
         
     end
     
