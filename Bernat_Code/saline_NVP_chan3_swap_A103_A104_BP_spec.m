@@ -9,7 +9,7 @@ subj_pairs = nchoosek(1:subj_num, 2); no_subj_pairs = size(subj_pairs, 1);
 drug_labels = {'saline','NVP'};
 drug_num = length(drug_labels);
 
-measures = {'BP', 'spec'};
+measures = {'BP', 'spec'}; no_measures = length(measures);
 
 for d = 1:drug_num
     
