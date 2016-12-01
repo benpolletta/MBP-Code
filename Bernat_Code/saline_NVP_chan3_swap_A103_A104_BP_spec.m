@@ -17,9 +17,9 @@ for d = 1:drug_num
         
         clear BP_all band_limits band_labels
         
-        from_subj = subject_labels{subject_pairs(p, 1)};
+        from_subj = subject_labels{subj_pairs(p, 1)};
         
-        to_subj = subject_labels{subject_pairs(p, 1)};
+        to_subj = subject_labels{subj_pairs(p, 1)};
         
         old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_BP', from_subj, channel, from_subj, drug, channel);
         
