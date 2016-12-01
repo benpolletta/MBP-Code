@@ -1,6 +1,6 @@
 function saline_NVP_chan3_swap_A103_A104_BP_spec
 
-channel = 'Occipital';
+channel = 3;
 
 subject_labels = {'A103','A104'};
 subj_num = length(subject_labels);
