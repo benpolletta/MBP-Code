@@ -21,7 +21,7 @@ for d = 1:drug_num
         
         from_subj = subject_labels{subj_pairs(p, 1)};
         
-        to_subj = subject_labels{subj_pairs(p, 1)};
+        to_subj = subject_labels{subj_pairs(p, 2)};
         
         for m = 1:no_measures
             
