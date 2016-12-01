@@ -23,11 +23,11 @@ for d = 1:drug_num
         
         to_subj = subject_labels{subj_pairs(p, 2)};
         
-        old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', from_subj, channel, from_subj, drug, channel);
+        old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d', from_subj, channel, from_subj, drug, channel);
         
         old_flag = ['_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS')];
         
-        new_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', to_subj, channel, to_subj, drug, channel);
+        new_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d', to_subj, channel, to_subj, drug, channel);
         
         new_flag = ['_NEW_', datestr(now, 'mm-dd-yy-HH-MM-SS')];
         
