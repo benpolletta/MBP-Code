@@ -33,7 +33,6 @@ for d = 1:drug_num
         
         for m = 1
             
-            [old_filename, measures{m}, '.txt']
             [fourhrs, hrs, states, sixmins] = text_read([old_filename, measures{m}, '.txt'],'%s%s%s%s%*[^\n]');
             
             fid = fopen([old_filename, measures{m}, old_flag, '.txt'], 'w');
