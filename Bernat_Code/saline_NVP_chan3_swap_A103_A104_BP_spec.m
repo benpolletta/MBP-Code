@@ -9,7 +9,7 @@ subj_pairs = [1 2; 2 1]; no_subj_pairs = size(subj_pairs, 1);
 drug_labels = {'saline','NVP'};
 drug_num = length(drug_labels);
 
-measures = {'BP', 'spec'}; no_measures = length(measures);
+measures = {'_states_pds', '_BP', '_spec'}; no_measures = length(measures);
 
 for d = 1:drug_num
     
@@ -33,6 +33,7 @@ for d = 1:drug_num
         
         for m = 1
             
+            [old_filename, measures{m}, '.txt']
             [fourhrs, hrs, states, sixmins] = text_read([old_filename, measures{m}, '.txt'],'%s%s%s%s%*[^\n]');
             
             fid = fopen([old_filename, measures{m}, old_flag, '.txt'], 'w');
