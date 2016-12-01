@@ -23,19 +23,37 @@ for d = 1:drug_num
         
         to_subj = subject_labels{subj_pairs(p, 2)};
         
-        for m = 1:no_measures
-            
-            old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', from_subj, channel, from_subj, drug, channel, measures{m});
-            
-            new_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', to_subj, channel, to_subj, drug, channel, measures{m});
-            
-            load([old_filename, '.mat']);
-            
-            save([old_filename, '_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.mat'], 'BP_all', 'band_limits', 'band_labels')
-            
-            save([new_filename, '_NEW_', datestr(now, 'mm-dd-yy-HH-MM-SS'), '.mat'], 'BP_all', 'band_limits', 'band_labels')
-            
-        end
+        old_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', from_subj, channel, from_subj, channel);
+        
+        new_sp_name = sprintf('ALL_%s_chan%d/ALL_%s_chan%d_states_pds', from_subj, channel, from_subj, channel);
+        
+        old_states_pds = text_read([old_sp_name, '.txt'],'%s%s%s%s%*[^\n]');
+        
+        fid = fopen([old_sp_name, '_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.txt'], 'w');
+        
+        fprintf(fid, '%s%s%s%s%*[^\n]', old_states_pds);
+        
+        fclose(fid);
+        
+        fid = fopen([new_sp_name, '_NEW_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.txt'], 'w');
+        
+        fprintf(fid, '%s%s%s%s%*[^\n]', old_states_pds);
+        
+        fclose(fid);
+        
+        % for m = 1:no_measures
+        % 
+        %     old_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', from_subj, channel, from_subj, drug, channel, measures{m});
+        % 
+        %     new_filename = sprintf('ALL_%s_chan%d/ALL_%s_%s_chan%d_%s', to_subj, channel, to_subj, drug, channel, measures{m});
+        % 
+        %     load([old_filename, '.mat']);
+        % 
+        %     save([old_filename, '_OLD_', datestr(now, 'mm-dd-yy_HH-MM-SS'), '.mat'], 'BP_all', 'band_limits', 'band_labels')
+        % 
+        %     save([new_filename, '_NEW_', datestr(now, 'mm-dd-yy-HH-MM-SS'), '.mat'], 'BP_all', 'band_limits', 'band_labels')
+        % 
+        % end
         
     end
     

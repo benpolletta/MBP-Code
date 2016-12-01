@@ -37,7 +37,7 @@ for d=1:drug_num
         
         all_dir=['ALL_',subject,'_chan',num2str(channel)];
         
-        [states,hrs,fourhrs,sixmins]=textread([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%s%s%s%s%*[^\n]');
+        [states,hrs,fourhrs,sixmins]=text_read([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%s%s%s%s%*[^\n]');
         
         BP_mat=load([all_dir,'/ALL_',channel_name,'_BP.mat']);
         BP_data=BP_mat.BP_all;
