@@ -44,7 +44,7 @@ for d = 1:drug_num
             
             fid = fopen([new_filename, measures{m}, new_flag, '.txt'], 'w');
             
-            fprintf(fid, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+            fprintf(fid, '%s%s%s%s%*[^\n]', char(fourhrs), char(hrs), char(states), char(sixmins));
             
             fclose(fid);
             
