@@ -4,7 +4,7 @@ channel = 3;
 
 subject_labels = {'A103','A104'};
 subj_num = length(subject_labels);
-subj_pairs = nchoosek(1:subj_num, 2); no_subj_pairs = size(subj_pairs, 1);
+subj_pairs = [1 2; 2 1]; no_subj_pairs = size(subj_pairs, 1);
 
 drug_labels = {'saline','NVP'};
 drug_num = length(drug_labels);
