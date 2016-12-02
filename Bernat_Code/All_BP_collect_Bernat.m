@@ -32,7 +32,7 @@ for d=1:drug_num
         
         record_dir=[subject,'_',drug];
         
-        channel_name=[record_dir,'_chan',num2str(channel)]
+        channel_name=[record_dir,'_chan',num2str(channel)];
 %         channel_dir=[channel_name,'_epochs'];
         
         all_dir=['ALL_',subject,'_chan',num2str(channel)];

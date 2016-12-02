@@ -128,12 +128,12 @@ for d=1:no_drugs
     fid_vec=zeros(no_measures,1);
     for i=1:no_measures
         fid_vec(i)=fopen([all_dirname,'/',all_filename,'_',measures{i},'.txt'],'w');
-%         fprintf(fid_vec(i),'%s\t%s\t','epoch','state');
+        %         fprintf(fid_vec(i),'%s\t%s\t','epoch','state');
     end
 
-%     fid_BP=fopen([all_dirname,'/',all_filename,'_band_pow.txt'],'w');
+    %     fid_BP=fopen([all_dirname,'/',all_filename,'_band_pow.txt'],'w');
     
-%     fprintf(fid_vec(1),make_format(no_f_bins,'f'),f);
+    %     fprintf(fid_vec(1),make_format(no_f_bins,'f'),f);
     
     for i=1:no_bands
         fprintf(fid_vec(2),'%s\t',band_freq_labels{i});
@@ -153,11 +153,11 @@ for d=1:no_drugs
     
     parfor j=1:total_epochs
         
-%         data_spec=zeros(1,no_f_bins);
+        %         data_spec=zeros(1,no_f_bins);
        
         BP=zeros(1,no_bands);
                 
-%         local_f_bin_indices=f_bin_indices;
+        %         local_f_bin_indices=f_bin_indices;
         
         local_band_indices=band_indices;
         

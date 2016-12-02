@@ -35,17 +35,23 @@ for d = 1:drug_num
             
             [fourhrs, hrs, states, sixmins] = text_read([old_filename, measures{m}, '.txt'],'%s%s%s%s%*[^\n]');
             
-            fid = fopen([old_filename, measures{m}, old_flag, '.txt'], 'w');
+            fid_old = fopen([old_filename, measures{m}, old_flag, '.txt'], 'w');
             
-            fprintf(fid, '%s%s%s%s%*[^\n]', char(fourhrs), char(hrs), char(states), char(sixmins));
+            fid_new = fopen([new_filename, measures{m}, new_flag, '.txt'], 'w');
             
-            fclose(fid);
+            epochs = length(fourhrs);
             
-            fid = fopen([new_filename, measures{m}, new_flag, '.txt'], 'w');
+            for e = 1:epochs
+                
+                fprintf(fid_old, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+                
+                fprintf(fid_new, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+                
+            end
             
-            fprintf(fid, '%s%s%s%s%*[^\n]', char(fourhrs), char(hrs), char(states), char(sixmins));
+            fclose(fid_old);
             
-            fclose(fid);
+            fclose(fid_new);
             
         end
         
