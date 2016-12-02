@@ -43,9 +43,9 @@ for d = 1:drug_num
             
             for e = 1:epochs
                 
-                fprintf(fid_old, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+                fprintf(fid_old, '%s%s%s%s%*[^\n]', fourhrs{e}, hrs{e}, states{e}, sixmins{e});
                 
-                fprintf(fid_new, '%s%s%s%s%*[^\n]', fourhrs, hrs, states, sixmins);
+                fprintf(fid_new, '%s%s%s%s%*[^\n]', fourhrs{e}, hrs{e}, states{e}, sixmins{e});
                 
             end
             
@@ -64,9 +64,9 @@ for d = 1:drug_num
         %     save([new_filename, measures{m}, new_flag, '.mat'], 'BP_all', 'band_limits', 'band_labels')
         %
         % end
-            
-        end
         
     end
     
+end
+
 end

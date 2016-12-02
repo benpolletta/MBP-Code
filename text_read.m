@@ -8,7 +8,7 @@ fclose(fid);
 
 for n = 1:nargout
    
-    varargout{n} = char(text{n});
+    varargout{n} = text{n};
     
 end
 
