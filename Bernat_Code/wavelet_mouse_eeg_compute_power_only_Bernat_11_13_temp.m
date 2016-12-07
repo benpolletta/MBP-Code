@@ -41,16 +41,16 @@ no_f_bins=length(f_bins);
 
 spec_format=make_format(no_f_bins+1,'f');
 
-% band_limits=[1 5; 5 10; 20 40; 40 90; 120 160; 160 200];
-% band_labels={'delta','theta','beta-low-gamma','high-gamma','HFO','spindle'};
-% band_labels_long={'Delta','Theta','Alpha','Beta','Low Gamma','High Gamma','HFO','Spindle'};
+band_limits=[1 5; 5 10; 20 40; 40 90; 120 160; 160 200];
+band_labels={'delta','theta','beta-low-gamma','high-gamma','HFO','spindle'};
+band_labels_long={'Delta','Theta','Alpha','Beta','Low Gamma','High Gamma','HFO','Spindle'};
 
 % band_limits=[20 50; 50 90; 90 120];
 % band_labels={'low-gamma','middle-gamma','high-gamma'};
 % band_labels_long={'Low Gamma','Middle Gamma','High Gamma'};
 
-band_limits=[.1 4; 4 8; 10 13; 13 20; 20 50; 50 90; 90 120; 125 175];
-band_labels={'delta','theta','alpha','low-beta','beta-low-gamma','mid-gamma','high-gamma','HFOs'};
+% band_limits=[.1 4; 4 8; 10 13; 13 20; 20 50; 50 90; 90 120; 125 175];
+% band_labels={'delta','theta','alpha','low-beta','beta-low-gamma','mid-gamma','high-gamma','HFOs'};
 
 [no_bands,~]=size(band_limits);
 
