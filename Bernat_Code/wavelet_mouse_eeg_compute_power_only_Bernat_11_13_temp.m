@@ -43,7 +43,7 @@ spec_format=make_format(no_f_bins+1,'f');
 
 band_limits=[1 5; 5 10; 20 40; 40 90; 120 160; 160 200];
 band_labels={'delta','theta','beta-low-gamma','high-gamma','HFO','spindle'};
-band_labels_long={'Delta','Theta','Alpha','Beta','Low Gamma','High Gamma','HFO','Spindle'};
+band_labels_long={'Delta','Theta','Beta/Low Gamma','High Gamma','HFO','Spindle'};
 
 % band_limits=[20 50; 50 90; 90 120];
 % band_labels={'low-gamma','middle-gamma','high-gamma'};
