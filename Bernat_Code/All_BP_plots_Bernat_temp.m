@@ -23,9 +23,13 @@ BP_pct_by_state = load([name,'/',name,'_spec_pct_by_state.mat'], 'BP_pct');
 BP_pct_by_state = BP_pct_by_state.BP_pct;
 BP_zs = load([name,'/',name,'_BP_zs.txt']);
 
-band_limits=[.1 4; 4 8; 10 13; 13 20; 20 50; 50 90; 90 120; 125 175];
-band_labels={'delta','theta','alpha','low-beta','beta-low-gamma','mid-gamma','high-gamma','HFOs'};
-long_band_labels={'Delta','Theta','Alpha','Low Beta','Beta/Low Gamma','Middle Gamma','High Gamma','HFO'};
+% band_limits=[.1 4; 4 8; 10 13; 13 20; 20 50; 50 90; 90 120; 125 175];
+% band_labels={'delta','theta','alpha','low-beta','beta-low-gamma','mid-gamma','high-gamma','HFOs'};
+% long_band_labels={'Delta','Theta','Alpha','Low Beta','Beta/Low Gamma','Middle Gamma','High Gamma','HFO'};
+
+band_limits=[1 5; 5 10; 20 40; 40 90; 120 160; 160 200];
+band_labels={'delta','theta','beta-low-gamma','high-gamma','HFO','spindle'};
+band_labels_long={'Delta','Theta','Beta/Low Gamma','High Gamma','HFO','Spindle'};
 
 [no_bands,~]=size(band_limits);
 band_freq_labels=cell(no_bands,1); long_band_freq_labels=cell(no_bands,1);
