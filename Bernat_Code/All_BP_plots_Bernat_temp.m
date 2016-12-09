@@ -29,7 +29,7 @@ BP_zs = load([name,'/',name,'_BP_zs.txt']);
 
 band_limits=[1 5; 5 10; 20 40; 40 90; 120 160; 160 200];
 band_labels={'delta','theta','beta-low-gamma','high-gamma','HFO','spindle'};
-band_labels_long={'Delta','Theta','Beta/Low Gamma','High Gamma','HFO','Spindle'};
+long_band_labels={'Delta','Theta','Beta/Low Gamma','High Gamma','HFO','Spindle'};
 
 [no_bands,~]=size(band_limits);
 band_freq_labels=cell(no_bands,1); long_band_freq_labels=cell(no_bands,1);
