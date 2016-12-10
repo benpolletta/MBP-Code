@@ -84,7 +84,7 @@ mkdir (all_dirname)
 drugs={'saline','MK801','NVP','Ro25'};
 no_drugs=length(drugs);
 
-for d=[1 3] % 1:no_drugs
+for d=[2 4] % 1:no_drugs
     
     record_dir=[subject,'_',drugs{d}];
     
