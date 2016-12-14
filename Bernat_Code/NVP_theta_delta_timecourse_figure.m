@@ -49,7 +49,7 @@ no_pre=0; no_post=4;
 no_BP_6min_periods = length(BP_6min_labels);
 short_BP_6min_labels = (1:40)*6 - 3; short_BP_6min_labels(short_BP_6min_labels == 0) = [];
 
-no_BP_bands = 8; no_sMI_bands = 6;
+no_BP_bands = 6; no_sMI_bands = 6; % no_BP_bands = 8;
     
 clear titles xlabels ylabels
            
