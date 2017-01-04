@@ -35,7 +35,7 @@ for d=1:drug_num
         channel_name=[record_dir,'_chan',num2str(channel)];
 %         channel_dir=[channel_name,'_epochs'];
         
-        all_dir=['ALL_',subject,'_chan',num2str(channel)];
+        all_dir=['ALL_',subject,'_chan',num2str(channel)]
         
         [states,hrs,fourhrs,sixmins]=text_read([all_dir,'/ALL_',channel_name,'_states_pds.txt'],'%s%s%s%s%*[^\n]');
         
@@ -54,6 +54,7 @@ for d=1:drug_num
         
 %         baseline_indices=strcmp(fourhrs,'pre4to1') | strcmp(fourhrs,'pre8to5');
         baseline_indices=strcmp(fourhrs,'pre4to1');
+        sum(baseline_indices)
         baseline_BP=ones(epochs,no_bands)*diag(nanmean(BP_data(baseline_indices,:)));
         BP_pct=100*BP_data./baseline_BP-100*ones(epochs,no_bands);
         
