@@ -43,20 +43,22 @@ for d = 1:no_drugs
         end
         
         subj_delta = nanzscore(fr_delta(strcmp(fr_subjects, subjects{s}) & fr_p4_index & strcmp(fr_drugs, drug)));
+        
+        time = (1:length(subj_delta))*16384/(1000*60*60); time = down_sample(time, ds_factor);
     
-        subj_delta = downsample(subj_delta, ds_factor);
+        subj_delta = down_sample(subj_delta, ds_factor);
         
         delta((end + 1):(end + length(subj_delta))) = subj_delta;
         
         subj_theta = nanzscore(ca1_theta(strcmp(ca1_subjects, subjects{s}) & ca1_p4_index & strcmp(ca1_drugs, drug)));
     
-        subj_theta = downsample(subj_theta, ds_factor);
+        subj_theta = down_sample(subj_theta, ds_factor);
         
         theta((end + 1):(end + length(subj_theta))) = subj_theta;
         
         subplot(no_drugs, 2, 2*d - 1)
         
-        plot((1:length(subj_delta))', [subj_delta subj_theta])
+        plot(time', [subj_delta subj_theta])
         
         if d == 1, legend({'Fr. \delta', 'CA1 \theta'}), end
         
@@ -64,7 +66,7 @@ for d = 1:no_drugs
         
         hold on
         
-        plot((1:length(subj_delta))', zeros(size(subj_delta)), '--k')
+        plot(time', zeros(size(subj_delta)), '--k')
         
         if d == 1
             
@@ -151,5 +153,26 @@ end
 for s = 1:no_subjects
     
     save_as_pdf(figs(s), [subjects{s}, '_theta_delta_multidrug_ds', num2str(ds_factor, '%.3g')])
+
+end
+
+end
+
+
+function ds = down_sample(ts, ds_factor)
+
+ts_length = length(ts);
+
+new_length = floor(ts_length/ds_factor);
+
+length_sampled = new_length*ds_factor;
+
+length_left_over = ts_length - length_sampled;
+
+start = floor(length_left_over/2);
+
+ts_sampled = ts(start + (1:length_sampled));
+
+ds = nanmean(reshape(ts_sampled, ds_factor, new_length))';
 
 end
