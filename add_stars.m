@@ -7,7 +7,7 @@ if isempty(c_order), c_order = [0 0 1; 0 .75 0; 1 0 0]; end
 
 logical = +logical;
 
-if any(logical ~= 0)
+if any(any(logical ~= 0))
     
     logical(logical == 0) = nan;
     

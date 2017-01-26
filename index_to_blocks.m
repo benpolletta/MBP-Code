@@ -20,15 +20,23 @@ end
 
 if ~isempty(stops) || ~isempty(starts)
     
-    if isempty(starts) || stops(1) < starts(1)
+    if ~isempty(stops)
         
-        starts = [1; starts];
+        if isempty(starts) || stops(1) < starts(1)
+            
+            starts = [1; starts];
+            
+        end
         
     end
     
-    if isempty(stops) || starts(end) > stops(end)
+    if ~isempty(starts)
         
-        stops = [stops; index_length];
+        if isempty(stops) || starts(end) > stops(end)
+            
+            stops = [stops; index_length];
+            
+        end
         
     end
     

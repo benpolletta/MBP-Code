@@ -78,15 +78,17 @@ subj_thetaHFO_high = subj_thetaHFO;
 
 subj_thetaHFO_high(subj_thetaHFO < quantile(subj_thetaHFO, 1 - q)) = nan;
 
-subplot(2, 2, 3)
+h = subplot(2, 2, 3);
 
 hrs = 4*(1:length(subj_deltaHFO))/length(subj_deltaHFO);
+    
+set(h, 'NextPlot', 'add', 'ColorOrder', [0 0 1; 1 0 0])
 
-plot(hrs', [subj_deltaHFO subj_thetaHFO])
+plot(hrs', [subj_deltaHFO subj_thetaHFO], 'LineWidth', 2)
 
 hold on
 
-plot(hrs', [subj_deltaHFO_high subj_thetaHFO_high], 'o') % , 'LineWidth', 2)
+plot(hrs', [subj_deltaHFO_high subj_thetaHFO_high], 'o', 'LineWidth', 2)
 
 legend({'\delta-HFO PAC','\theta-HFO PAC'})
 
