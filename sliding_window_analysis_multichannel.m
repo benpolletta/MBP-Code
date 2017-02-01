@@ -48,9 +48,7 @@ sw(sw_indices{:}) = first;
 
 window_time(1) = nanmean(time(1:window_length));
 
-for w = 2:no_windows
-    
-    w
+for w = 1:no_windows
     
     window_start_index = (w - 1)*overlap + 1;
     
@@ -61,10 +59,6 @@ for w = 2:no_windows
     window_time(w) = nanmean(time(window_start_index:window_end_index));
     
     sw_indices{end} = w;
-    
-    size(sw(sw_indices{:}))
-    
-    size(feval(fcn_handle, window_data, varargin{:}))
     
     sw(sw_indices{:}) = feval(fcn_handle, window_data, varargin{:});
     
