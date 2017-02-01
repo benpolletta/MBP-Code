@@ -59,7 +59,7 @@ for c1=1:no_cats1
             
             handl=figure_replotter(gcf,1,1,12,18,x_ticks,y_ticks,{[long_stat_labels{m},' ',long_cat1_labels{c1},' ',long_cat2_labels{c2}]});
             
-            saveas(handl,[name,'_',cat1,'_',cat2,'_',stat_labels{m},'.fig']);
+            save_as_pdf(handl,[name,'_',cat1,'_',cat2,'_',stat_labels{m}]);
             
         end
         

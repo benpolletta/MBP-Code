@@ -18,4 +18,5 @@ saveas(handle, [title,'.fig'])
 % set(textobj, 'FontSize', 8)
 
 set(handle, 'PaperOrientation', orientation_flag, 'PaperUnits', 'normalized', 'PaperPosition', [0 0 1 1])
+
 print(handle, '-painters', '-dpdf', '-r600', [title,'.pdf'])
