@@ -90,7 +90,7 @@ if plot_opt
         
         subplot(no_rows, no_cols, subplot_indices(p))
         
-        imagesc(sw_plot(:, :, p))
+        imagesc(abs(sw_plot(:, :, p)))
         
         axis xy
         
@@ -100,7 +100,7 @@ if plot_opt
         
         subplot(no_rows, no_cols, subplot_indices(p))
         
-        imagesc(nanzscore(sw_plot(:, :, p)')')
+        imagesc(nanzscore(abs(sw_plot(:, :, p)')'))
         
         axis xy
         
@@ -111,6 +111,8 @@ if plot_opt
     for f = 1:max(figure_indices)
         
         save_as_pdf(f, [filename, '_', num2str(f)])
+        
+        save_as_pdf(max(figure_indices) + f, [filename, '_', num2str(f)])
         
     end
     
