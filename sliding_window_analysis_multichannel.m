@@ -1,4 +1,8 @@
-function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, window_length, overlap, plot_opt, save_opt, filename, varargin)
+function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, window_length, step, plot_opt, save_opt, filename, varargin)
+
+% Performs sliding window analysis of data given a function.
+
+analysis_flag = sprintf('_%s_window%g_step%g', fcn_handle(2:end), window_length/sampling_freq, step/sampling_freq);
 
 [datalength, no_channels] = size(data);
 
@@ -12,11 +16,11 @@ end
 
 if isempty(window_length), window_length = sampling_freq; end
 
-if isempty(overlap), overlap = round(window_length/2); end
+if isempty(step), step = round(window_length/2); end
 
 time = (1:datalength)/sampling_freq;
 
-no_windows = floor((datalength - window_length)/overlap);
+no_windows = floor((datalength - window_length)/step);
 
 window_time = nan(no_windows, 1);
 
@@ -50,9 +54,9 @@ window_time(1) = nanmean(time(1:window_length));
 
 for w = 1:no_windows
     
-    window_start_index = (w - 1)*overlap + 1;
+    window_start_index = (w - 1)*step + 1;
     
-    window_end_index = (w - 1)*overlap + window_length;
+    window_end_index = (w - 1)*step + window_length;
     
     window_data = data(window_start_index:window_end_index, :);
     
@@ -66,7 +70,7 @@ end
 
 if save_opt
     
-    save([filename, '.mat'], 'sw', 'window_time', 'window_length', 'overlap', 'sampling_freq')
+    save([filename, analysis_flag, '.mat'], 'sw', 'window_time', 'window_length', 'step', 'sampling_freq')
     
 end
 
@@ -110,9 +114,9 @@ if plot_opt
     
     for f = 1:max(figure_indices)
         
-        save_as_pdf(f, [filename, '_', num2str(f)])
+        save_as_pdf(f, [filename, analysis_flag '_', num2str(f)])
         
-        save_as_pdf(max(figure_indices) + f, [filename, '_', num2str(f)])
+        save_as_pdf(max(figure_indices) + f, [filename, analysis_flag, '_', num2str(f)])
         
     end
     
