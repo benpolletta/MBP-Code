@@ -1,9 +1,9 @@
-function add_stars_one_line(handle, t, logical, side_vec, c_order)
+function add_stars_one_line(handle, t, logical, side_vec, varargin)
 
 % Adds stars to a boundedline type plot. Logical is whether or not to add
 % a star. Side vec is 0 for below & 1 for above. c_order is color of stars.
 
-if isempty(c_order), c_order = [0 0 1; 0 .75 0; 1 0 0]; end
+plot_spec = init_struct({'c_order', 'symbol'}, {[0 0 1; 0 .75 0; 1 0 0], '*'}, varargin{:});
 
 logical = +logical;
 
@@ -17,7 +17,7 @@ if all_dimensions(@any, logical ~= 0)
     
     hold on
     
-    set(handle, 'NextPlot', 'add', 'ColorOrder', c_order)
+    set(handle, 'NextPlot', 'add', 'ColorOrder', plot_spec.c_order)
     
     % axis(handle, 'tight')
     
@@ -37,7 +37,7 @@ if all_dimensions(@any, logical ~= 0)
     
     logical_multiplier = ones(size(logical))*diag(multiplier_vec);
     
-    plot(t, logical.*logical_multiplier, '*')
+    plot(t, logical.*logical_multiplier, plot_spec.symbol)
     
     ylim([min([yl, ylim_vec]) max([yl, ylim_vec])])
     

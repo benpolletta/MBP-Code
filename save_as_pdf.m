@@ -12,7 +12,11 @@ if length(varargin) > 0
     
 end
 
-saveas(handle, [title,'.fig'], '-v7.3')
+% try
+    
+saveas(handle, [title,'.fig'])
+    
+% catch
 
 % textobj = findobj('Type', 'text');
 % set(textobj, 'FontSize', 8)
