@@ -2,7 +2,7 @@ function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, da
 
 % Performs sliding window analysis of data given a function.
 
-analysis_flag = sprintf('_%s_window%g_step%g', fcn_handle(2:end), window_length/sampling_freq, step/sampling_freq);
+analysis_flag = sprintf('_%s_window%g_step%g', func2str(fcn_handle), window_length/sampling_freq, step/sampling_freq);
 
 [datalength, no_channels] = size(data);
 
