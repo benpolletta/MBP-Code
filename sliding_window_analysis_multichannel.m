@@ -1,6 +1,18 @@
 function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, window_length, step, plot_opt, save_opt, filename, varargin)
 
-% Performs sliding window analysis of data given a function.
+% Performs sliding window analysis of given data using supplied function handle.
+% * fcn_handle - the function to be performed on each window.
+% * data - the data given to the function (can be a vector or a matrix).
+% * sampling_freq - the sampling frequency of data.
+% * window_length - the length (in data indices) of the windows to be
+%   analyzed. Default is sampling_freq.
+% * step - the length (in data indices) that each window is offset relative
+%   to the previous one. Default is sampling_freq/2.
+% * plot_opt - plot the output (1) or not (0).
+% * save_opt - save the output (1) or not (0).
+% * filename - name to save the output files to; if empty, uses a flag
+%   containing the function and the window length and step length.
+% * varargin - extra variables to be passed to the function.
 
 analysis_flag = sprintf('_%s_window%g_step%g', func2str(fcn_handle), window_length/sampling_freq, step/sampling_freq);
 
@@ -114,9 +126,9 @@ if plot_opt
     
     for f = 1:max(figure_indices)
         
-        save_as_pdf(f, [filename, analysis_flag '_', num2str(f)])
+        save_as_pdf(f, [filename, analysis_flag '_', num2str(2*f - 1)])
         
-        save_as_pdf(max(figure_indices) + f, [filename, analysis_flag, '_', num2str(f)])
+        save_as_pdf(max(figure_indices) + f, [filename, analysis_flag, '_', num2str(2*f)])
         
     end
     
