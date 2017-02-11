@@ -38,6 +38,10 @@ if nargin > 2
                 
                 is.(keys{k}) = varargin{2*a};
                 
+            else
+                
+                is.(varargin{2*a - 1}) = varargin{2*a};
+                
             end
             
         end

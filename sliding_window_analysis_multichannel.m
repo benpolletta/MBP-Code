@@ -1,11 +1,14 @@
-function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, window_length, step, plot_opt, save_opt, filename, varargin)
+function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, sliding_window_cell, plot_opt, save_opt, filename, varargin)
 
 % Performs sliding window analysis of given data using supplied function handle.
 % * fcn_handle - the function to be performed on each window.
-% * data - the data given to the function (can be a vector or a matrix).
-% * sampling_freq - the sampling frequency of data.
-% * window_length - the length (in data indices) of the windows to be
-%   analyzed. Default is sampling_freq.
+% * data - the data given to the function (can be a vector or a matrix or an array).
+% * sampling_freq - (cell array) the sampling frequency of eachdimension of data.
+% * sliding_window_cell - a cell array whose length matches the number of
+%   dimensions of the input data. The nth cell contains a 2-vector
+%   (window_length, step_length), which gives the length of the windows (and
+%   the steps by which these windows are offset) for the sliding window
+%   analysis in dimension n.
 % * step - the length (in data indices) that each window is offset relative
 %   to the previous one. Default is sampling_freq/2.
 % * plot_opt - plot the output (1) or not (0).
@@ -14,33 +17,43 @@ function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, da
 %   containing the function and the window length and step length.
 % * varargin - extra variables to be passed to the function.
 
-analysis_flag = sprintf('_%s_window%g_step%g', func2str(fcn_handle), window_length/sampling_freq, step/sampling_freq);
+data_size = size(data);
 
-[datalength, no_channels] = size(data);
+data_dimensions = length(data_size);
 
-if no_channels > datalength
-    
-    data = data';
-    
-    [datalength, no_channels] = size(data);
+sliding_window_cell = check_args(sliding_window_cell, data_size);
+
+[time, window_time, first_indices] = deal(cell(data_dimensions, 1));
+
+no_windows = nan(data_dimensions, 1);
+
+for d = 1:data_dimensions
+
+    time{d} = (1:data_size(d))/sampling_freq{d};
+
+    no_windows(d) = ceil((data_size(d) - sliding_window_cell{d}(1) + 1)/sliding_window_cell{d}(2));
+
+    window_time{d} = nan(no_windows(d), 1);
     
 end
 
-if isempty(window_length), window_length = sampling_freq; end
+total_windows = prod(no_windows);
 
-if isempty(step), step = round(window_length/2); end
+[window_numbers{1:data_dimensions}] = ind2sub(no_windows, 1:total_windows);
 
-time = (1:datalength)/sampling_freq;
+for d = 1:data_dimensions
 
-no_windows = floor((datalength - window_length)/step);
+    first_indices{d} = 1:sliding_window_cell{d}(1);
+    
+    window_time{d}(1) = nanmean(time{d}(first_indices{d}));
+    
+end
 
-window_time = nan(no_windows, 1);
-
-first = feval(fcn_handle, data(1:window_length, :), varargin{:});
+first = feval(fcn_handle, data(first_indices{:}), varargin{:});
 
 output_size = size(first);
 
-sw_size = [output_size, no_windows];
+sw_size = [output_size, total_windows];
 
 output_dim = length(output_size);
 
@@ -62,17 +75,27 @@ sw_indices{end} = 1;
 
 sw(sw_indices{:}) = first;
 
-window_time(1) = nanmean(time(1:window_length));
-
-for w = 1:no_windows
+for w = 2:total_windows
     
-    window_start_index = (w - 1)*step + 1;
+    for d = 1:data_dimensions
     
-    window_end_index = (w - 1)*step + window_length;
+        w_dim = window_numbers{d}(w);
+        
+        window_dim = sliding_window_cell{d}(1);
+        
+        step_dim = sliding_window_cell{d}(2);
+        
+        window_start_index = (w_dim - 1)*step_dim + 1;
+        
+        window_end_index = (w_dim - 1)*step_dim + window_dim;
+        
+        window_indices{d} = window_start_index:window_end_index;
     
-    window_data = data(window_start_index:window_end_index, :);
+        window_time{d}(w_dim) = nanmean(time{d}(window_start_index:window_end_index));
+        
+    end
     
-    window_time(w) = nanmean(time(window_start_index:window_end_index));
+    window_data = data(window_indices{:});
     
     sw_indices{end} = w;
     
@@ -80,136 +103,88 @@ for w = 1:no_windows
     
 end
 
+reshape(sw, [output_size, no_windows'])
+
 if save_opt
     
-    save([filename, analysis_flag, '.mat'], 'sw', 'window_time', 'window_length', 'step', 'sampling_freq')
+    window_time_cell = cellfun(@(x,y) x/y, sliding_window_cell, sampling_freq, 'UniformOutput', 0);
+    
+    analysis_name = make_analysis_name(filename, func2str(fcn_handle), window_time_cell, length(size(data)));
+    
+    save([analysis_name, '.mat'], 'sw', 'window_time', 'sliding_window_cell', 'sampling_freq')
     
 end
 
 if plot_opt
     
-    no_x_ticks = 5;
+    % Plotting goes here.
     
-    x_ticks = 1:floor(no_windows/no_x_ticks):no_windows;
+end
+
+end
+
+
+function analysis_name = make_analysis_name(filename, fcn_name, window_time_cell, no_dims)
+
+analysis_label = fcn_name;
+
+for d = 1:no_dims
+
+    analysis_label = [analysis_label, sprintf('_dim%d_window%g_step%g', d, window_time_cell{d})];
     
-    no_plots = prod(sw_size(2:(end - 1)));
+end
+
+if ~isempty(filename), filename = [filename, '_']; end
+
+analysis_name = [filename, analysis_label];
+
+end
+
+
+function sliding_window_cell = check_args(sliding_window_cell, data_size)
+
+data_dimensions = length(data_size);
+
+if length(sliding_window_cell) > data_dimensions
     
-    sw_plot = reshape(sw, sw_size(1), no_plots, no_windows);
+    display(sprintf(['Fourth argument to sliding_window_analysis_multichannel is a cell array\n',...
+        'whose length matches the number of dimensions of the input data.\n',...
+        'The nth cell contains a 2-vector (window_length, step_length), which gives\n',...
+        'the length of the windows (and the steps by which these windows are offset)\n',...
+        'for the sliding window analysis in dimension n.']))
+
+end
     
-    sw_plot = permute(sw_plot, [1 3 2]);
+% Filling out the rest of the windows if only a first few are specified.
+for d = (length(sliding_window_cell) + 1):data_dimensions
     
-    [figure_indices, subplot_indices, no_rows, no_cols] = linear_figure_indices(sw_size(2:(end - 1)), [], []);
+    sliding_window_cell{d} = data_size(d)*ones(1, 2);
     
-    for p = 1:no_plots
+end
+
+% Filling out the rest of the windows if they are left empty.
+for d = 1:data_dimensions
+    
+    if isempty(sliding_window_cell{d})
         
-        figure(figure_indices(p))
-        
-        subplot(no_rows, no_cols, subplot_indices(p))
-        
-        imagesc(abs(sw_plot(:, :, p)))
-        
-        axis xy
-        
-        set(gca, 'XTick', x_ticks - .5, 'XTickLabel', round(window_time(x_ticks)))
-        
-        figure(max(figure_indices) + figure_indices(p))
-        
-        subplot(no_rows, no_cols, subplot_indices(p))
-        
-        imagesc(nanzscore(abs(sw_plot(:, :, p)')'))
-        
-        axis xy
-        
-        set(gca, 'XTick', x_ticks - .5, 'XTickLabel', round(window_time(x_ticks)))
+        sliding_window_cell{d} = data_size(d)*ones(1, 2);
         
     end
     
-    for f = 1:max(figure_indices)
-        
-        save_as_pdf(f, [filename, analysis_flag '_', num2str(2*f - 1)])
-        
-        save_as_pdf(max(figure_indices) + f, [filename, analysis_flag, '_', num2str(2*f)])
-        
-    end
-    
 end
 
-end
+% [datalength, no_channels] = size(data);
+% 
+% if no_channels > datalength
+%     
+%     data = data';
+%     
+%     [datalength, no_channels] = size(data);
+%     
+% end
 
-
-function [fig_indices, subplot_indices, no_rows, no_cols] = linear_figure_indices(size, max_row_index, max_col_index)
-
-if isempty(max_row_index), max_row_index = 10; end
-
-if isempty(max_col_index), max_col_index = 10; end
-
-if length(size) > 1
-    
-    if size(1) <= max_row_index && size(2) <= max_col_index
-        
-        no_rows = size(1);
-        
-        no_cols = size(2);
-        
-        fig_start_index = 3;
-        
-    elseif size(1) <= max_row_index*max_col_index
-        
-        [no_rows, no_cols] = subplot_size(size(1));
-        
-        fig_start_index = 2;
-        
-    else
-        
-        no_rows = max_row_index;
-        
-        no_cols = max_col_index;
-        
-        size(1) = ceil(size(1)/(max_row_index*max_col_index));
-        
-        fig_start_index = 1;
-        
-    end
-    
-elseif size(1) <= max_row_index*max_col_index
-    
-    [no_rows, no_cols] = subplot_size(size(1));
-    
-    fig_start_index = 2;
-    
-else
-    
-    no_rows = max_row_index;
-    
-    no_cols = max_col_index;
-    
-    size(1) = ceil(size(1)/(max_row_index*max_col_index));
-    
-    fig_start_index = 1;
-    
-end
-
-% fig_start_index = min(fig_start_index, length(size));
-
-no_figures = prod(size(fig_start_index:end));
-
-figure_subplot_indices = linear_subplot_indices(no_rows, no_cols);
-
-subplot_indices = repmat(figure_subplot_indices, 1, no_figures);
-
-subplot_indices = reshape(subplot_indices, no_rows*no_cols*no_figures, 1);
-
-fig_indices = cumsum(ones(no_rows*no_cols, no_figures), 2);
-
-fig_indices = reshape(fig_indices, no_rows*no_cols*no_figures, 1);
-
-end
-
-
-function subplot_indices = linear_subplot_indices(no_rows, no_cols)
-
-subplot_indices = reshape(1:(no_rows*no_cols), no_cols, no_rows)';
-
-subplot_indices = reshape(subplot_indices, no_rows*no_cols, 1);
+% if isempty(window_lengths), window_lengths = sampling_freq; end
+% 
+% if isempty(steps), steps = round(window_lengths/2); end
 
 end
