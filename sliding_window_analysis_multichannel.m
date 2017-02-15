@@ -6,9 +6,9 @@ function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, da
 % * sampling_freq - (cell array) the sampling frequency of eachdimension of data.
 % * sliding_window_cell - a cell array whose length matches the number of
 %   dimensions of the input data. The nth cell contains a 2-vector
-%   (window_length, step_length), which gives the length of the windows (and
-%   the steps by which these windows are offset) for the sliding window
-%   analysis in dimension n.
+%   (window_length, step_length), which gives (in indices) the length of
+%   the windows (and the lengths of the steps by which these windows are
+%   offset) for the sliding window analysis in dimension n.
 % * step - the length (in data indices) that each window is offset relative
 %   to the previous one. Default is sampling_freq/2.
 % * plot_opt - plot the output (1) or not (0).
