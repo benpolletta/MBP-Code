@@ -109,7 +109,7 @@ if save_opt
     
     window_time_cell = cellfun(@(x,y) x/y, sliding_window_cell, sampling_freq, 'UniformOutput', 0);
     
-    analysis_name = make_analysis_name(filename, func2str(fcn_handle), window_time_cell, length(size(data)));
+    analysis_name = make_sliding_window_analysis_name(filename, func2str(fcn_handle), window_time_cell, length(size(data)));
     
     save([analysis_name, '.mat'], 'sw', 'window_time', 'sliding_window_cell', 'sampling_freq')
     
@@ -120,23 +120,6 @@ if plot_opt
     % Plotting goes here.
     
 end
-
-end
-
-
-function analysis_name = make_analysis_name(filename, fcn_name, window_time_cell, no_dims)
-
-analysis_label = fcn_name;
-
-for d = 1:no_dims
-
-    analysis_label = [analysis_label, sprintf('_dim%d_window%g_step%g', d, window_time_cell{d})];
-    
-end
-
-if ~isempty(filename), filename = [filename, '_']; end
-
-analysis_name = [filename, analysis_label];
 
 end
 
