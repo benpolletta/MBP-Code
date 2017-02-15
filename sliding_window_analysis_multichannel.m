@@ -103,7 +103,7 @@ for w = 2:total_windows
     
 end
 
-reshape(sw, [output_size, no_windows'])
+sw = squeeze(reshape(sw, [output_size, no_windows']));
 
 if save_opt
     
@@ -111,7 +111,7 @@ if save_opt
     
     analysis_name = make_sliding_window_analysis_name(filename, func2str(fcn_handle), window_time_cell, length(size(data)));
     
-    save([analysis_name, '.mat'], 'sw', 'window_time', 'sliding_window_cell', 'sampling_freq')
+    save([analysis_name, '.mat'], 'sw', 'window_time', 'sliding_window_cell', 'sampling_freq', 'output_size', 'no_windows')
     
 end
 
