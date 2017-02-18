@@ -32,18 +32,18 @@ if nargin > 2
     
     for a = 1:(floor(nargin/2) - 1)
         
-        for k = 1:length(keys)
+        % is.(varargin{2*a - 1}) = varargin{2*a};
+        
+        if any(strcmp(varargin{2*a - 1}, keys))
             
-            if strcmp(varargin{2*a - 1}, keys{k})
-                
-                is.(keys{k}) = varargin{2*a};
-                
-            else
-                
-                is.(varargin{2*a - 1}) = varargin{2*a};
-                
-            end
-            
+            display(sprintf('Replacing default %s.', varargin{2*a - 1}))
+        
+            is.(keys{strcmp(varargin{2*a - 1}, keys)}) = varargin{2*a};
+        
+        else
+        
+            is.(varargin{2*a - 1}) = varargin{2*a};
+        
         end
         
     end
