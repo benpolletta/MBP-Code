@@ -1,9 +1,17 @@
 function [amp_indices,phase_indices]=random_pairs(in_noshufs,filenum)
 
+% Returns in_noshufs or fewer random pairs of nonidentical indices between 1 and filenum.
+
 if isempty(in_noshufs)
+        
+    shuf_indices=nchoosek(1:filenum,2);
+    shuf_indices=[shuf_indices; fliplr(shuf_indices)];
     
-    amp_indices=randperm(filenum);
-    phase_indices=randperm(filenum);
+    amp_indices=shuf_indices(:,2);
+    phase_indices=shuf_indices(:,1);
+    
+    % amp_indices=randperm(filenum);
+    % phase_indices=randperm(filenum);
     
 elseif 2*nchoosek(filenum,2)<in_noshufs
     
@@ -26,16 +34,6 @@ else
     choices=randperm(length(pairs));
     choices=choices(1:noshufs);
     shuf_indices=pairs(choices,:);
-    
-    %             shuf_indices=ceil(rand(2,noshufs)*filenum);
-    %             shuf_indices(:,diff(shuf_indices)==0)=[];
-    %
-    %             while length(shuf_indices)<noshufs
-    %
-    %                 shuf_indices(:,end+1:noshufs)=ceil(rand(2,noshufs-length(shuf_indices))*filenum);
-    %                 shuf_indices(:,diff(shuf_indices)==0)=[];
-    %
-    %             end
     
     amp_indices=shuf_indices(:,2);
     phase_indices=shuf_indices(:,1);
