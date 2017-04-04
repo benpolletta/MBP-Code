@@ -1,4 +1,4 @@
-function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, sliding_window_cell, plot_opt, save_opt, filename, varargin)
+function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, data, sampling_freq, sliding_window_cell, save_opt, filename, varargin)
 
 % Performs sliding window analysis of given data using supplied function handle.
 % * fcn_handle - the function to be performed on each window.
@@ -17,6 +17,8 @@ function [sw, window_time] = sliding_window_analysis_multichannel(fcn_handle, da
 %   containing the function and the window length and step length.
 % * varargin - extra variables to be passed to the function.
 
+%% Initializing output array, indices required to index into this multidimensional array.
+
 data_size = size(data);
 
 data_dimensions = length(data_size);
@@ -24,6 +26,8 @@ data_dimensions = length(data_size);
 sliding_window_cell = check_args(sliding_window_cell, data_size);
 
 [time, window_time, first_indices] = deal(cell(data_dimensions, 1));
+
+% Find number of windows in each dimension.
 
 no_windows = nan(data_dimensions, 1);
 
@@ -37,9 +41,13 @@ for d = 1:data_dimensions
     
 end
 
+% Linearize looping over all combinations of window numbers (over all dimensions).
+
 total_windows = prod(no_windows);
 
 [window_numbers{1:data_dimensions}] = ind2sub(no_windows, 1:total_windows);
+
+% Find indices and times of first window (i.e., window numbers (1,1,...,1)).
 
 for d = 1:data_dimensions
 
@@ -49,15 +57,24 @@ for d = 1:data_dimensions
     
 end
 
+% Find size of output based on output from first window.
+
 first = feval(fcn_handle, data(first_indices{:}), varargin{:});
 
 output_size = size(first);
+
+% Find size of array needed to hold outputs from all windows, based on size
+% of output from a single window and on the number of windows in each
+% dimension.
 
 sw_size = [output_size, total_windows];
 
 output_dim = length(output_size);
 
 sw_dim = output_dim + 1;
+
+% Initialize cell holding indices for each window, and size arguments for
+% array to hold outputs from all windows.
 
 [sw_size_cell, sw_indices] = deal(cell(sw_dim, 1));
 
@@ -69,55 +86,57 @@ for d = 1:sw_dim
     
 end
 
-sw = nan(sw_size_cell{:});
+sw = nan(sw_size_cell{:}); % Initialize array to hold outputs from all windows.
 
-sw_indices{end} = 1;
+sw_indices{end} = 1; % Set up indices of first window in array sw.
 
-sw(sw_indices{:}) = first;
+sw(sw_indices{:}) = first; % Assign first window in sw to output from first window.
+
+%% Analysis by window.
 
 for w = 2:total_windows
     
+    % For each data dimension, assigning number of window (in given
+    % dimension), indices into data for that window, and center time of
+    % that window.
+    
     for d = 1:data_dimensions
     
-        w_dim = window_numbers{d}(w);
+        w_dim = window_numbers{d}(w); % Number of window (in dimension d).
         
-        window_dim = sliding_window_cell{d}(1);
+        window_d = sliding_window_cell{d}(1); % Window size in this dimension.
         
-        step_dim = sliding_window_cell{d}(2);
+        step_d = sliding_window_cell{d}(2); % Step size in this dimension.
         
-        window_start_index = (w_dim - 1)*step_dim + 1;
+        window_start_index = (w_dim - 1)*step_d + 1; % Start of window in this dimension.
         
-        window_end_index = (w_dim - 1)*step_dim + window_dim;
+        window_end_index = (w_dim - 1)*step_d + window_d; % End of window in this dimension.
         
-        window_indices{d} = window_start_index:window_end_index;
+        window_indices{d} = window_start_index:window_end_index; % Indices of window in this dimension.
     
-        window_time{d}(w_dim) = nanmean(time{d}(window_start_index:window_end_index));
+        window_time{d}(w_dim) = nanmean(time{d}(window_start_index:window_end_index)); % Center time of window in this dimension.
         
     end
     
-    window_data = data(window_indices{:});
+    window_data = data(window_indices{:}); % Getting data for this window.
     
-    sw_indices{end} = w;
+    sw_indices{end} = w; % Setting up indices into output array for this window.
     
-    sw(sw_indices{:}) = feval(fcn_handle, window_data, varargin{:});
+    sw(sw_indices{:}) = feval(fcn_handle, window_data, varargin{:}); % Assigning output to output array.
     
 end
 
-sw = squeeze(reshape(sw, [output_size, no_windows']));
+sw = squeeze(reshape(sw, [output_size, no_windows'])); % Reshaping output array from linear over windows to multidimensional over each window dimension.
 
 if save_opt
     
     window_time_cell = cellfun(@(x,y) x/y, sliding_window_cell, sampling_freq, 'UniformOutput', 0);
     
-    analysis_name = make_sliding_window_analysis_name(filename, func2str(fcn_handle), window_time_cell, length(size(data)));
+    analysis_name = make_sliding_window_analysis_name(filename, func2str(fcn_handle), window_time_cell, length(size(data)), varargin{:});
+    
+    % varargin_name = make_varargin_name(varargin{:});
     
     save([analysis_name, '.mat'], 'sw', 'window_time', 'sliding_window_cell', 'sampling_freq', 'output_size', 'no_windows')
-    
-end
-
-if plot_opt
-    
-    % Plotting goes here.
     
 end
 
