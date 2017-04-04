@@ -35,7 +35,7 @@ for j=6:10
         fclose('all')
     end
     
-    fid3=fopen(['fft_times_noise_',num2str(j/10),'.txt','w')
+    fid3=fopen(['fft_times_noise_',num2str(j/10),'.txt'],'w')
     fprintf(fid3,'%f\n',times(:,j))
     
     for p=1:15
