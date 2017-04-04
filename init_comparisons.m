@@ -1,6 +1,24 @@
 function comparison_struct = init_comparisons(SW_size, dimension_compared, indices_compared,...
     dimensions_ranged_over, comparison_ranges, dimensions_truncated, dimension_subsets, comparison_name)
 
+% Creates a structure containing, among other things, a cell of indices to
+% be compared in a multidimensional array.
+% INPUTS:
+% * SW_size (row vector): size of multidimensional array to be compared.
+% * dimension_compared (scalar): dimension in the multidimensional array
+%   that's compared.
+% * indices_compared (2-vector): the left and the right index in the
+%   comparison.
+% * dimensions_ranged_over (vector): the indices of the dimensions to be
+%   ranged over.
+% * comparison_ranges (cell): the indices within the dimensions ranged over
+%   that are ranged over.
+% * dimensions_truncated (vector): the indices of the dimensions that are
+%   truncated.
+% * dimension_subsets (cell): the indices picked out of the truncated
+%   dimensions.
+% * comparison_name (string): name to append to the file saving p-values.
+
 number_dimensions = length(SW_size);
 
 for d = 1:number_dimensions
