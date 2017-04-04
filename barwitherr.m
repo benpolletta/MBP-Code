@@ -116,7 +116,7 @@ if nRows > 1
     hErrorbar = zeros(1,nCols);
     for col = 1:nCols
         % Extract the x location data needed for the errorbar plots:
-        x = get(get(handles.bar(col),'children'),'xdata');
+        x = bsxfun(@plus, hBar(col).XData, [hBar(col).XOffset]');% x = get(get(handles.bar(col),'children'),'xdata');
         % Use the mean x values to call the standard errorbar fn; the
         % errorbars will now be centred on each bar; these are in ascending
         % order so use xOrder to ensure y values and errors are too:
@@ -124,7 +124,7 @@ if nRows > 1
         set(hErrorbar(col), 'marker', 'none')
     end
 else
-    x = get(get(handles.bar,'children'),'xdata');
+    x = bsxfun(@plus, hBar(col).XData, [hBar(col).XOffset]'); % x = get(get(handles.bar,'children'),'xdata');
     hErrorbar = errorbar(mean(x,1), values, lowerErrors, upperErrors, '.k');
     set(hErrorbar, 'marker', 'none')
 end
