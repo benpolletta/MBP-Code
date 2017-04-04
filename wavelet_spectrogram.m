@@ -1,5 +1,10 @@
 function ws = wavelet_spectrogram(data, sampling_freq, freqs, no_cycles, save_opt, filename)
 
+if nargin < 2, sampling_freq = []; end
+if nargin < 3, freqs = []; end
+if nargin < 4, no_cycles = []; end
+if nargin < 5, save_opt = 0; end
+
 [data_length, no_channels] = size(data);
 
 if no_channels > data_length
@@ -9,6 +14,8 @@ if no_channels > data_length
     [data_length, no_channels] = size(data);
     
 end
+
+if isempty(sampling_freq), sampling_freq = data_length; end
 
 if isempty(freqs), freqs = 1:(sampling_freq/2); end
 no_freqs = length(freqs);
