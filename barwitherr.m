@@ -124,7 +124,7 @@ if nRows > 1
         set(hErrorbar(col), 'marker', 'none')
     end
 else
-    x = bsxfun(@plus, hBar(col).XData, [hBar(col).XOffset]'); % x = get(get(handles.bar,'children'),'xdata');
+    x = bsxfun(@plus, hBar.XData, [hBar.XOffset]'); % x = get(get(handles.bar,'children'),'xdata');
     hErrorbar = errorbar(mean(x,1), values, lowerErrors, upperErrors, '.k');
     set(hErrorbar, 'marker', 'none')
 end
