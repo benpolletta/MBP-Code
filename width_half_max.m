@@ -1,8 +1,10 @@
-function [whm, shm_sum, max_freq, max_value, entropy] = width_half_max(data, sampling_freq, freq_range, smooth_freq, plot_opt)
+function [whm, shm_sum, max_freq, max_value, entropy, band_power] = width_half_max(data, sampling_freq, freq_range, smooth_freq, plot_opt)
 
 data_length = length(data);
 
 if size(data, 1) ~= data_length, data = data'; end
+
+%% Getting spectral power.
 
 data = detrend(data);
 
@@ -11,6 +13,14 @@ data = detrend(data);
 if size(data_hat, 1) ~= length(data_hat), data_hat = data_hat'; end
 
 if size(freqs, 1) ~= length(freqs), freqs = freqs'; end
+
+freq_indices = freqs >= freq_range(1) & freqs <= freq_range(2);
+
+power = data_hat(freq_indices);
+
+band_power = sum(power);
+
+%% Smoothing spectral power.
 
 flip_size = min(data_length, sampling_freq);
 
@@ -24,11 +34,11 @@ data_hat_smoothed = conv(data_hat_flipped, gaussian, 'same');
 
 data_hat_smoothed = data_hat_smoothed((flip_size + 1):(end - flip_size));
 
-freq_indices = freqs >= freq_range(1) & freqs <= freq_range(2);
-
 data_hat_selected = data_hat_smoothed(freq_indices);
 
 freqs_selected = freqs(freq_indices);
+
+%% Finding width at half max.
 
 [max_value, max_index] = max(data_hat_selected);
 
@@ -52,9 +62,13 @@ whm = whm_end - whm_start + 1;
 
 if isempty(whm), whm = nan; end
 
+%% Getting entropy.
+
 data_hat_normalized = data_hat_selected./sum(data_hat_selected);
 
 entropy = - nansum(data_hat_normalized.*log(data_hat_normalized));
+
+%% Plotting.
 
 if plot_opt == 1
     
@@ -66,7 +80,11 @@ if plot_opt == 1
     
     hold on
     
-    plot(freqs_selected(whm_start:whm_end), half_max*ones(whm, 1), 'r-')
+    if ~isnan(whm)
+        
+        plot(freqs_selected(whm_start:whm_end), half_max*ones(whm, 1), 'r-')
+        
+    end
     
     plot(freqs_selected(max_index), max_value, 'rs')
     
