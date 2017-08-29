@@ -1,6 +1,8 @@
-function sync_axes(axis_list)
+function sync_axes(axis_list, axes_sunc)
 
-% [ymin, ymax, xmin, xmax] = deal(nan);
+if nargin < 2, axes_sunc = []; end
+
+if isempty(axes_sunc), axes_sunc = ''; end
 
 for a = 1:length(axis_list)
    
@@ -21,7 +23,25 @@ for d = 1:3
 end
 
 for a = 1:length(axis_list)
-   
-    set(axis_list(a), 'Xlim', axis_extrema(1, :), 'Ylim', axis_extrema(2, :), 'Clim', axis_extrema(3, :))
+    
+    switch axes_sunc
+        
+        case 'x'
+            
+            set(axis_list(a), 'Xlim', axis_extrema(1, :))
+            
+        case 'y'
+            
+            set(axis_list(a), 'Ylim', axis_extrema(2, :))
+            
+        case 'z'
+            
+            set(axis_list(a), 'Clim', axis_extrema(3, :))
+            
+        case ''
+            
+            set(axis_list(a), 'Xlim', axis_extrema(1, :), 'Ylim', axis_extrema(2, :), 'Clim', axis_extrema(3, :))
+    
+    end
     
 end
