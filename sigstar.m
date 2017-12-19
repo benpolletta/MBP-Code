@@ -241,7 +241,7 @@ elseif p<=0.05
 elseif isnan(p)
 	stars='n.s.';
 else
-	stars='';
+	stars=sprintf('p = %.2g', p);
 end
 		
 x=repmat(x,2,1);
