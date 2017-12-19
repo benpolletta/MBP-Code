@@ -118,6 +118,8 @@ if nRows > 1
         % Extract the x location data needed for the errorbar plots:
         if ~isempty(strfind(version, 'R2013a'))
             x = get(get(handles.bar(col),'children'),'xdata');
+        elseif ~isempty(strfind(version, 'R2014a'))
+            x = get(get(hBar(col), 'Children'), 'XData');
         else
             x = bsxfun(@plus, hBar(col).XData, [hBar(col).XOffset]'); 
         end
@@ -130,6 +132,8 @@ if nRows > 1
 else
     if ~isempty(strfind(version, 'R2013a'))
         x = get(get(handles.bar,'children'),'xdata');
+    elseif ~isempty(strfind(version, 'R2014a'))
+        x = get(get(hBar, 'Children'), 'XData');
     else
         x = bsxfun(@plus, hBar.XData, [hBar.XOffset]');
     end
