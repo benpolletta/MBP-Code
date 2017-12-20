@@ -1,6 +1,6 @@
 function label = make_label(stem, values, defaults, location_option)
 
-if nargin < 4, location_option = []; legend
+if nargin < 4, location_option = []; end
 if isempty(location_option), location_option = 'front'; end
 
 if nargin < 3, defaults = []; end
